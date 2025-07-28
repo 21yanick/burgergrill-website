@@ -426,7 +426,7 @@ export async function sendBillingEmail(customerId: string) {
 
 ```env
 # Supabase Integration
-NEXT_PUBLIC_SUPABASE_URL=http://localhost:55321
+NEXT_PUBLIC_SUPABASE_URL=http://localhost:56321
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIs...
 SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIs...
 
@@ -441,7 +441,7 @@ STRIPE_STARTER_PRICE_ID=price_...
 STRIPE_PRO_PRICE_ID=price_...
 
 # Application Settings
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=http://localhost:4000
 LOG_LEVEL=info
 
 # Email Service
@@ -652,12 +652,12 @@ cd infrastructure/
 docker compose up -d
 
 # 2. Services testen
-curl http://localhost:55321/health  # Supabase API
-curl http://localhost:55323         # Studio Interface
+curl http://localhost:56321/health  # Supabase API
+curl http://localhost:56323         # Studio Interface
 
 # 3. Webhook Testing (Stripe CLI)
 stripe login
-stripe listen --forward-to localhost:3000/api/webhooks/stripe
+stripe listen --forward-to localhost:4000/api/webhooks/stripe
 
 # 4. Email Testing (Development)
 # Emails werden an Inbucket gesendet: http://localhost:9001
@@ -694,7 +694,7 @@ pnpm run dev
 **Webhook Verification:**
 ```bash
 # Test webhook endpoint
-stripe listen --forward-to localhost:3000/api/webhooks/stripe
+stripe listen --forward-to localhost:4000/api/webhooks/stripe
 
 # Verify webhook secret
 echo $STRIPE_WEBHOOK_SECRET
@@ -751,8 +751,8 @@ docker compose logs inbucket
 ## ✅ Integration Checklist
 
 ### Setup Verification
-- [ ] Supabase API erreichbar (localhost:55321)
-- [ ] Database Studio funktioniert (localhost:55323)
+- [ ] Supabase API erreichbar (localhost:56321)
+- [ ] Database Studio funktioniert (localhost:56323)
 - [ ] Stripe Test Keys konfiguriert
 - [ ] Webhook Endpoint aktiv
 - [ ] Resend API Key gesetzt

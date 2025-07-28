@@ -1,6 +1,6 @@
 /**
- * 🟩 SHOP-ONLY: Dashboard Components Export
- * Clean imports for dashboard components
+ * Dashboard Components Export
+ * Restaurant dashboard components
  */
 
-export { StatusSelect } from './status-select'
+// No dashboard components needed for basic restaurant website

@@ -4,8 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme";
 import { Header, Footer } from "@/components/layout";
 import { getSiteMetadata } from "@/lib/config";
-// 🟩 SHOP-ONLY: Global Shopping Cart Integration
-import { ShoppingCart, CartHydration } from "@/components/shop";
+// Restaurant layout with clean structure
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,15 +41,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* 🟩 SHOP-ONLY: Cart State Hydration */}
-          <CartHydration />
+          {/* Restaurant theme provider setup */}
           <div className="flex min-h-screen flex-col">
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
-          {/* 🟩 SHOP-ONLY: Global Shopping Cart Slideout */}
-          <ShoppingCart />
+          {/* Clean restaurant layout structure */}
         </ThemeProvider>
       </body>
     </html>

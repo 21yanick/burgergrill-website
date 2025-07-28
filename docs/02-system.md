@@ -216,7 +216,7 @@ Template `.env.local` (bereits konfiguriert):
 
 ```env
 # Supabase Connection
-NEXT_PUBLIC_SUPABASE_URL=http://localhost:55321
+NEXT_PUBLIC_SUPABASE_URL=http://localhost:56321
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIs...
 
 # Stripe Integration
@@ -224,7 +224,7 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 STRIPE_SECRET_KEY=sk_test_...
 
 # Application
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=http://localhost:4000
 ```
 
 ### Keine Feature Flags
@@ -262,7 +262,7 @@ vi infrastructure/volumes/db/business-schema.sql
 docker compose restart supabase-db
 
 # 3. Änderungen in Studio überprüfen
-open http://localhost:55323
+open http://localhost:56323
 ```
 
 ### Template-Anpassungen

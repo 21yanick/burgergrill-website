@@ -118,7 +118,7 @@ export async function getUserProfile() {
   
   // Test with direct HTTP fetch to bypass Supabase client
   try {
-    const directResponse = await fetch('http://localhost:55321/rest/v1/profiles?select=*&limit=3', {
+    const directResponse = await fetch('http://localhost:56321/rest/v1/profiles?select=*&limit=3', {
       headers: {
         'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
         'apikey': process.env.SUPABASE_SERVICE_ROLE_KEY!,

@@ -36,20 +36,20 @@ pnpm install
 pnpm run dev
 ```
 
-**✅ Bereit:** [App](http://localhost:3000) | [Datenbank](http://localhost:55323)
+**✅ Bereit:** [App](http://localhost:4000) | [Datenbank](http://localhost:56323)
 
 ## 🔍 Setup Überprüfen
 
 ### Schnell-Test Checklist
-- [ ] [App lädt](http://localhost:3000) - Hauptanwendung
-- [ ] [Studio funktioniert](http://localhost:55323) - Datenbank Interface  
+- [ ] [App lädt](http://localhost:4000) - Hauptanwendung
+- [ ] [Studio funktioniert](http://localhost:56323) - Datenbank Interface  
 - [ ] Registrierung erstellt Account - Authentication testen
 - [ ] Dashboard erreichbar - Geschützte Routen funktionieren
 
 ### Test Account erstellen
-1. Gehe zu [Registrierung](http://localhost:3000/auth/register)
+1. Gehe zu [Registrierung](http://localhost:4000/auth/register)
 2. Account mit beliebiger Email/Passwort erstellen
-3. Prüfen in [Supabase Studio](http://localhost:55323) → Authentication → Users
+3. Prüfen in [Supabase Studio](http://localhost:56323) → Authentication → Users
 
 ## 🎯 Was Sie bekommen
 
@@ -104,7 +104,7 @@ Wichtige Variablen in `template/.env.local`:
 
 ```env
 # Datenbank (automatisch konfiguriert)
-NEXT_PUBLIC_SUPABASE_URL=http://localhost:55321
+NEXT_PUBLIC_SUPABASE_URL=http://localhost:56321
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 
 # Payments (Ihre Test Keys hinzufügen)

@@ -109,7 +109,7 @@ async function runSeed() {
     console.log('Next steps:');
     console.log('- Run: npm run dev');
     console.log('- Login with: test@example.com / password123');
-    console.log('- Visit Studio: http://localhost:55323');
+    console.log('- Visit Studio: http://localhost:56323');
     
   } catch (error) {
     console.error('❌ Seeding failed:', error.message);

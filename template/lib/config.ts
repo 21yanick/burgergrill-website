@@ -1,29 +1,23 @@
 /**
  * Site Configuration - Single Source of Truth
  * ✅ SHARED: Core config used by all business models
- * 🟦 SAAS-ONLY: Pricing section (remove for shop conversion)
+ * Restaurant configuration - Swiss locale and CHF currency
  */
 
 export const siteConfig = {
-  // ✅ SHARED: Core Brand Identity - Updated in 100% of customer projects
-  name: "SaaS Starter",
-  description: "100% self-hosted SaaS starter kit with Next.js 15, Supabase, and Stripe. Production-ready from day 1.",
+  // Restaurant Brand Identity
+  name: "Burgergrill",
+  description: "Das beste Burgergrill in der Schweiz. Frische Zutaten, perfekt gegrillte Burger und authentische Schweizer Qualität.",
   
-  // ✅ SHARED: Business Essentials - Different for each market
+  // Regional Settings for Switzerland
   currency: "CHF" as const,
   region: "swiss" as const,
   locale: "de-CH" as const,
   
-  // ✅ SHARED: Contact & Legal - Required by Swiss/EU law
+  // Restaurant Contact Information
   contact: {
-    email: "support@yourcompany.com",
-    company: "Your Company Name"
-  },
-  
-  // 🟦 SAAS-ONLY: Subscription Pricing (remove for shop conversion)
-  pricing: {
-    starter: 9.90,
-    pro: 19.90
+    email: "info@burgergrill.ch",
+    company: "Burgergrill AG"
   }
 } as const;
 
@@ -52,9 +46,9 @@ export function formatPrice(amount: number): string {
  */
 export function getSiteMetadata() {
   return {
-    title: `${siteConfig.name} - Self-Hosted Next.js 15 Kit`,
+    title: `${siteConfig.name} - Das beste Burgergrill der Schweiz`,
     description: siteConfig.description,
     author: siteConfig.contact.company,
-    keywords: ['saas', 'nextjs', 'supabase', 'stripe', 'self-hosted', siteConfig.region]
+    keywords: ['burger', 'grill', 'restaurant', 'schweiz', 'chf', siteConfig.region]
   };
 }

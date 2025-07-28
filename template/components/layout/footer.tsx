@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator"
 import { siteConfig } from "@/lib/config"
 
 export function Footer() {
-  // Clean SaaS-only footer - using centralized config
+  // Clean restaurant footer - using centralized config
   const { name: brandName, description } = siteConfig
   
   const productLinks = [
@@ -74,7 +74,7 @@ export function Footer() {
             </p>
             <div className="flex items-center space-x-4">
               <span className="text-xs text-muted-foreground">
-                SAAS Mode
+                Restaurant Mode
               </span>
             </div>
           </div>

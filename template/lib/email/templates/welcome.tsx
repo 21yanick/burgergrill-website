@@ -17,15 +17,15 @@ export function WelcomeEmail({ userFirstname }: WelcomeEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Welcome to our SaaS!</Preview>
+      <Preview>Willkommen bei Burgergrill!</Preview>
       <Body style={main}>
         <Container style={container}>
-          <Heading style={h1}>Welcome, {userFirstname}!</Heading>
+          <Heading style={h1}>Willkommen bei Burgergrill, {userFirstname}!</Heading>
           <Text style={text}>
-            Thanks for signing up. We&apos;re excited to have you on board.
+            Danke für Ihre Registrierung. Wir freuen uns, Sie bei unserem Burgergrill begrüssen zu dürfen!
           </Text>
           <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard`} style={button}>
-            Go to Dashboard
+            Zu Ihrem Konto
           </Link>
         </Container>
       </Body>

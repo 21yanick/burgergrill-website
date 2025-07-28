@@ -1,7 +1,7 @@
 {
-  "name": "nextjs-template",
+  "name": "burgergrill-website",
   "version": "1.0.0",
-  "description": "Swiss NextJS Starter Kit - Production-ready template with Auth, Subscriptions & Swiss optimizations",
+  "description": "Burgergrill Restaurant Website - Schweizer Burgergrill mit Next.js 15 und Supabase",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -37,10 +37,8 @@
     "react-dom": "^19.0.0",
     "react-email": "^4.1.0",
     "resend": "^4.6.0",
-    "stripe": "^18.3.0",
     "tailwind-merge": "^3.3.1",
-    "zod": "^4.0.0",
-    "zustand": "^5.0.6"
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",

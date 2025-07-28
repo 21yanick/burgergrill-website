@@ -47,12 +47,12 @@ export async function middleware(request: NextRequest) {
   
   // CSP Header - only add connect-src if supabaseUrl is available
   const connectSrc = supabaseUrl 
-    ? `'self' ${supabaseUrl} https://api.stripe.com`
-    : `'self' https://api.stripe.com`;
+    ? `'self' ${supabaseUrl}`
+    : `'self'`;
   
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-inline' https://js.stripe.com;
+    script-src 'self' 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https:;
     connect-src ${connectSrc};

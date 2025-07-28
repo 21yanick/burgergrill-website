@@ -87,7 +87,7 @@ async function runMigrations() {
     console.log('');
     console.log('Next steps:');
     console.log('- Run: npm run db:seed (to add test data)');
-    console.log('- Visit: http://localhost:55323 (Supabase Studio)');
+    console.log('- Visit: http://localhost:56323 (Supabase Studio)');
     
   } catch (error) {
     console.error('❌ Migration failed:', error.message);

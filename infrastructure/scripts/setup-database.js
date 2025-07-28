@@ -51,18 +51,18 @@ exec('docker ps', (error, stdout, stderr) => {
             console.log('✅ Database setup completed!');
             console.log('');
             console.log('🎉 Next steps:');
-            console.log('1. Open Supabase Studio: http://localhost:55323');
+            console.log('1. Open Supabase Studio: http://localhost:56323');
             console.log('2. Run: npm run dev');
-            console.log('3. Visit: http://localhost:3000');
+            console.log('3. Visit: http://localhost:4000');
           });
         } else {
           console.log('✅ Migrations executed successfully!');
           console.log('✅ Database setup completed!');
           console.log('');
           console.log('🎉 Next steps:');
-          console.log('1. Open Supabase Studio: http://localhost:55323');
+          console.log('1. Open Supabase Studio: http://localhost:56323');
           console.log('2. Run: npm run dev');
-          console.log('3. Visit: http://localhost:3000');
+          console.log('3. Visit: http://localhost:4000');
         }
       });
     }, 10000);

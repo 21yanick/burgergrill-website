@@ -8,7 +8,7 @@ import { Container } from '@/components/ui/container';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { CreditCard, LayoutDashboard, Settings, Package } from 'lucide-react';
+import { LayoutDashboard, Settings } from 'lucide-react';
 
 export default async function DashboardLayout({
   children,
@@ -38,22 +38,6 @@ export default async function DashboardLayout({
                 <Link href="/dashboard">
                   <LayoutDashboard className="h-4 w-4 mr-2" />
                   Overview
-                </Link>
-              </Button>
-              
-              {/* 🟩 SHOP-ONLY: Orders Management */}
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/dashboard/orders">
-                  <Package className="h-4 w-4 mr-2" />
-                  Orders
-                </Link>
-              </Button>
-              
-              {/* 🟦 SAAS-ONLY: Subscription Management (for shop: delete this button) */}
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/dashboard/subscription">
-                  <CreditCard className="h-4 w-4 mr-2" />
-                  Subscription
                 </Link>
               </Button>
             </div>

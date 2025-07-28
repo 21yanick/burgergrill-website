@@ -9,20 +9,15 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { CalendarDays, Mail, User, CreditCard } from 'lucide-react';
 import Link from 'next/link';
-import { requireAuth, getUserSubscription } from '@/lib/auth/server';
-import { getPlan } from '@/lib/plans';
+import { requireAuth } from '@/lib/auth/server';
 
 export default async function DashboardPage() {
   // Server-side authentication and data fetching - no loading states needed
   const user = await requireAuth(); // Handles redirect if not authenticated
-  const userSubscription = await getUserSubscription(user.id);
 
   const initials = user.email
     ? user.email.substring(0, 2).toUpperCase()
     : 'U';
-
-  // Use centralized plan configuration
-  const currentPlan = getPlan(userSubscription.type);
 
   return (
     <>
@@ -86,25 +81,14 @@ export default async function DashboardPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Subscription</CardTitle>
-            <Badge variant={currentPlan.badgeVariant}>{currentPlan.name}</Badge>
+            <CardTitle className="text-sm font-medium">Burgergrill Member</CardTitle>
+            <Badge variant="default">Active</Badge>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{currentPlan.name}</div>
+            <div className="text-2xl font-bold">Welcome</div>
             <p className="text-xs text-muted-foreground mb-3">
-              {userSubscription.type === 'free' 
-                ? 'Upgrade to unlock more features' 
-                : userSubscription.subscription?.status === 'active' 
-                  ? 'Active subscription' 
-                  : 'Subscription inactive'
-              }
+              Enjoy our delicious burgers and earn rewards
             </p>
-            <Button asChild size="sm" className="w-full">
-              <Link href="/dashboard/subscription">
-                <CreditCard className="mr-2 h-4 w-4" />
-                Manage Subscription
-              </Link>
-            </Button>
           </CardContent>
         </Card>
 

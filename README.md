@@ -1,251 +1,218 @@
-# NextJS Dual-Mode Starter Kit
+# 🍔 Burgergrill Website
 
-**Production-Ready Business Template: SaaS ↔ Shop in 5 Minuten**
+**Das beste Burgergrill der Schweiz** - Moderne Restaurant-Website mit Next.js 15 + Supabase
 
-Vollständig funktionsfähiges Template für **E-Commerce** oder **SaaS Subscriptions** mit Swiss Optimization. Self-hosted Stack mit Supabase, Stripe Integration und modernem Development Setup.
+Vollständig restaurant-fokussierte Website mit User-Management, sauberer Authentication und Swiss Localization. Self-hosted Supabase Stack für maximale Kontrolle und Performance.
 
 ## 🚀 Schnellstart
 
 ```bash
-# 1. Infrastructure starten
+# 1. Environment-Dateien erstellen
+cd infrastructure && cp .env.example .env
+cd ../template && cp .env.example .env.local
+
+# 2. Infrastructure starten (erstes Mal dauert ~2-3 Minuten)
 cd infrastructure && docker compose up -d
 
-# 2. Development starten  
+# 3. Development starten  
 cd ../template
 pnpm install && pnpm run dev
 ```
 
-**Bereit:** [App](http://localhost:3000) | [Datenbank](http://localhost:55323)
+**Bereit:** 
+- 🍔 **Website**: http://localhost:3000
+- 🗄️ **Database Studio**: http://localhost:56323 (supabase / this_password_is_insecure_and_should_be_updated)
+- 📊 **Analytics**: http://localhost:4000
+- 🔌 **API**: http://localhost:56321
 
 ## 🛠️ Tech Stack
 
-**Frontend:** Next.js 15 • React 19 • TypeScript • Tailwind CSS 4  
-**Backend:** Supabase (self-hosted) • PostgreSQL • Docker  
-**Payments:** Stripe Integration • CHF + TWINT  
-**State:** Zustand + Persist • Server Actions  
-**Email:** Resend Integration (German Templates)  
-**Components:** Radix UI • shadcn/ui
+### Frontend
+- **Next.js 15** - React 19, App Router, TypeScript
+- **Tailwind CSS** - Utility-first CSS framework
+- **Radix UI** - Headless UI components
+- **React Email** - Email templates
+- **Resend** - Email delivery service
 
-## ✨ Features
+### Backend & Infrastructure
+- **Supabase Self-Hosted** - PostgreSQL + Authentication + Storage + Realtime
+- **Docker Compose** - 16 Services für vollständigen Stack
+- **Kong Gateway** - API Gateway und Routing
+- **Vector** - Log aggregation und Analytics
+- **ImgProxy** - Image processing und optimization
 
-### 🇨🇭 Swiss Business Optimization
-- **CHF Währung** mit Rappen-Precision
-- **TWINT + Karte** Zahlungsmethoden
-- **de-CH Lokalisierung** (Datum, Währung, Sprache)
-- **Schweizer Adressen** und Postleitzahlen-Validierung
-- **DSGVO-konforme** Datenverarbeitung
-
-### 🛍️ E-Commerce System (Production Ready)
-- **Produktkatalog** mit Stripe Price Integration
-- **Shopping Cart** mit Zustand Persistence
-- **Guest Checkout** ohne Account-Zwang
-- **Order Management** Dashboard für Shop Owner
-- **Digital + Physical** Products Support
-- **Email Confirmations** und Status Updates
-
-### 💼 SaaS Subscription System (Production Ready)
-- **Subscription Plans** mit monatlicher Abrechnung
-- **Billing Dashboard** für Kunden
-- **Usage Tracking** und Account Management
-- **Stripe Customer Portal** Integration
-- **Webhook-driven** Subscription Events
-
-### 🔐 Vollständige Authentication
-- Email/Passwort Registrierung und Login
-- Geschützte Routen und Middleware
-- Benutzerprofile und Session-Management
-- Passwort zurücksetzen Flow
-
-### 🏗️ Moderne Architektur
-- **Next.js 15** mit App Router und Server Actions
-- **React 19** mit Server Components
-- **TypeScript** Strict Mode mit Zod Schemas
-- **Zustand** State Management mit Persist
-- **Dark/Light Theme** mit System Detection
-- **Mobile-First** Responsive Design
-
-### 🐳 Self-Hosted Infrastructure
-- **PostgreSQL** Datenbank mit Migrations
-- **Supabase** Authentication und Real-time API
-- **Docker Compose** Development Stack
-- **Kong Gateway** und Observability Stack
-
-### 📧 Professional Email System
-- **Resend Integration** für transactional Emails
-- **React Email** Templates (Order, Billing, Welcome)
-- **Swiss Formatierung** (CHF, de-CH Datum)
-- **Production-ready** Domain Setup
+### Database Schema
+- **Core Schema** - User profiles, authentication, file storage
+- **Swiss Localization** - CHF currency, de-CH locale
+- **Row Level Security** - Sichere Datenbank-Policies
+- **Automatic Triggers** - Profile creation, timestamps
 
 ## 📁 Projekt-Struktur
 
 ```
-template/                # Haupt-Development Template
-├── app/
-│   ├── (marketing)/
-│   │   ├── shop/           # 🟩 SHOP-ONLY (E-Commerce)
-│   │   └── pricing/        # 🟦 SAAS-ONLY (Subscriptions)
-│   ├── dashboard/
-│   │   ├── orders/         # 🟩 SHOP-ONLY (Order Management)
-│   │   └── subscription/   # 🟦 SAAS-ONLY (Billing)
-│   └── api/               # ✅ SHARED (Webhooks, Auth)
-├── components/
-│   ├── shop/              # 🟩 SHOP-ONLY (Cart, Products)
-│   ├── billing/           # 🟦 SAAS-ONLY (Plans, Checkout)
-│   └── ui/                # ✅ SHARED (Design System)
-└── lib/
-    ├── shop/              # 🟩 SHOP-ONLY (One-time Payments)
-    ├── plans.ts           # 🟦 SAAS-ONLY (Subscription Plans)
-    └── config.ts          # ✅ SHARED (Core Configuration)
-
-infrastructure/             # Docker Compose Stack
-├── docker-compose.yml     # Service Definitionen
-├── volumes/db/            # Database Schema (Both Models)
-└── .env.local            # Infrastructure Konfiguration
+burgergrill-website/
+├── infrastructure/          # Supabase Self-Hosted Stack
+│   ├── docker-compose.yml   # 16 Services (Postgres, Kong, Studio, etc.)
+│   ├── .env                 # Infrastructure configuration
+│   └── volumes/
+│       ├── db/              # Database schemas und init scripts
+│       └── logs/            # Vector logging configuration
+├── template/                # Next.js Restaurant Website
+│   ├── app/                 # App Router (Next.js 15)
+│   ├── components/          # UI Components (auth, layout, ui)
+│   ├── lib/                 # Utilities, config, email
+│   └── .env.local           # Application configuration
+└── README.md               # Diese Datei
 ```
-
-## 🔄 Dual-Mode Architecture
-
-### SaaS ↔ Shop Conversion (5 Minuten)
-
-**SaaS → Shop:**
-```bash
-# 1. Remove SaaS components
-rm -rf app/(marketing)/pricing/ app/dashboard/subscription/ components/billing/ lib/plans.ts
-
-# 2. Update navigation (1 line): /pricing → /shop in components/layout/header.tsx
-
-# 3. Done! Shop system is fully functional
-```
-
-**Shop → SaaS:**
-```bash  
-# 1. Remove Shop components
-rm -rf app/(marketing)/shop/ app/dashboard/orders/ components/shop/ lib/shop/
-
-# 2. Update navigation (1 line): /shop → /pricing in components/layout/header.tsx
-
-# 3. Done! SaaS system is fully functional
-```
-
-**Warum so einfach?** Beide Systeme laufen parallel mit clean code separation. Keine Database Migration nötig!
 
 ## 🔧 Konfiguration
 
-Das Template kommt vorkonfiguriert mit:
-- **Währung:** CHF mit Rappen-Precision
-- **Sprache:** Deutsch (de-CH) mit Schweizer Formatierung  
-- **Payments:** Stripe mit Karte und TWINT Support
-- **Business Models:** SaaS Subscriptions + E-Commerce Shop
-- **Zeitzone:** Europe/Zurich
+### Ports (konfliktfrei zu anderen Projekten)
+- **Kong API Gateway**: 56321
+- **Supabase Studio**: 56323  
+- **Analytics Dashboard**: 4000
+- **Next.js Development**: 3000
+- **PostgreSQL Direct**: 5432
+- **Connection Pooler**: 6543
 
-`lib/config.ts` anpassen für Ihre Region:
+### Environment Variables
 
-```typescript
-export const siteConfig = {
-  name: "Ihr App Name",
-  currency: "CHF" as const,
-  locale: "de-CH" as const,
-  
-  // Für SaaS: Subscription Pricing
-  subscription: {
-    starter: 2990, // 29.90 CHF in Rappen
-    pro: 7990      // 79.90 CHF in Rappen
-  },
-  
-  // Für Shop: Product Configuration
-  shop: {
-    shipping: { countries: ['CH'] },
-    digitalProducts: true,  // Support digital products
-    physicalProducts: true  // Support physical products
-  }
-}
-```
-
-## 🧪 Development
-
-### Tägliche Commands
+**Infrastructure (.env)**:
 ```bash
-pnpm run dev          # Development Server
-pnpm run build        # Production Build  
-pnpm run lint         # Code Linting
-pnpm run type-check   # TypeScript Validierung
+# Database & Security
+POSTGRES_PASSWORD=your-super-secret-password
+JWT_SECRET=your-super-secret-jwt-token-32-chars-min
+
+# Service Ports
+KONG_HTTP_PORT=56321
+STUDIO_PORT=56323
+
+# Site Configuration  
+SITE_URL=http://localhost:3000
+API_EXTERNAL_URL=http://localhost:56321
 ```
 
-### Infrastructure Management
+**Application (.env.local)**:
 ```bash
-cd infrastructure/
-docker compose up -d      # Services starten
-docker compose down       # Services stoppen  
-docker compose ps         # Service Status
-```
-
-### Datenbank
-- **Management:** [Supabase Studio](http://localhost:55323)
-- **Direkter Zugriff:** `docker exec -it supabase-db psql -U postgres`
-- **Migrations:** SQL Dateien in `infrastructure/volumes/db/`
-
-## 📚 Dokumentation
-
-- **[Schnellstart](docs/01-quickstart.md)** - Komplette Setup Anleitung
-- **[SaaS ↔ Shop Conversion](docs/06-customization.md)** - 5-Minuten Business Model Wechsel
-- **[Development](docs/05-development.md)** - Development Workflow
-- **[Service Integration](docs/04-integrations.md)** - Stripe, Supabase, Resend Setup
-- **[Infrastructure](infrastructure/README.md)** - Docker Setup Details
-
-## 🔑 Environment Setup
-
-### Template Konfiguration
-```env
-# Datenbank
-NEXT_PUBLIC_SUPABASE_URL=http://localhost:55321
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-
-# Stripe Integration
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-
-# SaaS Subscription Products
-STRIPE_STARTER_PRICE_ID=price_...     # Monatliche Subscription
-STRIPE_PRO_PRICE_ID=price_...         # Monatliche Subscription
-
-# Shop One-time Products  
-STRIPE_PRODUCT_1_PRICE_ID=price_...   # T-Shirt 24.90 CHF
-STRIPE_PRODUCT_2_PRICE_ID=price_...   # Digital Guide 19.90 CHF
-
-# Email Service
-RESEND_API_KEY=re_your_api_key
-EMAIL_DOMAIN=yourdomain.ch
+# Supabase Connection
+NEXT_PUBLIC_SUPABASE_URL=http://localhost:56321
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 
 # Application
 NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+# Email Service (optional)
+RESEND_API_KEY=re_YOUR_RESEND_API_KEY_HERE
 ```
 
-### Infrastructure Konfiguration
-```env
-# Secrets (für Production ändern)
-POSTGRES_PASSWORD=your-secure-password
-JWT_SECRET=your-jwt-secret-32-chars-min
-ANON_KEY=your_anon_key
-SERVICE_ROLE_KEY=your_service_role_key
+## 🗄️ Database Schema
 
-# Ports
-KONG_HTTP_PORT=55321
-STUDIO_PORT=55323
+### Core Tables
+- **`auth.users`** - Supabase Authentication (built-in)
+- **`public.profiles`** - Extended user profiles
+- **`storage.buckets`** - File storage (avatars, uploads)
+
+### Security Features
+- ✅ **Row Level Security (RLS)** auf allen Tabellen
+- ✅ **JWT Authentication** mit secure policies  
+- ✅ **Automatic Profile Creation** via database triggers
+- ✅ **Secure File Upload** policies
+
+## 📧 Email System
+
+**Restaurant-spezifische Email Templates**:
+- **Welcome Email** - Begrüssung neuer Benutzer
+- **Password Reset** - Sichere Passwort-Wiederherstellung
+- **Swiss Localization** - Deutsche Texte, CHF Preise
+
+**Email Provider**: Resend (einfach zu konfigurieren, Swiss-friendly)
+
+## 🔐 Authentifizierung
+
+**Supabase Auth Features**:
+- ✅ Email/Password Registration & Login
+- ✅ Password Reset Flow
+- ✅ Email Confirmation (optional)
+- ✅ Protected Routes mit Middleware
+- ✅ Client & Server-side Authentication
+
+**Auth Flow**:
+1. User registriert sich → Profile wird automatisch erstellt
+2. Email confirmation (development: auto-confirm)  
+3. JWT Token für sichere API calls
+4. Row Level Security policies für Datenschutz
+
+## 🚀 Deployment
+
+### Development
+```bash
+# Infrastructure starten
+cd infrastructure && docker compose up -d
+
+# Application development
+cd template && pnpm dev
 ```
 
-## 🚀 Production Deployment
+### Production Preparation
+1. **Secrets ändern** - Alle passwords und keys in .env files
+2. **SSL Certificates** - HTTPS für production deployment
+3. **Domain Configuration** - SITE_URL und API_EXTERNAL_URL anpassen
+4. **Database Backup** - Regelmässige Backups einrichten
 
-1. **Business Model:** SaaS oder Shop entscheiden (5-Min Conversion)
-2. **Environment:** Production `.env.local` mit Live Stripe Keys
-3. **Datenbank:** Managed PostgreSQL oder Self-hosting
-4. **Payments:** Stripe Webhooks und Live Mode konfigurieren
-5. **Domain:** Custom Domain mit SSL und Email-Domain Setup
-6. **Monitoring:** Error Tracking und Analytics konfigurieren
+## 🐛 Troubleshooting
+
+### Container Probleme
+```bash
+# Status prüfen
+docker compose ps
+
+# Logs anschauen
+docker compose logs [service-name]
+
+# Fresh restart
+docker compose down -v
+rm -rf volumes/db/data/  # ACHTUNG: Löscht alle Daten!
+docker compose up -d
+```
+
+### Database Issues
+- **"Database already exists"** → `rm -rf volumes/db/data/` und container restart
+- **Analytics container unhealthy** → meist wegen fehlender init schemas
+- **Realtime connection issues** → normal beim ersten Start, stabilisiert sich
+
+### Development Issues
+```bash
+# TypeScript Errors prüfen
+cd template && pnpm run type-check
+
+# Build testen
+pnpm run build
+
+# Dependencies aktualisieren
+pnpm install
+```
+
+## 📝 Features
+
+### Restaurant-spezifisch
+- 🍔 **Burgergrill Branding** - Schweizer Restaurant Design
+- 🇨🇭 **Swiss Localization** - Deutsche Sprache, CHF Currency
+- 📱 **Responsive Design** - Mobile-first, perfekt für Smartphone-Bestellungen
+- 🔐 **User Accounts** - Kunden können Accounts erstellen
+- 📧 **Email Integration** - Automatische Begrüssungs-Emails
+
+### Technisch  
+- ⚡ **Performance** - Next.js 15, Image Optimization, Static Generation
+- 🔒 **Security** - Row Level Security, JWT Authentication, HTTPS ready
+- 📊 **Analytics** - Integrierte Logflare Analytics für User Insights
+- 🐳 **Self-Hosted** - Komplette Kontrolle über alle Services
+- 🔧 **Developer Experience** - TypeScript, ESLint, Prettier, Hot Reload
+
+## 📄 License
+
+Developed for Burgergrill Restaurant Website.
 
 ---
 
-**Status:** Production Ready ✅ (SaaS + Shop)  
-**Swiss Optimized:** CHF • TWINT • de-CH • DSGVO  
-**Lizenz:** MIT • **Node.js:** 18+ erforderlich
+**Built with ❤️ in Switzerland** 🇨🇭

@@ -14,7 +14,7 @@ cd ../template
 pnpm install && pnpm run dev
 ```
 
-**Ready:** [App](http://localhost:3000) | [Database](http://localhost:55323)
+**Ready:** [App](http://localhost:4000) | [Database](http://localhost:56323)
 
 ## 📅 Daily Commands
 
@@ -114,7 +114,7 @@ echo "ALTER TABLE profiles ADD COLUMN new_field TEXT;" > infrastructure/volumes/
 cd infrastructure && docker compose restart
 
 # Verify in Studio
-open http://localhost:55323
+open http://localhost:56323
 ```
 
 ## 🔧 Configuration
@@ -144,10 +144,10 @@ Key variables in `.env.local`:
 
 ```env
 # Application
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=http://localhost:4000
 
 # Database (auto-configured)
-NEXT_PUBLIC_SUPABASE_URL=http://localhost:55321
+NEXT_PUBLIC_SUPABASE_URL=http://localhost:56321
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
@@ -203,7 +203,7 @@ pnpm run build
 ### Schema Management
 ```bash
 # View current schema
-open http://localhost:55323  # → Tables tab
+open http://localhost:56323  # → Tables tab
 
 # Add new table
 echo "CREATE TABLE my_table (id UUID PRIMARY KEY DEFAULT gen_random_uuid());" > infrastructure/volumes/db/03-my-table.sql
@@ -257,7 +257,7 @@ docker compose restart studio
 # 2. template/.env.local (NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY)
 
 # Verify in Studio
-open http://localhost:55323  # → Settings → API
+open http://localhost:56323  # → Settings → API
 ```
 
 ## ⚡ Performance Tips

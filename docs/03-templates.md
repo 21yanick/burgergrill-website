@@ -367,7 +367,7 @@ export const PLANS: Record<PlanType, Plan> = {
 
 ```env
 # Supabase (Infrastructure Integration)
-NEXT_PUBLIC_SUPABASE_URL=http://localhost:55321
+NEXT_PUBLIC_SUPABASE_URL=http://localhost:56321
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIs...
 
 # Stripe (Test Keys - ersetzen für Production)
@@ -377,7 +377,7 @@ STRIPE_STARTER_PRICE_ID=price_...
 STRIPE_PRO_PRICE_ID=price_...
 
 # Application Settings
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=http://localhost:4000
 LOG_LEVEL=info
 ```
 
@@ -495,7 +495,7 @@ cd template/
 pnpm install
 pnpm run dev
 
-# → Live Reload auf http://localhost:3000
+# → Live Reload auf http://localhost:4000
 # → Änderungen sind sofort sichtbar
 ```
 

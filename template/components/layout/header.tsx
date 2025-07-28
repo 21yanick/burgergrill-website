@@ -5,15 +5,12 @@ import { Separator } from "@/components/ui/separator"
 import { AuthButton } from "@/components/auth"
 import { ThemeToggle } from "@/components/theme"
 import { siteConfig } from "@/lib/config"
-// 🟩 SHOP-ONLY: Cart Icon Integration
-import { CartIcon } from "@/components/shop"
+// Restaurant header with navigation and authentication
 export function Header() {
-  // ✅ SHARED navigation structure
-  // 🟩 SHOP-FOCUSED: Using /shop navigation (for SaaS: change back to /pricing)
+  // Restaurant navigation structure
   const navigationLinks = [
-    { href: '/features', label: 'Features' },        // ✅ SHARED
-    { href: '/shop', label: 'Shop' },                // 🟩 SHOP-ONLY: for SaaS use { href: '/pricing', label: 'Pricing' }
-    { href: '/contact', label: 'Contact' }           // ✅ SHARED
+    { href: '/features', label: 'Features' },
+    { href: '/contact', label: 'Contact' }
   ]
 
   return (
@@ -49,10 +46,8 @@ export function Header() {
               </Link>
             ))}
             <Separator orientation="vertical" className="h-6" />
-            {/* 🟩 SHOP-ONLY: Shopping Cart Icon */}
-            <CartIcon />
             <ThemeToggle />
-            {/* 🟦 SAAS-ONLY: AuthButton (for shop: make optional or replace with cart) */}
+            {/* Restaurant: User authentication for reservations and orders */}
             <AuthButton />
           </nav>
         </div>

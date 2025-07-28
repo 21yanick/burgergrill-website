@@ -11,7 +11,7 @@ cd infrastructure
 docker compose up -d
 ```
 
-**Services:** [API](http://localhost:55321) | [Studio](http://localhost:55323) | [Analytics](http://localhost:4000)
+**Services:** [API](http://localhost:56321) | [Studio](http://localhost:56323) | [Analytics](http://localhost:4000)
 
 ## 🐳 Services Overview
 
@@ -108,10 +108,10 @@ docker compose up -d
 ### Health Checks
 ```bash
 # API status
-curl http://localhost:55321/health
+curl http://localhost:56321/health
 
 # Studio access
-curl http://localhost:55323
+curl http://localhost:56323
 
 # Database connection
 docker exec supabase-db pg_isready -U postgres

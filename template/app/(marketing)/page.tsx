@@ -7,9 +7,9 @@ export default function LandingPage() {
 
   const getHeroContent = () => {
     return {
-      title: 'The Complete SaaS Platform',
-      subtitle: 'Build, scale, and manage your software business with our all-in-one platform.',
-      cta: 'Start Free Trial',
+      title: 'Das beste Burgergrill der Schweiz',
+      subtitle: 'Frische Zutaten, perfekt gegrillte Burger und authentische Schweizer Qualität direkt vor Ihrer Haustür.',
+      cta: 'Tisch reservieren',
       ctaLink: '/auth/register',
     }
   }
@@ -36,7 +36,7 @@ export default function LandingPage() {
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link href="/pricing">View Pricing</Link>
+                <Link href="/contact">Kontakt</Link>
               </Button>
             </div>
           </div>
@@ -51,7 +51,7 @@ export default function LandingPage() {
               Everything You Need
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Built with modern technology and best practices for performance, security, and scalability.
+              Erstklassige Zutaten, traditionelle Grillkunst und moderner Service für das perfekte Burger-Erlebnis.
             </p>
           </div>
 
@@ -59,9 +59,9 @@ export default function LandingPage() {
             <Card>
               <CardHeader>
                 <Shield className="w-12 h-12 mb-4 text-primary" />
-                <CardTitle>Security First</CardTitle>
+                <CardTitle>Qualität zuerst</CardTitle>
                 <CardDescription>
-                  Built-in authentication, authorization, and data protection with industry standards.
+                  Nur die besten Zutaten, frisch zubereitet und nach höchsten Qualitätsstandards serviert.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -69,9 +69,9 @@ export default function LandingPage() {
             <Card>
               <CardHeader>
                 <Zap className="w-12 h-12 mb-4 text-primary" />
-                <CardTitle>High Performance</CardTitle>
+                <CardTitle>Schneller Service</CardTitle>
                 <CardDescription>
-                  Optimized for speed with modern frameworks, caching, and efficient database queries.
+                  Effiziente Küche und freundlicher Service für kurze Wartezeiten und maximalen Genuss.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -79,9 +79,9 @@ export default function LandingPage() {
             <Card>
               <CardHeader>
                 <Users className="w-12 h-12 mb-4 text-primary" />
-                <CardTitle>User Experience</CardTitle>
+                <CardTitle>Gastronomie-Erlebnis</CardTitle>
                 <CardDescription>
-                  Intuitive interface with responsive design that works perfectly on all devices.
+                  Gemütliche Atmosphäre und herzlicher Service für ein unvergessliches Burger-Erlebnis.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -97,7 +97,7 @@ export default function LandingPage() {
             Ready to Get Started?
           </h2>
           <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-            Join thousands of businesses that trust our platform to power their growth.
+            Entdecken Sie, warum wir das beliebteste Burgergrill der Region sind.
           </p>
           <Button variant="secondary" size="lg" asChild>
             <Link href={hero.ctaLink}>

@@ -5,14 +5,13 @@ import {
   Zap, 
   Users, 
   Database, 
-  CreditCard, 
   Mail, 
   Calendar,
-  ShoppingCart,
-  BarChart3,
-  Lock,
+  Coffee,
+  Clock,
   Globe,
-  Smartphone
+  Smartphone,
+  ChefHat
 } from 'lucide-react'
 
 export default function FeaturesPage() {
@@ -20,111 +19,91 @@ export default function FeaturesPage() {
   const coreFeatures = [
     {
       icon: Shield,
-      title: 'Enterprise Security',
-      description: 'Bank-level security with encryption, authentication, and compliance standards.',
-      features: ['End-to-end encryption', 'SSO integration', 'Audit logs', 'GDPR compliant'],
+      title: 'Lebensmittelsicherheit',
+      description: 'Höchste Hygienestandards und sichere Lebensmittelverarbeitung nach HACCP.',
+      features: ['HACCP-zertifiziert', 'Tägliche Qualitätskontrollen', 'Frische-Garantie', 'Allergen-Management'],
     },
     {
       icon: Zap,
-      title: 'High Performance',
-      description: 'Lightning-fast platform built with modern technology and optimized for scale.',
-      features: ['Sub-second loading', 'Global CDN', 'Auto-scaling', 'Real-time updates'],
+      title: 'Schnelle Küche',
+      description: 'Professionelle Küchenausstattung für perfekt zubereitete Burger in kürzester Zeit.',
+      features: ['Grill-Perfektion', 'Frische Zubereitung', 'Optimierte Abläufe', 'Live-Tracking'],
     },
     {
       icon: Database,
-      title: 'Reliable Infrastructure',
-      description: 'Self-hosted solution with 99.9% uptime and automatic backups.',
-      features: ['Automatic backups', 'Disaster recovery', 'Load balancing', 'Monitoring'],
+      title: 'Zuverlässiger Service',
+      description: 'Konstant hohe Qualität und zuverlässige Öffnungszeiten für unsere Gäste.',
+      features: ['Täglich geöffnet', 'Konstante Qualität', 'Professionelles Team', 'Gäste-Support'],
     },
     {
       icon: Globe,
-      title: 'Multi-Region Support',
-      description: 'Deploy globally with support for multiple currencies and payment methods.',
-      features: ['Multi-currency', 'Localization', 'Regional compliance', 'Global payments'],
+      title: 'Lokale Verbundenheit',
+      description: 'Verwurzelt in der Schweizer Tradition mit regionalen Zutaten und lokalen Partnern.',
+      features: ['Schweizer Fleisch', 'Regionale Lieferanten', 'Lokale Traditionen', 'CHF-Preise'],
     },
   ]
 
-  const saasFeatures = [
+  const restaurantFeatures = [
     {
-      icon: Users,
-      title: 'User Management',
-      description: 'Complete user lifecycle management with roles and permissions.',
-      features: ['Role-based access', 'Team management', 'User analytics', 'Onboarding flows'],
+      icon: ChefHat,
+      title: 'Meister-Köche',
+      description: 'Erfahrene Köche mit Leidenschaft für perfekte Burger-Kreationen.',
+      features: ['Ausgebildete Köche', 'Kreative Rezepte', 'Individuelle Wünsche', 'Qualitäts-Standards'],
     },
     {
-      icon: CreditCard,
-      title: 'Subscription Billing',
-      description: 'Automated recurring billing with flexible pricing models.',
-      features: ['Multiple pricing tiers', 'Trial management', 'Dunning management', 'Revenue analytics'],
+      icon: Coffee,
+      title: 'Gemütliche Atmosphäre',
+      description: 'Warme, einladende Umgebung für entspannte Mahlzeiten.',
+      features: ['Moderne Einrichtung', 'Familienfreundlich', 'Terrasse', 'WLAN kostenlos'],
     },
     {
-      icon: BarChart3,
-      title: 'Analytics & Insights',
-      description: 'Comprehensive analytics to understand your business performance.',
-      features: ['Usage analytics', 'Revenue tracking', 'Custom dashboards', 'Export capabilities'],
-    },
-  ]
-
-  const shopFeatures = [
-    {
-      icon: ShoppingCart,
-      title: 'E-Commerce Engine',
-      description: 'Full-featured online store with cart, checkout, and order management.',
-      features: ['Product catalog', 'Inventory tracking', 'Order management', 'Shipping integration'],
-    },
-    {
-      icon: CreditCard,
-      title: 'Payment Processing',
-      description: 'Secure payment processing with multiple payment methods.',
-      features: ['Credit cards', 'TWINT', 'PayPal', 'Buy now pay later'],
-    },
-    {
-      icon: BarChart3,
-      title: 'Sales Analytics',
-      description: 'Track sales performance and customer behavior.',
-      features: ['Sales reports', 'Customer insights', 'Product analytics', 'Conversion tracking'],
+      icon: Clock,
+      title: 'Flexible Service-Zeiten',
+      description: 'Durchgehend warme Küche und flexible Bestelloptionen.',
+      features: ['Lange Öffnungszeiten', 'Take-Away', 'Lieferservice', 'Reservierungen'],
     },
   ]
 
-  const bookingFeatures = [
+  const menuFeatures = [
     {
-      icon: Calendar,
-      title: 'Appointment Scheduling',
-      description: 'Professional booking system with calendar integration.',
-      features: ['Calendar sync', 'Time slots', 'Recurring appointments', 'Availability management'],
+      icon: ChefHat,
+      title: 'Signature Burger',
+      description: 'Unser berühmter Burgergrill-Classic mit geheimen Gewürzen.',
+      features: ['100% Schweizer Rindfleisch', 'Hausgemachte Sauce', 'Frisches Gemüse', 'Handwerkliche Brötchen'],
+    },
+    {
+      icon: Coffee,
+      title: 'Beilagen & Getränke',
+      description: 'Perfekte Ergänzungen zu unseren Burgern.',
+      features: ['Knusprige Pommes', 'Hausgemachte Dips', 'Schweizer Getränke', 'Frische Salate'],
     },
     {
       icon: Users,
-      title: 'Client Management',
-      description: 'Manage your clients and their appointment history.',
-      features: ['Client profiles', 'Appointment history', 'Communication tools', 'Preferences tracking'],
-    },
-    {
-      icon: CreditCard,
-      title: 'Payment & Deposits',
-      description: 'Collect deposits and payments for your services.',
-      features: ['Deposit collection', 'Payment processing', 'Refund management', 'Invoice generation'],
+      title: 'Familien-Angebote',
+      description: 'Spezielle Menüs und Angebote für die ganze Familie.',
+      features: ['Kinder-Menüs', 'Familien-Portionen', 'Vegetarische Optionen', 'Dessert-Auswahl'],
     },
   ]
 
-  const additionalFeatures = [
+
+  const serviceFeatures = [
     {
       icon: Mail,
-      title: 'Email System',
-      description: 'Professional email templates and automated communications.',
-      features: ['Transactional emails', 'Custom templates', 'Email tracking', 'Automation workflows'],
+      title: 'Online Bestellung',
+      description: 'Bequeme Online-Bestellung mit Abholung oder Lieferung.',
+      features: ['Online-Menü', 'Bestellsystem', 'Lieferservice', 'Abholung'],
     },
     {
       icon: Smartphone,
-      title: 'Mobile Responsive',
-      description: 'Perfect experience across all devices and screen sizes.',
-      features: ['Responsive design', 'Mobile optimization', 'Touch-friendly', 'Offline support'],
+      title: 'Mobile App',
+      description: 'Unsere App für schnelle Bestellungen und exklusive Angebote.',
+      features: ['Schnelle Bestellung', 'Treueprogramm', 'Push-Nachrichten', 'Standort-Service'],
     },
     {
-      icon: Lock,
-      title: 'Privacy First',
-      description: 'Complete data sovereignty with self-hosted deployment.',
-      features: ['Self-hosted', 'Data ownership', 'Privacy controls', 'GDPR toolkit'],
+      icon: Calendar,
+      title: 'Tischreservierung',
+      description: 'Einfache Online-Reservierung für Ihren perfekten Abend.',
+      features: ['Online-Reservierung', 'Flexible Zeiten', 'Gruppenanfragen', 'Event-Buchungen'],
     },
   ]
 
@@ -132,20 +111,19 @@ export default function FeaturesPage() {
     <div className="container mx-auto px-4 py-20">
       <div className="text-center mb-16">
         <h1 className="text-4xl lg:text-5xl font-bold mb-6">
-          Powerful Features for Every Business
+          Unser Service für Sie
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-          Everything you need to build, scale, and manage your digital business. 
-          Built with modern technology and best practices.
+          Von der Küche bis zum Service - entdecken Sie, was uns zum besten Burgergrill der Schweiz macht.
         </p>
       </div>
 
       {/* Core Features */}
       <section className="mb-20">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Core Platform Features</h2>
+          <h2 className="text-3xl font-bold mb-4">Unsere Grundpfeiler</h2>
           <p className="text-lg text-muted-foreground">
-            Essential features available in all configurations
+            Die Basis für unser erstklassiges Burgergrill-Erlebnis
           </p>
         </div>
         
@@ -171,20 +149,20 @@ export default function FeaturesPage() {
         </div>
       </section>
 
-      {/* SaaS Platform Features */}
+      {/* Restaurant Service Features */}
       <section className="mb-20">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">
-            SaaS Platform Features
-            <Badge className="ml-3">SaaS</Badge>
+            Restaurant Service Features
+            <Badge className="ml-3">Restaurant</Badge>
           </h2>
           <p className="text-lg text-muted-foreground">
-            Everything you need to run a successful software business
+            Alles was Sie für ein perfektes Burger-Erlebnis brauchen
           </p>
         </div>
         
         <div className="grid md:grid-cols-3 gap-8">
-          {saasFeatures.map((feature, index) => (
+          {restaurantFeatures.map((feature, index) => (
             <Card key={index} className="h-full">
               <CardHeader>
                 <feature.icon className="w-12 h-12 text-primary mb-4" />
@@ -206,17 +184,17 @@ export default function FeaturesPage() {
       </section>
 
 
-      {/* Additional Features */}
+      {/* Service Features */}
       <section>
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Additional Features</h2>
+          <h2 className="text-3xl font-bold mb-4">Digitale Services</h2>
           <p className="text-lg text-muted-foreground">
-            Enhanced capabilities that come standard with every deployment
+            Moderne Lösungen für maximalen Komfort
           </p>
         </div>
         
         <div className="grid md:grid-cols-3 gap-8">
-          {additionalFeatures.map((feature, index) => (
+          {serviceFeatures.map((feature, index) => (
             <Card key={index} className="h-full">
               <CardHeader>
                 <feature.icon className="w-12 h-12 text-primary mb-4" />

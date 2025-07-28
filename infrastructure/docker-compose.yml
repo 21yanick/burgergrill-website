@@ -14,7 +14,7 @@ services:
     image: supabase/studio:2025.06.30-sha-6f5982d
     restart: unless-stopped
     ports:
-      - "55323:3000"
+      - "56323:3000"
     healthcheck:
       test:
         [
@@ -409,13 +409,9 @@ services:
       - ./volumes/db/pooler.sql:/docker-entrypoint-initdb.d/migrations/99-pooler.sql:Z
       # Use named volume to persist pgsodium decryption key between restarts
       - db-config:/etc/postgresql-custom
-      # Business schema modules for NextJS Core Template (mounted for \i includes)
-      - ./volumes/db/00-core-schema.sql:/docker-entrypoint-initdb.d/00-core-schema.sql:Z
-      - ./volumes/db/01-saas-schema.sql:/docker-entrypoint-initdb.d/01-saas-schema.sql:Z
-      - ./volumes/db/02-shop-schema.sql:/docker-entrypoint-initdb.d/02-shop-schema.sql:Z
-      - ./volumes/db/03-booking-schema.sql:/docker-entrypoint-initdb.d/03-booking-schema.sql:Z
-      # Main schema loader (controls which modules are loaded)
-      - ./volumes/db/business-schema.sql:/docker-entrypoint-initdb.d/migrations/99-business-schema.sql:Z
+      # Business schema modules for Burgergrill Restaurant (run AFTER Supabase schemas)
+      - ./volumes/db/zzz-core-schema.sql:/docker-entrypoint-initdb.d/zzz-core-schema.sql:Z
+      - ./volumes/db/99-business-schema.sql:/docker-entrypoint-initdb.d/zzz-business-schema.sql:Z
     healthcheck:
       test:
         [
