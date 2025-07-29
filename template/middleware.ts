@@ -3,7 +3,47 @@ import type { NextRequest } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 
 export async function middleware(request: NextRequest) {
-  // IMPORTANT: Handle auth first, then apply security headers
+  // COMING SOON MODE CHECK - Highest Priority
+  const showComingSoon = process.env.SHOW_COMING_SOON === 'true';
+  
+  // Debug-Logging für Production-Debugging
+  console.log('🚀 MIDDLEWARE - Coming Soon Check:', {
+    showComingSoon,
+    path: request.nextUrl.pathname,
+    timestamp: new Date().toISOString(),
+    SHOW_COMING_SOON: process.env.SHOW_COMING_SOON
+  });
+
+  // Coming Soon Mode aktiviert - alle Requests auf Coming Soon umleiten
+  if (showComingSoon) {
+    // Nur normale Seiten umleiten, nicht API Routes oder Assets
+    if (request.nextUrl.pathname.startsWith('/api') || 
+        request.nextUrl.pathname.startsWith('/_next') ||
+        request.nextUrl.pathname.startsWith('/auth') ||
+        request.nextUrl.pathname.includes('.') ||
+        request.nextUrl.pathname === '/coming-soon-internal') {
+      // Für Coming Soon Internal Route: normale Middleware weiter
+      if (request.nextUrl.pathname === '/coming-soon-internal') {
+        // Skip auth für Coming Soon Page
+        return NextResponse.next();
+      }
+      // Andere Assets/API normal weiter
+      if (!request.nextUrl.pathname.startsWith('/auth')) {
+        return NextResponse.next();
+      }
+    }
+
+    // Internal Rewrite zur Coming Soon Page
+    const url = request.nextUrl.clone();
+    url.pathname = '/coming-soon-internal';
+    
+    console.log('✅ MIDDLEWARE - Redirecting to Coming Soon');
+    return NextResponse.rewrite(url);
+  }
+
+  console.log('❌ MIDDLEWARE - Normal website mode');
+  
+  // IMPORTANT: Handle auth next, then apply security headers
   const { supabaseResponse, user } = await updateSession(request);
   
   // Protected routes - require authentication

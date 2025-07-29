@@ -6,10 +6,20 @@ import { HeroSection, MenuSection, KgVerkaufSection, LocationSection } from '@/c
 import { ComingSoonPage } from '@/components/coming-soon'
 
 export default function LandingPage() {
+  // DEBUG: Environment Variable Status loggen
+  console.log('🔍 DEBUG - Environment Variables:', {
+    SHOW_COMING_SOON: process.env.SHOW_COMING_SOON,
+    NODE_ENV: process.env.NODE_ENV,
+    timestamp: new Date().toISOString()
+  });
+  
   // Server-Side Environment Variable (Runtime-Zugriff ohne NEXT_PUBLIC_)
   if (process.env.SHOW_COMING_SOON === 'true') {
+    console.log('✅ Coming Soon Mode ACTIVATED');
     return <ComingSoonPage />
   }
+  
+  console.log('❌ Normal Website Mode - Coming Soon NOT activated');
 
   return (
     <div className="flex flex-col">

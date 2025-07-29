@@ -63,11 +63,14 @@ SHOW_COMING_SOON=false
 
 ## 🔧 Technische Details
 
-### Dateien erstellt:
+### Dateien erstellt/aktualisiert:
 - `components/coming-soon/coming-soon-page.tsx` - Hauptkomponente
 - `components/coming-soon/index.ts` - Export
-- Aktualisiert: `app/(marketing)/page.tsx` - Environment Variable Logic
+- Aktualisiert: `app/(marketing)/page.tsx` - Page-Level Logic + Debug-Logging
 - Aktualisiert: `app/layout.tsx` - **Header/Footer Suppression**
+- **NEU**: `middleware.ts` - **Robuste Middleware-Lösung**
+- **NEU**: `app/coming-soon-internal/page.tsx` - Interne Coming Soon Route
+- **NEU**: `app/coming-soon-internal/layout.tsx` - Clean Layout ohne Header/Footer
 - Aktualisiert: `.env.example` - Dokumentation
 
 ### Environment Variable Logic:
@@ -114,16 +117,21 @@ SHOW_COMING_SOON=false
 4. **No Navigation**: Coming Soon Page hat keine Header/Footer
 5. **TypeScript**: Alle Komponenten sind fully typed
 
-## 🔧 Build-Time vs Runtime Problem gelöst
+## 🔧 Robuste Middleware-Lösung implementiert
 
-**Problem**: `NEXT_PUBLIC_` Environment Variables werden zur BUILD-TIME eingebettet
-- Änderung in Coolify → Kein Effekt ohne Rebuild
-- Unpraktisch für Production Toggle
+**Problem**: Next.js Caching und Build-Time Issues
+- Page-basierte Environment Variable Checks werden gecached
+- Server Components können statisch generiert werden  
+- Unpredictable Production Behavior
 
-**Lösung**: Server-Side Environment Variables (Runtime-Zugriff)
-- Änderung in Coolify → Sofortiger Effekt
-- Kein Rebuild erforderlich
-- Dynamic Toggle möglich
+**Lösung**: Middleware-basierte Coming Soon (GARANTIERT funktionsfähig)
+- **Middleware**: Läuft bei JEDER Request
+- **Kein Caching**: Wird nie gecached, immer fresh
+- **Runtime Environment**: Variables zur Runtime gelesen
+- **Rewrite-basiert**: Interne Route ohne URL-Änderung
+- **Debug-Logging**: Vollständige Transparenz in Production
+
+**Dual-Approach**: Page-Level + Middleware für maximale Zuverlässigkeit
 
 ## 🎯 Use Cases
 
