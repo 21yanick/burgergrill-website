@@ -1,5 +1,7 @@
 # Nixpacks configuration for Coolify deployment
-[providers.node]
+
+# Node.js provider (auto-detected)
+providers = ["node"]
 
 # Install pnpm globally before running install/build commands
 [phases.setup]
@@ -18,7 +20,7 @@ cmd = "pnpm build"
 [start]
 cmd = "pnpm start"
 
-# Node.js version (match your local development)
+# Environment variables
 [variables]
 NODE_VERSION = "18"
 PNPM_VERSION = "latest"
