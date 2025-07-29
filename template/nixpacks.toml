@@ -1,13 +1,12 @@
 # Nixpacks configuration for Coolify deployment
 
-# Node.js provider (auto-detected)
+# Node.js provider (auto-detected)  
 providers = ["node"]
 
-# Install pnpm globally before running install/build commands
+# Install pnpm directly without corepack signature issues
 [phases.setup]
 cmds = [
-  "corepack enable",
-  "corepack prepare pnpm@latest --activate"
+  "npm install -g pnpm@8.15.6"
 ]
 
 # Use pnpm for all operations
@@ -23,4 +22,3 @@ cmd = "pnpm start"
 # Environment variables
 [variables]
 NODE_VERSION = "18"
-PNPM_VERSION = "latest"
