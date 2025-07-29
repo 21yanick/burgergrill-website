@@ -1,15 +1,28 @@
 import Link from "next/link"
 import { Container } from "@/components/layout/container"
 import { Separator } from "@/components/ui/separator"
+import { MapPin, Phone, Mail, Instagram, Facebook, Settings } from "lucide-react"
 import { siteConfig } from "@/lib/config"
 
 export function Footer() {
-  // Clean restaurant footer - using centralized config
-  const { name: brandName, description } = siteConfig
-  
-  const productLinks = [
-    { href: '/features', label: 'Features' },
-    { href: '/pricing', label: 'Pricing' }
+  // Restaurant-specific navigation
+  const restaurantLinks = [
+    { href: '#menu', label: 'Speisekarte' },
+    { href: '#kg-verkauf', label: 'KG-Verkauf' },
+    { href: '#location', label: 'Standort' }
+  ]
+
+  // Restaurant contact info (consistent with LocationSection)
+  const contactInfo = {
+    address: "Bahnhofstrasse 47, 8001 Zürich",
+    phone: "+41 44 123 45 67",
+    email: "info@burgergrill.ch"
+  }
+
+  // Social media links
+  const socialLinks = [
+    { href: '#', label: 'Instagram', icon: Instagram },
+    { href: '#', label: 'Facebook', icon: Facebook }
   ]
 
   return (
@@ -17,51 +30,102 @@ export function Footer() {
       <Container>
         <div className="py-8 md:py-12">
           {/* Main footer content */}
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {/* Brand column */}
-            <div className="space-y-3">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+            
+            {/* Restaurant Brand */}
+            <div className="space-y-4">
               <div className="flex items-center space-x-2">
-                <div className="flex h-6 w-6 items-center justify-center rounded bg-primary">
-                  <span className="text-xs font-bold text-primary-foreground">
-                    S
-                  </span>
+                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-accent text-accent-foreground">
+                  <span className="text-lg">🍔</span>
                 </div>
-                <span className="font-bold">{brandName}</span>
+                <span className="font-bold text-lg">{siteConfig.name}</span>
               </div>
-              <p className="text-sm text-muted-foreground">
-                {description}
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Authentische Cevapcici nach traditionellem Balkan-Rezept. 
+                Frisch gegrillt mit schweizer Premium-Zutaten.
               </p>
             </div>
 
-            {/* Product column */}
-            <div className="space-y-3">
-              <h4 className="text-sm font-semibold">Navigate</h4>
-              <ul className="space-y-2 text-sm">
-                {productLinks.map((link) => (
+            {/* Restaurant Navigation */}
+            <div className="space-y-4">
+              <h4 className="text-sm font-semibold">Restaurant</h4>
+              <ul className="space-y-3 text-sm">
+                {restaurantLinks.map((link) => (
                   <li key={link.href}>
-                    <Link href={link.href} className="text-muted-foreground hover:text-foreground">
+                    <Link 
+                      href={link.href} 
+                      className="text-muted-foreground hover:text-accent transition-colors"
+                    >
                       {link.label}
                     </Link>
                   </li>
                 ))}
-                <li>
-                  <Link href="/contact" className="text-muted-foreground hover:text-foreground">
-                    Contact
-                  </Link>
-                </li>
               </ul>
             </div>
 
-            {/* System column */}
-            <div className="space-y-3">
-              <h4 className="text-sm font-semibold">System</h4>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link href="/api/health" className="text-muted-foreground hover:text-foreground">
-                    API Status
+            {/* Contact Info */}
+            <div className="space-y-4">
+              <h4 className="text-sm font-semibold">Kontakt</h4>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-start gap-2">
+                  <MapPin className="w-4 h-4 mt-0.5 text-muted-foreground" />
+                  <span className="text-muted-foreground">
+                    {contactInfo.address}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-muted-foreground" />
+                  <a 
+                    href={`tel:${contactInfo.phone}`}
+                    className="text-muted-foreground hover:text-accent transition-colors"
+                  >
+                    {contactInfo.phone}
+                  </a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-muted-foreground" />
+                  <a 
+                    href={`mailto:${contactInfo.email}`}
+                    className="text-muted-foreground hover:text-accent transition-colors"
+                  >
+                    {contactInfo.email}
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Social & System */}
+            <div className="space-y-4">
+              <h4 className="text-sm font-semibold">Folgen Sie uns</h4>
+              <div className="space-y-3">
+                {/* Social Media */}
+                <div className="flex gap-3">
+                  {socialLinks.map((social) => {
+                    const IconComponent = social.icon
+                    return (
+                      <a
+                        key={social.label}
+                        href={social.href}
+                        className="flex h-8 w-8 items-center justify-center rounded-md border border-border hover:bg-accent hover:text-accent-foreground transition-colors"
+                        aria-label={social.label}
+                      >
+                        <IconComponent className="h-4 w-4" />
+                      </a>
+                    )
+                  })}
+                </div>
+                
+                {/* Dashboard Link (hidden for non-owners) */}
+                <div className="pt-2 border-t border-border/50">
+                  <Link 
+                    href="/dashboard"
+                    className="flex items-center gap-2 text-xs text-muted-foreground hover:text-accent transition-colors"
+                  >
+                    <Settings className="w-3 h-3" />
+                    Restaurant-Dashboard
                   </Link>
-                </li>
-              </ul>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -69,13 +133,17 @@ export function Footer() {
 
           {/* Bottom footer */}
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <p className="text-sm text-muted-foreground">
-              © 2025 {brandName}. Built with Next.js 15 & Supabase.
-            </p>
-            <div className="flex items-center space-x-4">
-              <span className="text-xs text-muted-foreground">
-                Restaurant Mode
-              </span>
+            <div className="text-center md:text-left">
+              <p className="text-sm text-muted-foreground">
+                © 2025 {siteConfig.name}. Authentische Cevapcici seit 2020.
+              </p>
+            </div>
+            <div className="flex items-center text-xs text-muted-foreground">
+              <span>Mo: Geschlossen</span>
+              <span className="mx-2">•</span>
+              <span>Di-Sa: 11-22h</span>
+              <span className="mx-2">•</span>
+              <span>So: 12-21h</span>
             </div>
           </div>
         </div>
