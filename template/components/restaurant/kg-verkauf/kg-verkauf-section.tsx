@@ -15,13 +15,11 @@ export function KgVerkaufSection({ className }: KgVerkaufSectionProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleOrderSubmit = async (orderData: KgOrderData) => {
-    // TODO: Implement email sending logic
-    console.log("New KG-Verkauf order:", orderData);
-    
-    // Here we would typically:
-    // 1. Send email to restaurant
-    // 2. Store order in database
-    // 3. Send confirmation email to customer
+    // TODO: Implement Resend email integration for order notifications  
+    // - Send order confirmation to customer
+    // - Send order notification to restaurant
+    // - Use template from lib/email/templates/
+    console.log("New Grillfleisch-Verkauf order:", orderData);
     
     // Create summary of ordered products
     const productSummary = orderData.products
@@ -34,13 +32,13 @@ export function KgVerkaufSection({ className }: KgVerkaufSectionProps) {
 
   return (
     <>
-      <section id="kg-verkauf" className={cn("py-20 lg:py-32 bg-muted/30", className)}>
+      <section id="grillfleisch-verkauf" className={cn("py-20 lg:py-32 bg-muted/30", className)}>
         <div className="container mx-auto px-4">
           <div className="text-center max-w-4xl mx-auto">
             {/* Section Header */}
             <div className="mb-12">
               <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-                KG-Verkauf für zu Hause
+                Grillfleisch-Verkauf für zu Hause
               </h2>
               <p className="text-xl text-muted-foreground leading-relaxed">
                 Unsere frischen Spezialitäten auch kilogrammweise für Ihre Grillparty oder Event. 
@@ -118,7 +116,7 @@ export function KgVerkaufSection({ className }: KgVerkaufSectionProps) {
               className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-8 py-6"
             >
               <ShoppingCart className="mr-2 h-5 w-5" />
-              Jetzt KG-Verkauf bestellen
+              Jetzt Grillfleisch-Verkauf bestellen
             </Button>
           </div>
         </div>

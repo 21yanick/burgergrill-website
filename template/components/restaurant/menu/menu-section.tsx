@@ -88,8 +88,6 @@ export function MenuSection({
             <div className="max-w-lg mx-auto">
               <SimpleList 
                 items={menu.beilagen} 
-                title="Beilagen" 
-                icon="🥗"
               />
             </div>
           </section>
@@ -109,8 +107,6 @@ export function MenuSection({
             <div className="max-w-lg mx-auto">
               <SimpleList 
                 items={menu.saucen} 
-                title="Saucen" 
-                icon="🌶️"
               />
             </div>
           </section>

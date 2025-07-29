@@ -14,11 +14,15 @@ export interface VideoSettings {
 export interface HeroContent {
   title: string;
   subtitle: string;
-  primaryCTA: {
+  primaryCTA: ({
     text: string;
     href: string;
     icon?: string;
-  };
+  } | {
+    text: string;
+    onClick: () => void;
+    icon?: string;
+  });
   secondaryCTA: {
     text: string;
     href: string;

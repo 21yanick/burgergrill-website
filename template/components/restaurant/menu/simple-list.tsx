@@ -7,14 +7,16 @@ import { SimpleListProps } from "./types";
 export function SimpleList({ items, title, icon }: SimpleListProps) {
   return (
     <Card className="h-full">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-3 text-xl">
-          {icon && <span className="text-2xl">{icon}</span>}
-          <span>{title}</span>
-        </CardTitle>
-      </CardHeader>
+      {title && (
+        <CardHeader className="pb-4">
+          <CardTitle className="flex items-center gap-3 text-xl">
+            {icon && <span className="text-2xl">{icon}</span>}
+            <span>{title}</span>
+          </CardTitle>
+        </CardHeader>
+      )}
       
-      <CardContent>
+      <CardContent className={!title ? "py-4" : ""}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {items.map((item, index) => (
             <div
@@ -48,29 +50,5 @@ export function SimpleList({ items, title, icon }: SimpleListProps) {
         )}
       </CardContent>
     </Card>
-  );
-}
-
-// Responsive layout for both Beilagen and Saucen
-export function AccompanimentsSection({ 
-  beilagen, 
-  saucen 
-}: { 
-  beilagen: SimpleListProps['items'], 
-  saucen: SimpleListProps['items'] 
-}) {
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-      <SimpleList 
-        items={beilagen} 
-        title="Beilagen" 
-        icon="🥗"
-      />
-      <SimpleList 
-        items={saucen} 
-        title="Saucen" 
-        icon="🌶️"
-      />
-    </div>
   );
 }

@@ -4,7 +4,7 @@ export { MenuSection } from './menu-section';
 // Component Exports
 export { CategoryTabs, useActiveCategory } from './category-tabs';
 export { MainDishCard, MainDishGrid } from './main-dish-card';
-export { SimpleList, AccompanimentsSection } from './simple-list';
+export { SimpleList } from './simple-list';
 export { DrinkCard, DrinkSection } from './drink-card';
 export { ContactCTA, CompactContactCTA } from './contact-cta';
 

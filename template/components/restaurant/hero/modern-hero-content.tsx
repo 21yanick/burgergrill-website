@@ -2,8 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { ArrowRight, ShoppingCart, Phone, Star } from 'lucide-react';
+import { ArrowRight, ShoppingCart, Phone } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from "@/lib/utils";
 import { HeroCTAProps } from './types';
@@ -28,62 +27,56 @@ export function ModernHeroContent({ title, subtitle, ctas, className }: ModernHe
     <div className={cn("container mx-auto px-4 pt-24 md:pt-8", className)}>
       <div className="max-w-4xl mx-auto text-center text-white">
         
-        {/* Premium Badge - Hidden on Mobile for cleaner look */}
-        <div className={cn(
-          "mb-4 md:mb-6 transform transition-all duration-1000 delay-200 hidden md:block",
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-        )}>
-          <Badge 
-            variant="secondary" 
-            className="bg-white/10 text-white border-white/20 backdrop-blur-sm text-sm font-medium px-4 py-2"
-          >
-            <Star className="w-4 h-4 mr-2 text-yellow-400 fill-yellow-400" />
-            Schweizer Grill-Tradition seit Jahren
-          </Badge>
-        </div>
 
-        {/* Main Title - Responsive sizing */}
+        {/* Main Title - Enhanced Typography */}
         <h1 className={cn(
-          "text-3xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 leading-tight transform transition-all duration-1000 delay-300",
+          "text-3xl md:text-5xl lg:text-7xl font-bold mb-6 md:mb-8 leading-tight transform transition-all duration-1000 delay-300",
+          "tracking-tight md:tracking-wide drop-shadow-2xl",
           isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-        )}>
-          <span className="block">
+        )}
+        style={{ 
+          textShadow: '0 4px 8px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.15)'
+        }}>
+          <span className="block bg-black/5 backdrop-blur-sm rounded-2xl px-4 py-3 md:px-8 md:py-4 border border-white/10">
             {title}
           </span>
         </h1>
 
-        {/* Subtitle - Shorter on mobile */}
+        {/* Subtitle - Enhanced Readability */}
         <p className={cn(
-          "text-base md:text-xl lg:text-2xl mb-6 md:mb-8 leading-relaxed max-w-3xl mx-auto transform transition-all duration-1000 delay-500",
-          "text-white/90 font-light",
+          "text-base md:text-xl lg:text-2xl mb-8 md:mb-10 leading-relaxed max-w-2xl mx-auto transform transition-all duration-1000 delay-500",
+          "text-white/95 font-light tracking-wide drop-shadow-lg",
           isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
-        )}>
-          <span className="block md:hidden">
-            Frisch gegrillte Cevapcici, saftige Burger und erstklassige Spezialitäten.
+        )}
+        style={{ 
+          textShadow: '0 2px 4px rgba(0,0,0,0.4), 0 4px 8px rgba(0,0,0,0.2)'
+        }}>
+          <span className="block md:hidden bg-black/5 backdrop-blur-sm rounded-xl px-3 py-2">
+            Traditionelle Čevapčići & saftige Burger.
           </span>
-          <span className="hidden md:block">
+          <span className="hidden md:block bg-black/5 backdrop-blur-sm rounded-xl px-6 py-3 border border-white/5">
             {subtitle}
           </span>
         </p>
 
-        {/* Premium Quality Indicators - Simplified on mobile */}
+        {/* Premium Quality Indicators - Enhanced Design */}
         <div className={cn(
-          "flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 mb-6 md:mb-10 transform transition-all duration-1000 delay-700",
+          "flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-6 mb-8 md:mb-12 transform transition-all duration-1000 delay-700",
           isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
         )}>
-          {/* Mobile: Only show 2 most important indicators */}
-          <div className="flex items-center gap-2 text-white/80">
-            <div className="w-2 h-2 bg-accent rounded-full"></div>
-            <span className="text-sm font-medium">100% Rind & Kalbsfleisch</span>
+          {/* Enhanced indicators with backdrop */}
+          <div className="flex items-center gap-2 text-white/90 bg-black/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/10">
+            <div className="w-2 h-2 bg-accent rounded-full shadow-sm"></div>
+            <span className="text-sm font-medium tracking-wide">100% Rind & Kalbsfleisch</span>
           </div>
-          <div className="flex items-center gap-2 text-white/80">
-            <div className="w-2 h-2 bg-accent rounded-full"></div>
-            <span className="text-sm font-medium">Frisch auf dem Grill</span>
+          <div className="flex items-center gap-2 text-white/90 bg-black/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/10">
+            <div className="w-2 h-2 bg-accent rounded-full shadow-sm"></div>
+            <span className="text-sm font-medium tracking-wide">Frisch auf dem Grill</span>
           </div>
           {/* Third indicator only on desktop */}
-          <div className="hidden sm:flex items-center gap-2 text-white/80">
-            <div className="w-2 h-2 bg-accent rounded-full"></div>
-            <span className="text-sm font-medium">Schweizer Qualität</span>
+          <div className="hidden sm:flex items-center gap-2 text-white/90 bg-black/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/10">
+            <div className="w-2 h-2 bg-accent rounded-full shadow-sm"></div>
+            <span className="text-sm font-medium tracking-wide">Schweizer Qualität</span>
           </div>
         </div>
 
@@ -93,22 +86,39 @@ export function ModernHeroContent({ title, subtitle, ctas, className }: ModernHe
           isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
         )}>
           {/* Primary CTA - Prominent */}
-          <Button 
-            asChild 
-            size="lg" 
-            className={cn(
-              "bg-accent hover:bg-accent/90 text-accent-foreground",
-              "h-12 md:h-14 px-6 md:px-8 text-base md:text-lg font-semibold",
-              "shadow-xl hover:shadow-2xl",
-              "transform hover:scale-105 transition-all duration-300",
-              "ring-2 ring-accent/20 hover:ring-accent/40"
-            )}
-          >
-            <Link href={ctas.primaryCTA.href}>
+          {'onClick' in ctas.primaryCTA ? (
+            <Button 
+              onClick={ctas.primaryCTA.onClick}
+              size="lg" 
+              className={cn(
+                "bg-accent hover:bg-accent/90 text-accent-foreground",
+                "h-12 md:h-14 px-6 md:px-8 text-base md:text-lg font-semibold",
+                "shadow-xl hover:shadow-2xl",
+                "transform hover:scale-105 transition-all duration-300",
+                "ring-2 ring-accent/20 hover:ring-accent/40"
+              )}
+            >
               <ShoppingCart className="mr-2 md:mr-3 h-4 md:h-5 w-4 md:w-5" />
               {ctas.primaryCTA.text}
-            </Link>
-          </Button>
+            </Button>
+          ) : (
+            <Button 
+              asChild 
+              size="lg" 
+              className={cn(
+                "bg-accent hover:bg-accent/90 text-accent-foreground",
+                "h-12 md:h-14 px-6 md:px-8 text-base md:text-lg font-semibold",
+                "shadow-xl hover:shadow-2xl",
+                "transform hover:scale-105 transition-all duration-300",
+                "ring-2 ring-accent/20 hover:ring-accent/40"
+              )}
+            >
+              <Link href={ctas.primaryCTA.href}>
+                <ShoppingCart className="mr-2 md:mr-3 h-4 md:h-5 w-4 md:w-5" />
+                {ctas.primaryCTA.text}
+              </Link>
+            </Button>
+          )}
 
           {/* Secondary CTA - Universal Readability */}
           <Button 

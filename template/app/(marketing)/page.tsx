@@ -14,7 +14,7 @@ export default function LandingPage() {
       {/* Menu Section */}
       <MenuSection />
 
-      {/* KG-Verkauf Section */}
+      {/* Grillfleisch-Verkauf Section */}
       <KgVerkaufSection />
 
       {/* Features Section */}
@@ -76,8 +76,8 @@ export default function LandingPage() {
             Entdecken Sie, warum wir das beliebteste Cevapcici-Grill der Region sind.
           </p>
           <Button variant="secondary" size="lg" asChild>
-            <Link href="#kg-verkauf">
-              KG-Verkauf bestellen
+            <Link href="#grillfleisch-verkauf">
+              Grillfleisch-Verkauf bestellen
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>

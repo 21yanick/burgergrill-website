@@ -6,7 +6,7 @@
 
 1. **Veed.io** (Empfohlen für Anfänger):
    - Gehe zu: https://www.veed.io/compress-video
-   - Upload `Cevape_video.mp4`
+   - Upload `Cevape_videoo.mp4`
    - **Desktop**: "Web optimized" → Target: 3-4 MB
    - **Mobile**: "Mobile optimized" → Target: 1-2 MB
    - Erstelle beide Versionen

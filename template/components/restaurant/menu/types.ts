@@ -54,7 +54,7 @@ export interface MainDishCardProps {
 
 export interface SimpleListProps {
   items: Accompaniment[] | Sauce[];
-  title: string; 
+  title?: string; 
   icon?: string;
 }
 

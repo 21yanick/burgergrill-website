@@ -8,7 +8,7 @@ export function Footer() {
   // Restaurant-specific navigation
   const restaurantLinks = [
     { href: '#menu', label: 'Speisekarte' },
-    { href: '#kg-verkauf', label: 'KG-Verkauf' },
+    { href: '#grillfleisch-verkauf', label: 'Grillfleisch-Verkauf' },
     { href: '#location', label: 'Standort' }
   ]
 

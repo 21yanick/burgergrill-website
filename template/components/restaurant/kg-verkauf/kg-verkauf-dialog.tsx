@@ -159,17 +159,18 @@ export function KgVerkaufDialog({ isOpen, onClose, onSubmit }: KgVerkaufDialogPr
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="w-[95vw] max-w-[500px] h-[95vh] max-h-[90vh] sm:h-auto flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-accent">
-            KG-Verkauf bestellen
+            Grillfleisch-Verkauf bestellen
           </DialogTitle>
           <DialogDescription>
             Frische Spezialitäten für zu Hause. Mindestvorlauf 24 Stunden.
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="flex-1 overflow-y-auto px-1 -mr-1" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <form onSubmit={handleSubmit} className="space-y-6">
           {/* Preis-Info Box */}
           <div className="bg-muted/50 border rounded-lg p-4">
             <h4 className="font-semibold text-sm mb-2">📋 Aktuelle Preise:</h4>
@@ -317,7 +318,8 @@ export function KgVerkaufDialog({ isOpen, onClose, onSubmit }: KgVerkaufDialogPr
               rows={3}
             />
           </div>
-        </form>
+          </form>
+        </div>
 
         <DialogFooter className="gap-3">
           <Button type="button" variant="outline" onClick={onClose}>
