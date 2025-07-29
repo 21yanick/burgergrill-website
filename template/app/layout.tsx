@@ -30,6 +30,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Check if we're in Coming Soon mode
+  const isComingSoon = process.env.SHOW_COMING_SOON === 'true';
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -42,11 +45,19 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {/* Restaurant theme provider setup */}
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
+          {isComingSoon ? (
+            // Coming Soon Mode - Clean layout without Header/Footer
+            <div className="min-h-screen">
+              {children}
+            </div>
+          ) : (
+            // Normal Mode - Full layout with Header/Footer
+            <div className="flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          )}
           {/* Clean restaurant layout structure */}
         </ThemeProvider>
       </body>

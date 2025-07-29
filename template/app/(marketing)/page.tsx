@@ -3,8 +3,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ArrowRight, Check, Shield, Zap, Users } from 'lucide-react'
 import Link from 'next/link'
 import { HeroSection, MenuSection, KgVerkaufSection, LocationSection } from '@/components/restaurant'
+import { ComingSoonPage } from '@/components/coming-soon'
 
 export default function LandingPage() {
+  // Environment Variable Toggle für Coming Soon Mode
+  if (process.env.SHOW_COMING_SOON === 'true') {
+    return <ComingSoonPage />
+  }
 
   return (
     <div className="flex flex-col">
