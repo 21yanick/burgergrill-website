@@ -26,13 +26,13 @@ export const metadata: Metadata = {
   authors: [{ name: siteMetadata.author }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Get headers and check for Coming Soon indicators
-  const headersList = headers();
+  // Get headers and check for Coming Soon indicators (Next.js 15: headers() returns Promise)
+  const headersList = await headers();
   const comingSoonHeaderActive = headersList.get('x-coming-soon-active') === 'true';
   
   // Check if we're in Coming Soon mode (Environment Variable OR Middleware Header)

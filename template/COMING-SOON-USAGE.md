@@ -125,9 +125,10 @@ SHOW_COMING_SOON=false
 
 1. **Image File**: Stellt sicher, dass `Burger_Grill.png` existiert
 2. **Environment**: Nur `'true'` (String) aktiviert Coming Soon Mode - **Server-Side Runtime-Zugriff**
-3. **Simple & Fast**: Statisches Bild lädt sofort ohne Komplexität
-4. **No Navigation**: Coming Soon Page hat keine Header/Footer
-5. **TypeScript**: Alle Komponenten sind fully typed
+3. **Next.js 15**: Layout ist async wegen `await headers()` (Breaking Change fix)
+4. **Simple & Fast**: Statisches Bild lädt sofort ohne Komplexität
+5. **No Navigation**: Coming Soon Page hat keine Header/Footer
+6. **TypeScript**: Alle Komponenten sind fully typed
 
 ## 🔧 Robuste Middleware-Lösung implementiert
 
