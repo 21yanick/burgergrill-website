@@ -6,8 +6,8 @@ import { HeroSection, MenuSection, KgVerkaufSection, LocationSection } from '@/c
 import { ComingSoonPage } from '@/components/coming-soon'
 
 export default function LandingPage() {
-  // Environment Variable Toggle für Coming Soon Mode (NEXT_PUBLIC_ für Client-Side Zugriff)
-  if (process.env.NEXT_PUBLIC_SHOW_COMING_SOON === 'true') {
+  // Server-Side Environment Variable (Runtime-Zugriff ohne NEXT_PUBLIC_)
+  if (process.env.SHOW_COMING_SOON === 'true') {
     return <ComingSoonPage />
   }
 

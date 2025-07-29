@@ -7,15 +7,15 @@ Professionelles Coming Soon System für Burgergrill Website mit Video-Background
 
 ### Coming Soon Mode aktivieren:
 ```bash
-# WICHTIG: NEXT_PUBLIC_ Prefix für Production erforderlich!
+# Server-Side Environment Variable (Runtime-Zugriff)
 # In .env.local oder Coolify Environment Variables:
-NEXT_PUBLIC_SHOW_COMING_SOON=true
+SHOW_COMING_SOON=true
 ```
 
 ### Coming Soon Mode deaktivieren:
 ```bash
 # In .env.local oder Coolify Environment Variables:
-NEXT_PUBLIC_SHOW_COMING_SOON=false
+SHOW_COMING_SOON=false
 # oder Variable komplett weglassen
 ```
 
@@ -72,8 +72,8 @@ NEXT_PUBLIC_SHOW_COMING_SOON=false
 
 ### Environment Variable Logic:
 ```typescript
-// app/layout.tsx - Header/Footer Suppression
-const isComingSoon = process.env.NEXT_PUBLIC_SHOW_COMING_SOON === 'true';
+// app/layout.tsx - Header/Footer Suppression (Server-Side)
+const isComingSoon = process.env.SHOW_COMING_SOON === 'true';
 {isComingSoon ? (
   <div className="min-h-screen">{children}</div>
 ) : (
@@ -84,8 +84,8 @@ const isComingSoon = process.env.NEXT_PUBLIC_SHOW_COMING_SOON === 'true';
   </div>
 )}
 
-// app/(marketing)/page.tsx - Page Content Toggle
-if (process.env.NEXT_PUBLIC_SHOW_COMING_SOON === 'true') {
+// app/(marketing)/page.tsx - Page Content Toggle (Server-Side)
+if (process.env.SHOW_COMING_SOON === 'true') {
   return <ComingSoonPage />
 }
 ```
@@ -94,25 +94,36 @@ if (process.env.NEXT_PUBLIC_SHOW_COMING_SOON === 'true') {
 
 ### Staging/Testing:
 ```bash
-NEXT_PUBLIC_SHOW_COMING_SOON=true pnpm build
+SHOW_COMING_SOON=true pnpm build
 ```
 
 ### Production Launch (Coolify):
 ```bash
-# Coming Soon aktivieren
-NEXT_PUBLIC_SHOW_COMING_SOON=true
+# Coming Soon aktivieren - KEIN Rebuild erforderlich!
+SHOW_COMING_SOON=true
 
-# Später: Full Website aktivieren  
-NEXT_PUBLIC_SHOW_COMING_SOON=false
+# Später: Full Website aktivieren - KEIN Rebuild erforderlich!  
+SHOW_COMING_SOON=false
 ```
 
 ## ⚠️ Wichtige Hinweise
 
 1. **Image File**: Stellt sicher, dass `Burger_Grill.png` existiert
-2. **Environment**: Nur `'true'` (String) aktiviert Coming Soon Mode - **NEXT_PUBLIC_ Prefix erforderlich!**
+2. **Environment**: Nur `'true'` (String) aktiviert Coming Soon Mode - **Server-Side Runtime-Zugriff**
 3. **Simple & Fast**: Statisches Bild lädt sofort ohne Komplexität
 4. **No Navigation**: Coming Soon Page hat keine Header/Footer
 5. **TypeScript**: Alle Komponenten sind fully typed
+
+## 🔧 Build-Time vs Runtime Problem gelöst
+
+**Problem**: `NEXT_PUBLIC_` Environment Variables werden zur BUILD-TIME eingebettet
+- Änderung in Coolify → Kein Effekt ohne Rebuild
+- Unpraktisch für Production Toggle
+
+**Lösung**: Server-Side Environment Variables (Runtime-Zugriff)
+- Änderung in Coolify → Sofortiger Effekt
+- Kein Rebuild erforderlich
+- Dynamic Toggle möglich
 
 ## 🎯 Use Cases
 
