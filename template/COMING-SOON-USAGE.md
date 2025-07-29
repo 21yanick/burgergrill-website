@@ -7,14 +7,15 @@ Professionelles Coming Soon System für Burgergrill Website mit Video-Background
 
 ### Coming Soon Mode aktivieren:
 ```bash
-# In .env.local setzen:
-SHOW_COMING_SOON=true
+# WICHTIG: NEXT_PUBLIC_ Prefix für Production erforderlich!
+# In .env.local oder Coolify Environment Variables:
+NEXT_PUBLIC_SHOW_COMING_SOON=true
 ```
 
 ### Coming Soon Mode deaktivieren:
 ```bash
-# In .env.local setzen:
-SHOW_COMING_SOON=false
+# In .env.local oder Coolify Environment Variables:
+NEXT_PUBLIC_SHOW_COMING_SOON=false
 # oder Variable komplett weglassen
 ```
 
@@ -72,7 +73,7 @@ SHOW_COMING_SOON=false
 ### Environment Variable Logic:
 ```typescript
 // app/layout.tsx - Header/Footer Suppression
-const isComingSoon = process.env.SHOW_COMING_SOON === 'true';
+const isComingSoon = process.env.NEXT_PUBLIC_SHOW_COMING_SOON === 'true';
 {isComingSoon ? (
   <div className="min-h-screen">{children}</div>
 ) : (
@@ -84,7 +85,7 @@ const isComingSoon = process.env.SHOW_COMING_SOON === 'true';
 )}
 
 // app/(marketing)/page.tsx - Page Content Toggle
-if (process.env.SHOW_COMING_SOON === 'true') {
+if (process.env.NEXT_PUBLIC_SHOW_COMING_SOON === 'true') {
   return <ComingSoonPage />
 }
 ```
@@ -93,22 +94,22 @@ if (process.env.SHOW_COMING_SOON === 'true') {
 
 ### Staging/Testing:
 ```bash
-SHOW_COMING_SOON=true pnpm build
+NEXT_PUBLIC_SHOW_COMING_SOON=true pnpm build
 ```
 
-### Production Launch:
+### Production Launch (Coolify):
 ```bash
 # Coming Soon aktivieren
-SHOW_COMING_SOON=true
+NEXT_PUBLIC_SHOW_COMING_SOON=true
 
 # Später: Full Website aktivieren  
-SHOW_COMING_SOON=false
+NEXT_PUBLIC_SHOW_COMING_SOON=false
 ```
 
 ## ⚠️ Wichtige Hinweise
 
 1. **Image File**: Stellt sicher, dass `Burger_Grill.png` existiert
-2. **Environment**: Nur `'true'` (String) aktiviert Coming Soon Mode
+2. **Environment**: Nur `'true'` (String) aktiviert Coming Soon Mode - **NEXT_PUBLIC_ Prefix erforderlich!**
 3. **Simple & Fast**: Statisches Bild lädt sofort ohne Komplexität
 4. **No Navigation**: Coming Soon Page hat keine Header/Footer
 5. **TypeScript**: Alle Komponenten sind fully typed

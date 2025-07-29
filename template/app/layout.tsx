@@ -30,8 +30,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Check if we're in Coming Soon mode
-  const isComingSoon = process.env.SHOW_COMING_SOON === 'true';
+  // Check if we're in Coming Soon mode (NEXT_PUBLIC_ für Client-Side Zugriff)
+  const isComingSoon = process.env.NEXT_PUBLIC_SHOW_COMING_SOON === 'true';
 
   return (
     <html lang="en" suppressHydrationWarning>
