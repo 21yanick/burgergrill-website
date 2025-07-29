@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme";
 import { Header, Footer } from "@/components/layout";
 import { getSiteMetadata } from "@/lib/config";
+import { headers } from "next/headers";
 // Restaurant layout with clean structure
 
 const geistSans = Geist({
@@ -30,8 +31,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Check if we're in Coming Soon mode (Server-Side für Runtime-Zugriff)
+  // Get headers and check for Coming Soon indicators
+  const headersList = headers();
+  const comingSoonHeaderActive = headersList.get('x-coming-soon-active') === 'true';
+  
+  // Check if we're in Coming Soon mode (Environment Variable OR Middleware Header)
   const isComingSoon = process.env.SHOW_COMING_SOON === 'true';
+  const shouldUseCleanLayout = isComingSoon || comingSoonHeaderActive;
+  
+  // Debug-Logging für Root Layout
+  console.log('🏠 ROOT LAYOUT - Layout Decision:', {
+    isComingSoon,
+    comingSoonHeaderActive,
+    shouldUseCleanLayout,
+    timestamp: new Date().toISOString()
+  });
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -45,7 +59,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {/* Restaurant theme provider setup */}
-          {isComingSoon ? (
+          {shouldUseCleanLayout ? (
             // Coming Soon Mode - Clean layout without Header/Footer
             <div className="min-h-screen">
               {children}

@@ -38,7 +38,12 @@ export async function middleware(request: NextRequest) {
     url.pathname = '/coming-soon-internal';
     
     console.log('✅ MIDDLEWARE - Redirecting to Coming Soon');
-    return NextResponse.rewrite(url);
+    const response = NextResponse.rewrite(url);
+    
+    // Set custom header für Root Layout Detection
+    response.headers.set('x-coming-soon-active', 'true');
+    
+    return response;
   }
 
   console.log('❌ MIDDLEWARE - Normal website mode');

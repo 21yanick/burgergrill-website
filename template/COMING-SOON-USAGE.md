@@ -73,12 +73,24 @@ SHOW_COMING_SOON=false
 - **NEU**: `app/coming-soon-internal/layout.tsx` - Clean Layout ohne Header/Footer
 - Aktualisiert: `.env.example` - Dokumentation
 
-### Environment Variable Logic:
+### Environment Variable + Header Logic:
 ```typescript
-// app/layout.tsx - Header/Footer Suppression (Server-Side)
+// middleware.ts - Primary Control (GARANTIERT funktionsfähig)
+const showComingSoon = process.env.SHOW_COMING_SOON === 'true';
+if (showComingSoon) {
+  const response = NextResponse.rewrite('/coming-soon-internal');
+  response.headers.set('x-coming-soon-active', 'true'); // Root Layout Signal
+  return response;
+}
+
+// app/layout.tsx - Header/Footer Suppression (Dual Check)
+const headersList = headers();
+const comingSoonHeaderActive = headersList.get('x-coming-soon-active') === 'true';
 const isComingSoon = process.env.SHOW_COMING_SOON === 'true';
-{isComingSoon ? (
-  <div className="min-h-screen">{children}</div>
+const shouldUseCleanLayout = isComingSoon || comingSoonHeaderActive;
+
+{shouldUseCleanLayout ? (
+  <div className="min-h-screen">{children}</div> // NO Header/Footer
 ) : (
   <div className="flex min-h-screen flex-col">
     <Header />
@@ -87,7 +99,7 @@ const isComingSoon = process.env.SHOW_COMING_SOON === 'true';
   </div>
 )}
 
-// app/(marketing)/page.tsx - Page Content Toggle (Server-Side)
+// app/(marketing)/page.tsx - Page Content Toggle (Fallback)
 if (process.env.SHOW_COMING_SOON === 'true') {
   return <ComingSoonPage />
 }
@@ -124,14 +136,15 @@ SHOW_COMING_SOON=false
 - Server Components können statisch generiert werden  
 - Unpredictable Production Behavior
 
-**Lösung**: Middleware-basierte Coming Soon (GARANTIERT funktionsfähig)
-- **Middleware**: Läuft bei JEDER Request
-- **Kein Caching**: Wird nie gecached, immer fresh
-- **Runtime Environment**: Variables zur Runtime gelesen
-- **Rewrite-basiert**: Interne Route ohne URL-Änderung
+**Lösung**: Middleware + Header-basierte Coming Soon (GARANTIERT funktionsfähig)
+- **Middleware**: Läuft bei JEDER Request, nie gecached
+- **Custom Header**: `x-coming-soon-active: true` für Root Layout Detection
+- **Dual Layout Check**: Environment Variable + Middleware Header
+- **Clean Layout**: Root Layout erkennt Coming Soon und unterdrückt Header/Footer
+- **Rewrite-basiert**: Interne Route `/coming-soon-internal` ohne URL-Änderung
 - **Debug-Logging**: Vollständige Transparenz in Production
 
-**Dual-Approach**: Page-Level + Middleware für maximale Zuverlässigkeit
+**Triple-Approach**: Page-Level + Middleware + Root Layout für 100% Zuverlässigkeit
 
 ## 🎯 Use Cases
 
