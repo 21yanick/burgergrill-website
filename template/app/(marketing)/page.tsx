@@ -45,7 +45,7 @@ export default function LandingPage() {
                 <Zap className="w-12 h-12 mb-4 text-accent" />
                 <CardTitle>Frisch vom Grill</CardTitle>
                 <CardDescription>
-                  Alles wird frisch auf unserem Holzkohlegrill zubereitet - für den unverwechselbaren Geschmack.
+                  Alles wird frisch auf unserem Grill zubereitet - für den unverwechselbaren Geschmack.
                 </CardDescription>
               </CardHeader>
             </Card>

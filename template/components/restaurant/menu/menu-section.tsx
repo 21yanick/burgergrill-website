@@ -1,146 +1,146 @@
 "use client";
 
+import React from "react";
 import { cn } from "@/lib/utils";
-import { MenuGrid } from "./menu-grid";
-import { MenuCategoryData, MenuItemData } from "./types";
-
-interface MenuSectionProps {
-  categories?: MenuCategoryData[];
-  onItemClick?: (item: MenuItemData) => void;
-  className?: string;
-}
-
-// Sample Cevapcici-Grill Menu Data
-const defaultMenuData: MenuCategoryData[] = [
-  {
-    id: "cevapcici-burger",
-    name: "Cevapcici-Burger",
-    description: "Unsere Signature-Kreationen mit authentischen Cevapcici aus traditioneller Herstellung",
-    sortOrder: 1,
-    items: [
-      {
-        id: "classic-cevapcici",
-        name: "Classic Cevapcici-Burger",
-        description: "6 handgemachte Cevapcici, Zwiebeln, Kajmak, Ajvar, frisches Fladenbrot",
-        price: 16.50,
-        available: true,
-        isSignature: true,
-        allergens: ["Gluten", "Milch"]
-      },
-      {
-        id: "xl-cevapcici",
-        name: "XL Cevapcici-Burger",
-        description: "10 Cevapcici, doppelt Kajmak, scharfer Ajvar, geröstete Zwiebeln, Pommes",
-        price: 22.00,
-        available: true,
-        isSignature: true,
-        allergens: ["Gluten", "Milch"]
-      },
-      {
-        id: "cevapcici-deluxe",
-        name: "Cevapcici Deluxe",
-        description: "8 Cevapcici, Pljeskavica, Kajmak, Ajvar, Gurken, Tomaten, hausgemachtes Brot",
-        price: 19.50,
-        available: true,
-        isSignature: true,
-        allergens: ["Gluten", "Milch", "Ei"]
-      }
-    ]
-  },
-  {
-    id: "klassische-burger",
-    name: "Klassische Burger",
-    description: "Saftige Beef-Burger mit schweizer Premium-Rindfleisch",
-    sortOrder: 2,
-    items: [
-      {
-        id: "swiss-classic",
-        name: "Swiss Classic Burger",
-        description: "180g Beef Patty, Schweizer Käse, Salat, Tomaten, Zwiebeln, Burger-Sauce",
-        price: 14.50,
-        available: true,
-        allergens: ["Gluten", "Milch", "Ei"]
-      },
-      {
-        id: "bacon-cheese",
-        name: "Bacon & Cheese Burger",
-        description: "180g Beef Patty, Bacon, Cheddar, Salat, Tomaten, BBQ-Sauce",
-        price: 16.00,
-        available: true,
-        allergens: ["Gluten", "Milch", "Ei"]
-      },
-      {
-        id: "mushroom-swiss",
-        name: "Mushroom Swiss Burger",
-        description: "200g Beef Patty, sautierte Champignons, Schweizer Käse, Rucola",
-        price: 17.50,
-        available: true,
-        allergens: ["Gluten", "Milch"]
-      }
-    ]
-  },
-  {
-    id: "wuerste-grill",
-    name: "Würste & Grill-Spezialitäten",
-    description: "Traditionelle Grillwürste und Balkan-Spezialitäten",
-    sortOrder: 3,
-    items: [
-      {
-        id: "bratwurst",
-        name: "Schweizer Bratwurst",
-        description: "2 traditionelle Bratwürste, Senf, Zwiebeln, Brot",
-        price: 12.50,
-        available: true,
-        allergens: ["Gluten", "Senf"]
-      },
-      {
-        id: "pljeskavica",
-        name: "Pljeskavica",
-        description: "Grosse balkanische Frikadelle, Kajmak, Ajvar, Zwiebeln, Fladenbrot",
-        price: 15.00,
-        available: true,
-        isSignature: true,
-        allergens: ["Gluten", "Milch"]
-      },
-      {
-        id: "mixed-grill",
-        name: "Mixed Grill Teller",
-        description: "Cevapcici, Pljeskavica, Bratwurst, Kajmak, Ajvar, Pommes",
-        price: 24.50,
-        available: true,
-        isSignature: true,
-        allergens: ["Gluten", "Milch", "Senf"]
-      }
-    ]
-  }
-];
+import { MenuSectionProps, MenuCategory, MainDish } from "./types";
+import { authenticBurgergrillMenu, menuHeader } from "./menu-data";
+import { CategoryTabs, useActiveCategory } from "./category-tabs";
+import { MainDishGrid } from "./main-dish-card";
+import { SimpleList } from "./simple-list";
+import { DrinkSection } from "./drink-card";
+import { ContactCTA } from "./contact-cta";
 
 export function MenuSection({ 
-  categories = defaultMenuData, 
-  onItemClick, 
+  menu = authenticBurgergrillMenu, 
   className 
 }: MenuSectionProps) {
+  
+  // Category navigation state
+  const categories: MenuCategory[] = ['hauptgerichte', 'beilagen', 'saucen', 'getränke'];
+  const [activeCategory, setActiveCategory] = useActiveCategory(categories);
+  
+  // Dish interaction handler
+  const handleDishClick = (dish: MainDish) => {
+    // Future: Open dish detail modal or add to cart
+    console.log('Dish clicked:', dish);
+  };
+
   return (
-    <section id="menu" className={cn("py-20 lg:py-32", className)}>
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center mb-16 lg:mb-20">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            Unsere Speisekarte
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Authentische Cevapcici nach traditionellem Rezept, saftige Burger mit schweizer Rindfleisch 
-            und erstklassige Grillspezialitäten - alles frisch zubereitet auf unserem Holzkohlegrill.
-          </p>
+    <section id="menu" className={cn("relative", className)}>
+      {/* Header Section */}
+      <div className="py-16 lg:py-20 bg-gradient-to-b from-background to-muted/20">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-4xl mx-auto">
+            <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-foreground">
+              {menuHeader.title}
+            </h2>
+            <p className="text-xl lg:text-2xl text-accent font-semibold mb-3">
+              {menuHeader.subtitle}
+            </p>
+            <p className="text-lg text-primary font-medium mb-2">
+              {menuHeader.description}
+            </p>
+          </div>
         </div>
-
-        {/* Menu Grid */}
-        <MenuGrid 
-          categories={categories} 
-          onItemClick={onItemClick}
-        />
-
       </div>
+
+      {/* Category Navigation */}
+      <CategoryTabs
+        categories={categories}
+        activeCategory={activeCategory}
+        onCategoryChange={setActiveCategory}
+      />
+
+      {/* Menu Content */}
+      <div className="py-12 lg:py-16">
+        <div className="container mx-auto px-4 space-y-20">
+          
+          {/* Hauptgerichte Section */}
+          <section id="category-hauptgerichte" className="scroll-mt-32">
+            <div className="text-center mb-12">
+              <h3 className="text-3xl lg:text-4xl font-bold mb-4 flex items-center justify-center gap-3">
+                <span className="text-4xl">🍔</span>
+                <span>Hauptgerichte</span>
+              </h3>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Unsere authentischen Spezialitäten, frisch auf dem Grill zubereitet
+              </p>
+            </div>
+            
+            <MainDishGrid 
+              dishes={menu.hauptgerichte}
+              onDishClick={handleDishClick}
+            />
+          </section>
+
+          {/* Beilagen Section */}
+          <section id="category-beilagen" className="scroll-mt-32">
+            <div className="text-center mb-12">
+              <h3 className="text-3xl lg:text-4xl font-bold mb-4 flex items-center justify-center gap-3">
+                <span className="text-4xl">🥗</span>
+                <span>Beilagen</span>
+              </h3>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Perfekte Ergänzungen zu Ihren Hauptgerichten
+              </p>
+            </div>
+            
+            <div className="max-w-lg mx-auto">
+              <SimpleList 
+                items={menu.beilagen} 
+                title="Beilagen" 
+                icon="🥗"
+              />
+            </div>
+          </section>
+
+          {/* Saucen Section - Separate for better navigation */}
+          <section id="category-saucen" className="scroll-mt-32">
+            <div className="text-center mb-12">
+              <h3 className="text-3xl lg:text-4xl font-bold mb-4 flex items-center justify-center gap-3">
+                <span className="text-4xl">🌶️</span>
+                <span>Saucen</span>
+              </h3>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Geschmackvolle Saucen für das perfekte Geschmackserlebnis
+              </p>
+            </div>
+            
+            <div className="max-w-lg mx-auto">
+              <SimpleList 
+                items={menu.saucen} 
+                title="Saucen" 
+                icon="🌶️"
+              />
+            </div>
+          </section>
+
+          {/* Getränke Section */}
+          <section id="category-getränke" className="scroll-mt-32">
+            <div className="text-center mb-12">
+              <h3 className="text-3xl lg:text-4xl font-bold mb-4 flex items-center justify-center gap-3">
+                <span className="text-4xl">🥤</span>
+                <span>Getränke</span>
+              </h3>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Erfrischende Getränke zum fairen Einheitspreis
+              </p>
+            </div>
+            
+            <div className="max-w-2xl mx-auto">
+              <DrinkSection drinks={menu.getränke} />
+            </div>
+          </section>
+
+          {/* Contact CTA Section */}
+          <section className="pt-8">
+            <div className="max-w-3xl mx-auto">
+              <ContactCTA kontakt={menu.kontakt} />
+            </div>
+          </section>
+        </div>
+      </div>
+
     </section>
   );
 }

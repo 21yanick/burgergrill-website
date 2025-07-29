@@ -4,32 +4,32 @@ import { OpeningHours } from "./opening-hours";
 import { MapEmbed } from "./map-embed";
 import { LocationData, LocationSectionProps } from "./types";
 
-// Mock data for Swiss restaurant (Zürich)
+// Authentic Burgergrill location data (Solothurn)
 const defaultLocationData: LocationData = {
   contact: {
     address: {
-      street: "Bahnhofstrasse 47",
-      city: "Zürich",
-      postalCode: "8001",
+      street: "Bielstrasse 50",
+      city: "Solothurn",
+      postalCode: "4500",
       country: "Schweiz"
     },
-    phone: "+41 44 123 45 67",
+    phone: "079 489 77 55",
     email: "info@burgergrill.ch" // From site config
   },
   hours: {
-    monday: "Geschlossen",
-    tuesday: "11:00 - 22:00",
-    wednesday: "11:00 - 22:00", 
-    thursday: "11:00 - 22:00",
-    friday: "11:00 - 23:00",
-    saturday: "11:00 - 23:00",
-    sunday: "12:00 - 21:00"
+    monday: "10:00 - 14:00",
+    tuesday: "10:00 - 18:30",
+    wednesday: "10:00 - 18:30", 
+    thursday: "10:00 - 18:30",
+    friday: "10:00 - 18:30",
+    saturday: "9:00 - 18:00",
+    sunday: "Geschlossen"
   },
-  // Optional: Real Google Maps embed can be added later
-  // mapEmbed: {
-  //   src: "https://www.google.com/maps/embed?pb=...",
-  //   title: "Burgergrill Zürich Standort"
-  // }
+  // Google Maps embed for Bielstrasse 50, 4500 Solothurn (CSP now allows frame-src)
+  mapEmbed: {
+    src: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2677.579554787817!2d7.528403866414368!3d47.21035549845828!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x478e1a8c8d8f8d8f%3A0x8d8f8d8f8d8f8d8f!2sBielstrasse%2050%2C%204500%20Solothurn!5e0!3m2!1sde!2sch!4v1643723400000!5m2!1sde!2sch",
+    title: "Burgergrill Solothurn - Bielstrasse 50"
+  }
 };
 
 export function LocationSection({ 
@@ -48,7 +48,7 @@ export function LocationSection({
             Besuchen Sie uns
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Mitten im Herzen von Zürich servieren wir Ihnen authentische Cevapcici 
+            Mitten im Herzen von Solothurn servieren wir Ihnen authentische Cevapcici 
             und saftige Burger. Kommen Sie vorbei und erleben Sie unser Restaurant.
           </p>
         </div>
@@ -70,15 +70,6 @@ export function LocationSection({
           </div>
         </div>
 
-        {/* Additional Info */}
-        <div className="mt-12 text-center">
-          <div className="inline-flex items-center gap-2 bg-background border rounded-full px-6 py-3">
-            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            <span className="text-sm font-medium">
-              Reservationen empfohlen • Takeaway verfügbar
-            </span>
-          </div>
-        </div>
       </div>
     </section>
   );

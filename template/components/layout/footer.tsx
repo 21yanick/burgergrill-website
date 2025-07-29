@@ -14,8 +14,8 @@ export function Footer() {
 
   // Restaurant contact info (consistent with LocationSection)
   const contactInfo = {
-    address: "Bahnhofstrasse 47, 8001 Zürich",
-    phone: "+41 44 123 45 67",
+    address: "Bielstrasse 50, 4500 Solothurn",
+    phone: "079 489 77 55",
     email: "info@burgergrill.ch"
   }
 

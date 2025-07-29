@@ -1,10 +1,10 @@
 # 🍔 Burgergrill Website
 
-**Authentische Cevapcici & Burger aus Zürich** - Moderne Restaurant One-Pager mit Next.js 15 + Supabase
+**Authentische Cevapcici & Burger aus Solothurn** - Moderne Restaurant One-Pager mit Next.js 15 + Supabase
 
 **Status: Phase 1 - UI zu 95% komplett** | Schweizer Restaurant mit KG-Verkauf, Location-Finder und CMS-Dashboard
 
-Spezialisiert auf authentische Cevapcici nach traditionellem Balkan-Rezept, premium Burger mit schweizer Rindfleisch und kilogrammweisen Verkauf für Events. Vollständig responsive Design mit echter Zürich-Integration.
+Spezialisiert auf authentische Cevapcici nach traditionellem Balkan-Rezept, premium Burger mit schweizer Rindfleisch und kilogrammweisen Verkauf für Events. 
 
 ## ✨ Live Features (Phase 1 - 95% komplett)
 
@@ -12,16 +12,9 @@ Spezialisiert auf authentische Cevapcici nach traditionellem Balkan-Rezept, prem
 - **Hero Section**: Cevapcici-fokussierte Landingpage mit CTAs zu KG-Verkauf und Menü
 - **Menu Display**: 3 Kategorien (Cevapcici-Burger, Klassische Burger, Würste & Grill) mit CHF-Preisen
 - **KG-Verkauf System**: Dialog-basierte Bestellungen für kilogrammweise Produkte (Events/Partys)
-- **Location & Hours**: Interaktive Karte, Öffnungszeiten, Kontaktdaten (Bahnhofstrasse 47, Zürich)
+- **Location & Hours**: Interaktive Karte, Öffnungszeiten, Kontaktdaten
 - **Restaurant Footer**: Social Media, Kontaktdaten, Dashboard-Link für Inhaber
 - **Mobile-First**: Vollständig responsive für Smartphone-Bestellungen
-
-### 🇨🇭 **Swiss Integration**
-- **Echte Adresse**: Bahnhofstrasse 47, 8001 Zürich mit Google Maps Integration
-- **Schweizer Telefon**: +41 44 123 45 67 (klickbar für direkte Anrufe)
-- **CHF-Preise**: Alle Menüpreise in Schweizer Franken formatiert
-- **Deutsche Lokalisierung**: Authentische Texte, "Sie"-Form, schweizer Begriffe
-- **Öffnungszeiten**: Mo geschlossen, Di-Sa 11-22h, So 12-21h mit "Heute"-Indikator
 
 ### 🏗️ **Technische Architektur**
 - **Komponenten-Struktur**: Domain-separierte `/components/restaurant/` Organisation
@@ -100,7 +93,7 @@ burgergrill-website/
 │   │   ├── auth/           # Benutzer-Authentication
 │   │   └── ui/             # shadcn/ui Base Components
 │   ├── lib/
-│   │   ├── config.ts       # 🇨🇭 Swiss Site Config (CHF, de-CH, Zürich)
+│   │   ├── config.ts       # 🇨🇭 Swiss Site Config (CHF, de-CH)
 │   │   ├── supabase/       # Database Connection & Auth
 │   │   └── email/          # Resend Email Templates
 │   └── .env.local          # Application configuration
@@ -135,24 +128,13 @@ KgVerkaufSection
 ├── kg-verkauf-dialog.tsx    # Modal mit Produkt-Auswahl
 └── types.ts                # KgOrderData Interface
 
-// Location & Hours - Zürich Integration (NEU implementiert)
+// Location & Hours
 LocationSection
 ├── location-section.tsx     # 2-Column Layout Container
 ├── contact-info.tsx        # Adresse, Telefon, Email mit Icons
 ├── opening-hours.tsx       # Öffnungszeiten mit "Heute" Highlight  
 ├── map-embed.tsx          # Google Maps + Route Planner
 └── types.ts              # LocationData Interface
-```
-
-### Schweizer Restaurant-Daten (Konsistent verwendet)
-```typescript
-// Echte Zürich-Integration in allen Komponenten
-const restaurantData = {
-  address: "Bahnhofstrasse 47, 8001 Zürich",
-  phone: "+41 44 123 45 67",
-  email: "info@burgergrill.ch",
-  hours: "Mo: Geschlossen • Di-Sa: 11-22h • So: 12-21h"
-}
 ```
 
 ## 🔧 Konfiguration
@@ -289,7 +271,7 @@ pnpm install
 - ✅ **Hero Section** - Authentische Cevapcici-Landing mit Restaurant-Branding
 - ✅ **Menu Display** - 3 Kategorien mit CHF-Preisen und Allergenkennzeichnung
 - ✅ **KG-Verkauf System** - Dialog-Interface für kilogrammweise Bestellungen  
-- ✅ **Location & Hours** - Zürich-Integration mit Google Maps und Öffnungszeiten
+- ✅ **Location & Hours** - Integration mit Google Maps und Öffnungszeiten
 - ✅ **Restaurant Footer** - Social Media, Kontaktdaten, Dashboard-Link
 - ✅ **Restaurant Header** - Navigation zu allen Sections (Speisekarte, KG-Verkauf, Standort)
 - ✅ **Swiss Localization** - Deutsche Texte, CHF-Preise, Schweizer Telefonnummern
@@ -322,13 +304,6 @@ pnpm install
 - **KG-Verkauf Dialog**: Produktauswahl, Kundendaten, Preis-Kalkulation
 - **"Heute" Öffnungszeiten**: Intelligente Hervorhebung des aktuellen Wochentags
 - **Google Maps Integration**: Directions, Route Planning, Map Embed Placeholder
-
-### 🇨🇭 **Swiss Restaurant Integration**
-- **Echte Zürich-Adresse**: Bahnhofstrasse 47, 8001 Zürich (konsistent überall)
-- **Klickbare Kontakte**: `tel:+41 44 123 45 67` und `mailto:info@burgergrill.ch`
-- **Schweizer Öffnungszeiten**: Mo geschlossen, Di-Sa 11-22h, So 12-21h
-- **Deutsche Lokalisierung**: Authentische Texte, "Sie"-Form, restaurant-spezifische Begriffe
-- **CHF-Währung**: Intl.NumberFormat mit de-CH Locale in allen Preisanzeigen
 
 ### 🏗️ **Technische Features**
 - **Domain-Driven Components**: `/components/restaurant/` mit klarer Separation

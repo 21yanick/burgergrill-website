@@ -57,6 +57,7 @@ export async function middleware(request: NextRequest) {
     img-src 'self' blob: data: https:;
     connect-src ${connectSrc};
     font-src 'self';
+    frame-src 'self' https://maps.google.com https://www.google.com;
     object-src 'none';
     base-uri 'self';
     form-action 'self';

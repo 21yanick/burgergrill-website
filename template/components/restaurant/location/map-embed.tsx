@@ -38,10 +38,11 @@ export function MapEmbed({ mapEmbed, address }: MapEmbedProps) {
               width="100%"
               height="100%"
               style={{ border: 0 }}
-              allowFullScreen
+              allowFullScreen={true}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="rounded-b-lg"
+              sandbox="allow-scripts allow-same-origin allow-popups allow-top-navigation"
             />
           </div>
         ) : (

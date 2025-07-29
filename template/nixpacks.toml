@@ -1,0 +1,24 @@
+# Nixpacks configuration for Coolify deployment
+[providers.node]
+
+# Install pnpm globally before running install/build commands
+[phases.setup]
+cmds = [
+  "corepack enable",
+  "corepack prepare pnpm@latest --activate"
+]
+
+# Use pnpm for all operations
+[phases.install]
+cmd = "pnpm install --frozen-lockfile"
+
+[phases.build]
+cmd = "pnpm build"
+
+[start]
+cmd = "pnpm start"
+
+# Node.js version (match your local development)
+[variables]
+NODE_VERSION = "18"
+PNPM_VERSION = "latest"

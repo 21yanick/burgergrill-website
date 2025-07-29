@@ -1,37 +1,76 @@
-// Menu Types for Restaurant
+// Menu Types for Authentic Burgergrill Restaurant 2025
 
-export interface MenuItemData {
+// Main dish with price and special flags
+export interface MainDish {
   id: string;
   name: string;
-  description: string;
   price: number; // in CHF
-  image?: string;
-  allergens?: string[];
-  available: boolean;
-  isSignature?: boolean; // Cevapcici signature dishes
+  isSignature?: boolean; // Cevapcici specialties  
+  isProfitable?: boolean; // Mix dishes with higher margins
+  available?: boolean;
 }
 
-export interface MenuCategoryData {
+// Simple accompaniment without price
+export interface Accompaniment {
   id: string;
   name: string;
-  description?: string;
-  items: MenuItemData[];
-  sortOrder: number;
-  icon?: string;
 }
 
-export interface MenuProps {
-  categories: MenuCategoryData[];
+// Simple sauce without price  
+export interface Sauce {
+  id: string;
+  name: string;
+}
+
+// Flat-price drinks
+export interface DrinkData {
+  title: string;
+  description: string;
+  price: number; // All drinks same price
+}
+
+// Complete menu structure matching real menu card
+export interface BurgergrillMenu {
+  hauptgerichte: MainDish[];
+  beilagen: Accompaniment[];
+  saucen: Sauce[];
+  getränke: DrinkData;
+  kontakt: {
+    telefon: string;
+    vorbestellungText: string;
+  };
+}
+
+// Component Props
+export interface MenuSectionProps {
+  menu?: BurgergrillMenu;
   className?: string;
 }
 
-export interface MenuItemProps {
-  item: MenuItemData;
-  onItemClick?: (item: MenuItemData) => void;
-  showImage?: boolean;
+export interface MainDishCardProps {
+  dish: MainDish;
+  onDishClick?: (dish: MainDish) => void;
 }
 
-export interface MenuCategoryProps {
-  category: MenuCategoryData;
-  onItemClick?: (item: MenuItemData) => void;
+export interface SimpleListProps {
+  items: Accompaniment[] | Sauce[];
+  title: string; 
+  icon?: string;
+}
+
+export interface DrinkCardProps {
+  drinks: DrinkData;
+}
+
+export interface ContactCTAProps {
+  kontakt: BurgergrillMenu['kontakt'];
+}
+
+// Navigation
+export type MenuCategory = 'hauptgerichte' | 'beilagen' | 'saucen' | 'getränke';
+
+export interface CategoryTabProps {
+  categories: MenuCategory[];
+  activeCategory: MenuCategory;
+  onCategoryChange: (category: MenuCategory) => void;
 }
