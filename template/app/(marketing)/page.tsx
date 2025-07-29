@@ -11,6 +11,9 @@ export default function LandingPage() {
       {/* Hero Section */}
       <HeroSection />
 
+      {/* Location & Hours Section */}
+      <LocationSection />
+
       {/* Menu Section */}
       <MenuSection />
 
@@ -60,27 +63,6 @@ export default function LandingPage() {
               </CardHeader>
             </Card>
           </div>
-        </div>
-      </section>
-
-      {/* Location & Hours Section */}
-      <LocationSection />
-
-      {/* CTA Section */}
-      <section className="py-20 bg-accent text-accent-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            Bereit für authentische Cevapcici?
-          </h2>
-          <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-            Entdecken Sie, warum wir das beliebteste Cevapcici-Grill der Region sind.
-          </p>
-          <Button variant="secondary" size="lg" asChild>
-            <Link href="#grillfleisch-verkauf">
-              Grillfleisch-Verkauf bestellen
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
         </div>
       </section>
     </div>

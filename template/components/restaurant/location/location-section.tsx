@@ -48,7 +48,7 @@ export function LocationSection({
             Besuchen Sie uns
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Mitten im Herzen von Solothurn servieren wir Ihnen authentische Cevapcici 
+            Vor dem Conforama in Solothurn servieren wir Ihnen authentische Cevapcici 
             und saftige Burger. Kommen Sie vorbei und erleben Sie unser Restaurant.
           </p>
         </div>

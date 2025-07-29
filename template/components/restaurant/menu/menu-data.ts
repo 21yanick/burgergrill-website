@@ -125,8 +125,8 @@ export const authenticBurgergrillMenu: BurgergrillMenu = {
   ],
 
   getränke: {
-    title: 'Alle Getränke',
-    description: 'Coca-Cola, Fanta, Sprite, Wasser, etc.',
+    title: '',
+    description: '',
     price: 2.00
   },
 

@@ -80,9 +80,6 @@ export function MenuSection({
                 <span className="text-4xl">🥗</span>
                 <span>Beilagen</span>
               </h3>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Perfekte Ergänzungen zu Ihren Hauptgerichten
-              </p>
             </div>
             
             <div className="max-w-lg mx-auto">
@@ -99,9 +96,6 @@ export function MenuSection({
                 <span className="text-4xl">🌶️</span>
                 <span>Saucen</span>
               </h3>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Geschmackvolle Saucen für das perfekte Geschmackserlebnis
-              </p>
             </div>
             
             <div className="max-w-lg mx-auto">
@@ -118,9 +112,6 @@ export function MenuSection({
                 <span className="text-4xl">🥤</span>
                 <span>Getränke</span>
               </h3>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Erfrischende Getränke zum fairen Einheitspreis
-              </p>
             </div>
             
             <div className="max-w-2xl mx-auto">

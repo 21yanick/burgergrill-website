@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from '@/components/ui/button';
-import { ArrowRight, ShoppingCart, Phone } from 'lucide-react';
+import { ArrowRight, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from "@/lib/utils";
 import { HeroCTAProps } from './types';
@@ -52,7 +52,7 @@ export function ModernHeroContent({ title, subtitle, ctas, className }: ModernHe
           textShadow: '0 2px 4px rgba(0,0,0,0.4), 0 4px 8px rgba(0,0,0,0.2)'
         }}>
           <span className="block md:hidden bg-black/5 backdrop-blur-sm rounded-xl px-3 py-2">
-            Traditionelle Čevapčići & saftige Burger.
+            Traditionelle Cevapcici & saftige Burger.
           </span>
           <span className="hidden md:block bg-black/5 backdrop-blur-sm rounded-xl px-6 py-3 border border-white/5">
             {subtitle}
@@ -143,24 +143,6 @@ export function ModernHeroContent({ title, subtitle, ctas, className }: ModernHe
               <ArrowRight className="ml-2 md:ml-3 h-4 md:h-5 w-4 md:w-5" />
             </Link>
           </Button>
-        </div>
-
-        {/* Contact CTA - Hidden on mobile for cleaner look */}  
-        <div className={cn(
-          "mt-6 md:mt-8 transform transition-all duration-1000 delay-1100 hidden md:block",
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-        )}>
-          <Link 
-            href="tel:079 489 77 55"
-            className={cn(
-              "inline-flex items-center gap-2 text-white/70 hover:text-white",
-              "text-sm font-medium transition-colors duration-300",
-              "hover:underline underline-offset-4"
-            )}
-          >
-            <Phone className="w-4 h-4" />
-            <span>Direktbestellung: 079 489 77 55</span>
-          </Link>
         </div>
 
         {/* Scroll Indicator - Desktop only */}
