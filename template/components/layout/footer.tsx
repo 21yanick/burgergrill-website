@@ -139,11 +139,7 @@ export function Footer() {
               </p>
             </div>
             <div className="flex items-center text-xs text-muted-foreground">
-              <span>Mo: Geschlossen</span>
-              <span className="mx-2">•</span>
-              <span>Di-Sa: 11-22h</span>
-              <span className="mx-2">•</span>
-              <span>So: 12-21h</span>
+              <span>Made with ❤️ from 21design.ch</span>
             </div>
           </div>
         </div>
