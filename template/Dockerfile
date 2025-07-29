@@ -6,9 +6,17 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
-COPY package.json pnpm-lock.yaml* ./
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
+# Install dependencies based on the preferred package manager  
+COPY package.json ./
+COPY pnpm-lock.yaml* ./
+
+# Install pnpm and dependencies (handle missing lockfile gracefully)
+RUN npm install -g pnpm && \
+    if [ -f pnpm-lock.yaml ]; then \
+        pnpm install --frozen-lockfile; \
+    else \
+        pnpm install; \
+    fi
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -27,7 +35,7 @@ ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
 ENV NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
 ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
 
-RUN npm install -g pnpm && pnpm build
+RUN npm install -g pnpm && pnpm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
