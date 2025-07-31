@@ -2,7 +2,10 @@ import { cn } from "@/lib/utils";
 import { ContactInfo } from "./contact-info";
 import { OpeningHours } from "./opening-hours";
 import { MapEmbed } from "./map-embed";
+import { HolidayBanner } from "./holiday-banner";
 import { LocationData, LocationSectionProps } from "./types";
+import { getOpeningHours } from "@/lib/restaurant/actions/opening-hours";
+import { getActiveSpecialHours } from "@/lib/restaurant/actions/special-hours";
 
 // Authentic Burgergrill location data (Solothurn)
 const defaultLocationData: LocationData = {
@@ -32,16 +35,62 @@ const defaultLocationData: LocationData = {
   }
 };
 
-export function LocationSection({ 
+export async function LocationSection({ 
   data = defaultLocationData, 
   className 
 }: LocationSectionProps) {
+  // KISS: Simple server-side data fetching with fallback
+  let liveOpeningHours = null;
+  let activeHoliday = null;
+
+  try {
+    // Fetch live data from database
+    const dbHours = await getOpeningHours();
+    const holiday = await getActiveSpecialHours();
+    
+    // DEBUG: Log the data structure
+    console.log('🏪 Marketing page database data:', { dbHours, holiday });
+    
+    if (dbHours) {
+      // Convert database format to component format - FIXED DATA STRUCTURE
+      liveOpeningHours = {
+        monday: !dbHours.monday?.isOpen ? 'Geschlossen' : `${dbHours.monday?.openTime} - ${dbHours.monday?.closeTime}`,
+        tuesday: !dbHours.tuesday?.isOpen ? 'Geschlossen' : `${dbHours.tuesday?.openTime} - ${dbHours.tuesday?.closeTime}`,
+        wednesday: !dbHours.wednesday?.isOpen ? 'Geschlossen' : `${dbHours.wednesday?.openTime} - ${dbHours.wednesday?.closeTime}`,
+        thursday: !dbHours.thursday?.isOpen ? 'Geschlossen' : `${dbHours.thursday?.openTime} - ${dbHours.thursday?.closeTime}`,
+        friday: !dbHours.friday?.isOpen ? 'Geschlossen' : `${dbHours.friday?.openTime} - ${dbHours.friday?.closeTime}`,
+        saturday: !dbHours.saturday?.isOpen ? 'Geschlossen' : `${dbHours.saturday?.openTime} - ${dbHours.saturday?.closeTime}`,
+        sunday: !dbHours.sunday?.isOpen ? 'Geschlossen' : `${dbHours.sunday?.openTime} - ${dbHours.sunday?.closeTime}`,
+      };
+      
+      // DEBUG: Log the converted data
+      console.log('🏪 Converted opening hours:', liveOpeningHours);
+    }
+    
+    activeHoliday = holiday;
+  } catch (error) {
+    console.error('Marketing page data fetch error:', error);
+    // Graceful degradation - use hardcoded data
+  }
+
+  // Use live data if available, fallback to hardcoded
+  const displayData = {
+    ...data,
+    hours: liveOpeningHours || data.hours
+  };
   return (
     <section 
       id="location" 
       className={cn("py-20 lg:py-32 bg-muted/20", className)}
     >
       <div className="container mx-auto px-4">
+        {/* KISS: Simple Holiday Banner - show if active */}
+        {activeHoliday && (
+          <div className="mb-8">
+            <HolidayBanner />
+          </div>
+        )}
+
         {/* Section Header */}
         <div className="text-center mb-16 lg:mb-20">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">
@@ -57,15 +106,15 @@ export function LocationSection({
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Left Column: Contact Info & Hours */}
           <div className="space-y-6">
-            <ContactInfo contact={data.contact} />
-            <OpeningHours hours={data.hours} />
+            <ContactInfo contact={displayData.contact} />
+            <OpeningHours hours={displayData.hours} />
           </div>
 
           {/* Right Column: Map */}
           <div className="lg:order-first xl:order-last">
             <MapEmbed 
-              mapEmbed={data.mapEmbed}
-              address={data.contact.address}
+              mapEmbed={displayData.mapEmbed}
+              address={displayData.contact.address}
             />
           </div>
         </div>

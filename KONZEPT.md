@@ -9,6 +9,13 @@
 - **Zielgruppe**: Schweizer Kunden, German Content, CHF Preise
 - **Fokus**: Authentische Cevapcici & Burger, KG-Verkauf
 
+## DB-Zugriff (Testserver)
+- **Server:** `root@167.235.150.94`
+- **DB Container:** `supabase-db-zkw8g48scw0sw0w8koo08wwg`
+- **DB User:** `supabase_admin` / PW: `3fa2EPcbDl6mg4Wl940TXWoFtTfRo8rX`
+- **Database:** `postgres` (leeres public Schema, nur auth-Tabellen vorhanden)
+
+
 ## 📱 One-Pager Struktur
 
 ```

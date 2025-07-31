@@ -116,7 +116,7 @@ export function KgVerkaufSection({ className }: KgVerkaufSectionProps) {
               className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-8 py-6"
             >
               <ShoppingCart className="mr-2 h-5 w-5" />
-              Jetzt Grillfleisch-Verkauf bestellen
+              Jetzt Grillfleisch bestellen
             </Button>
           </div>
         </div>

@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { LayoutDashboard, Settings } from 'lucide-react';
+import { LogoutButton } from '@/components/dashboard/logout-button';
+import { ThemeToggle } from '@/components/theme';
 
 export default async function DashboardLayout({
   children,
@@ -19,7 +21,7 @@ export default async function DashboardLayout({
   await requireAuth();
 
   return (
-    <div className="py-8">
+    <div className="pt-24 pb-8">
       <Container>
         <div className="space-y-8">
           {/* Dashboard Navigation */}
@@ -27,7 +29,7 @@ export default async function DashboardLayout({
             <div>
               <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
               <p className="text-muted-foreground">
-                Manage your account and business operations
+                Verwalten Sie Ihr Konto und Restaurant
               </p>
             </div>
             
@@ -37,9 +39,15 @@ export default async function DashboardLayout({
               <Button variant="outline" size="sm" asChild>
                 <Link href="/dashboard">
                   <LayoutDashboard className="h-4 w-4 mr-2" />
-                  Overview
+                  Übersicht
                 </Link>
               </Button>
+              
+              {/* ✅ THEME: Dark/Light Mode Toggle */}
+              <ThemeToggle />
+              
+              {/* ✅ LOGOUT: Secure logout from dashboard */}
+              <LogoutButton />
             </div>
           </div>
 
