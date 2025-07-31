@@ -143,7 +143,7 @@ CREATE TABLE public.special_hours (
   -- Status Configuration
   is_closed BOOLEAN DEFAULT true,
   custom_open_time TIME, -- Falls nicht geschlossen, custom Öffnungszeit
-  custom_close_time TIME, -- Falls nicht geschlossen, custom Schließzeit
+  custom_close_time TIME, -- Falls nicht geschlossen, custom Schliesszeit
   
   -- Display Information
   reason TEXT DEFAULT 'Ferien' CHECK (reason IN ('Ferien', 'Feiertag', 'Wartung', 'Event', 'Sonstiges')),

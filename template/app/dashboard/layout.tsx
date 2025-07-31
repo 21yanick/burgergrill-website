@@ -1,16 +1,17 @@
 /**
- * Dashboard Layout - Server Component
- * Handles authentication and provides clean dashboard shell
+ * 📊 DASHBOARD LAYOUT - Next.js 15 Modern Architecture
+ * Clean dashboard layout with dedicated header and authentication
+ * 
+ * Features:
+ * - Server-side authentication check
+ * - Dedicated dashboard header with navigation
+ * - Container-based content layout
+ * - Mobile-responsive design
  */
 
 import { requireAuth } from '@/lib/auth/server';
 import { Container } from '@/components/ui/container';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { LayoutDashboard, Settings } from 'lucide-react';
-import { LogoutButton } from '@/components/dashboard/logout-button';
-import { ThemeToggle } from '@/components/theme';
+import { DashboardHeader } from '@/components/dashboard/dashboard-header';
 
 export default async function DashboardLayout({
   children,
@@ -21,42 +22,18 @@ export default async function DashboardLayout({
   await requireAuth();
 
   return (
-    <div className="pt-24 pb-8">
-      <Container>
-        <div className="space-y-8">
-          {/* Dashboard Navigation */}
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-              <p className="text-muted-foreground">
-                Verwalten Sie Ihr Konto und Restaurant
-              </p>
-            </div>
-            
-            {/* Quick Navigation */}
-            <div className="flex items-center gap-2">
-              {/* ✅ SHARED: Dashboard Overview */}
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/dashboard">
-                  <LayoutDashboard className="h-4 w-4 mr-2" />
-                  Übersicht
-                </Link>
-              </Button>
-              
-              {/* ✅ THEME: Dark/Light Mode Toggle */}
-              <ThemeToggle />
-              
-              {/* ✅ LOGOUT: Secure logout from dashboard */}
-              <LogoutButton />
-            </div>
-          </div>
-
-          {/* Dashboard Content */}
-          <div className="space-y-6">
+    <div className="min-h-screen bg-background">
+      {/* Dashboard Header - Navigation, Theme, User Controls */}
+      <DashboardHeader />
+      
+      {/* Main Dashboard Content */}
+      <main className="pb-8">
+        <Container>
+          <div className="py-8">
             {children}
           </div>
-        </div>
-      </Container>
+        </Container>
+      </main>
     </div>
   );
 }

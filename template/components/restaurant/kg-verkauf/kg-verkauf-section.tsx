@@ -82,25 +82,25 @@ export function KgVerkaufSection({ className }: KgVerkaufSectionProps) {
             {/* Products Overview */}
             <div className="bg-background border rounded-xl p-8 mb-8">
               <h3 className="text-xl font-bold mb-6">Verfügbare Produkte</h3>
-              <div className="grid md:grid-cols-3 gap-6 text-left">
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-accent">🥩 Cevapcici</h4>
+              <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div className="space-y-3 text-center">
+                  <h4 className="font-semibold text-accent text-lg">🥩 Cevapcici</h4>
                   <p className="text-sm text-muted-foreground">
                     Handgemacht nach traditionellem Rezept
                   </p>
                   <p className="text-xs text-muted-foreground">Kilogrammweise verfügbar</p>
                 </div>
                 
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-accent">🍔 Burger Patties</h4>
+                <div className="space-y-3 text-center">
+                  <h4 className="font-semibold text-accent text-lg">🍔 Burger Patties</h4>
                   <p className="text-sm text-muted-foreground">
                     Premium Rindfleisch-Patties
                   </p>
                   <p className="text-xs text-muted-foreground">Kilogrammweise verfügbar</p>
                 </div>
                 
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-accent">🌭 Würste</h4>
+                <div className="space-y-3 text-center">
+                  <h4 className="font-semibold text-accent text-lg">🌭 Würste</h4>
                   <p className="text-sm text-muted-foreground">
                     Traditionelle Bratwürste
                   </p>

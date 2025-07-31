@@ -1,11 +1,20 @@
+/**
+ * 🏠 ROOT LAYOUT - Next.js 15 Clean Architecture
+ * Minimal root layout - Route Groups handle specific layouts
+ * 
+ * Features:
+ * - ThemeProvider for dark/light mode
+ * - Font loading and CSS globals
+ * - Coming Soon mode support
+ * - Route Groups: (marketing) and dashboard/
+ */
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme";
-import { Header, Footer } from "@/components/layout";
 import { getSiteMetadata } from "@/lib/config";
 import { headers } from "next/headers";
-// Restaurant layout with clean structure
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,24 +40,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Get headers and check for Coming Soon indicators (Next.js 15: headers() returns Promise)
+  // Check for Coming Soon mode (Environment Variable OR Middleware Header)
   const headersList = await headers();
   const comingSoonHeaderActive = headersList.get('x-coming-soon-active') === 'true';
-  
-  // Check if we're in Coming Soon mode (Environment Variable OR Middleware Header)
   const isComingSoon = process.env.SHOW_COMING_SOON === 'true';
   const shouldUseCleanLayout = isComingSoon || comingSoonHeaderActive;
-  
-  // Debug-Logging für Root Layout
-  console.log('🏠 ROOT LAYOUT - Layout Decision:', {
-    isComingSoon,
-    comingSoonHeaderActive,
-    shouldUseCleanLayout,
-    timestamp: new Date().toISOString()
-  });
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="de" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -58,21 +57,15 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* Restaurant theme provider setup */}
           {shouldUseCleanLayout ? (
-            // Coming Soon Mode - Clean layout without Header/Footer
+            // Coming Soon Mode - Clean layout
             <div className="min-h-screen">
               {children}
             </div>
           ) : (
-            // Normal Mode - Full layout with Header/Footer
-            <div className="flex min-h-screen flex-col">
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
+            // Normal Mode - Route Groups handle their own layouts
+            <>{children}</>
           )}
-          {/* Clean restaurant layout structure */}
         </ThemeProvider>
       </body>
     </html>

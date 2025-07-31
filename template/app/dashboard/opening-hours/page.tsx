@@ -10,13 +10,11 @@
  * - Error boundaries for graceful error handling
  */
 
-import React from 'react';
 import { Metadata } from 'next';
 import { requireAuth } from '@/lib/auth/server';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Clock, Calendar, Info, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Clock, Info } from 'lucide-react';
 import Link from 'next/link';
 
 import { WeeklyEditor } from '@/components/dashboard/opening-hours/weekly-editor';
@@ -42,30 +40,11 @@ export default async function OpeningHoursPage() {
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div className="space-y-1">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
-              <Clock className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight">Öffnungszeiten</h1>
-              <p className="text-muted-foreground">
-                Verwalten Sie die wöchentlichen Öffnungszeiten Ihres Restaurants
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Navigation */}
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/dashboard" className="flex items-center gap-2">
-              <ArrowLeft className="w-4 h-4" />
-              Dashboard
-            </Link>
-          </Button>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight">Öffnungszeiten</h1>
+        <p className="text-muted-foreground">
+          Verwalten Sie die wöchentlichen Öffnungszeiten Ihres Restaurants
+        </p>
       </div>
 
 

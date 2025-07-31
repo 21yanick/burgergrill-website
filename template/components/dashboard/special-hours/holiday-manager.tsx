@@ -303,7 +303,7 @@ export function HolidayManager({ className }: HolidayManagerProps) {
             <Badge variant="outline">{specialHours.length}</Badge>
           </CardTitle>
           <CardDescription>
-            Übersicht aller geplanten Schließungen
+            Übersicht aller geplanten Schliessungen
           </CardDescription>
         </CardHeader>
         
@@ -454,7 +454,7 @@ export function HolidayManager({ className }: HolidayManagerProps) {
           <DialogHeader>
             <DialogTitle>Feiertag löschen</DialogTitle>
             <DialogDescription>
-              Sind Sie sicher, dass Sie diese Schließung löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.
+              Sind Sie sicher, dass Sie diese Schliessung löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.
             </DialogDescription>
           </DialogHeader>
           

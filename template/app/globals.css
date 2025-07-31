@@ -69,12 +69,12 @@
   
   /* === AUTHENTISCHE BALKAN-RESTAURANT FARBPALETTE === */
   
-  /* Warme Hintergründe statt steriles Weiß */
+  /* Warme Hintergründe statt steriles Weiss */
   --background: oklch(0.97 0.006 45);       /* Cream-White mit Wärme */
   --foreground: oklch(0.12 0.015 25);       /* Warmes Dunkelbraun */
   
   /* Warme Cards & Surfaces */
-  --card: oklch(0.985 0.008 50);            /* Subtiles warmes Weiß */
+  --card: oklch(0.985 0.008 50);            /* Subtiles warmes Weiss */
   --card-foreground: oklch(0.12 0.015 25);  /* Konsistent warm */
   
   /* Popover & Dialogs */

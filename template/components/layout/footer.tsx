@@ -137,6 +137,21 @@ export function Footer() {
               <p className="text-sm text-muted-foreground">
                 © 2025 {siteConfig.name}. Authentische Cevapcici seit 2020.
               </p>
+              <div className="flex justify-center md:justify-start gap-4 mt-2">
+                <Link 
+                  href="/impressum"
+                  className="text-xs text-muted-foreground hover:text-accent transition-colors"
+                >
+                  Impressum
+                </Link>
+                <span className="text-xs text-muted-foreground">•</span>
+                <Link 
+                  href="/datenschutz"
+                  className="text-xs text-muted-foreground hover:text-accent transition-colors"
+                >
+                  Datenschutz
+                </Link>
+              </div>
             </div>
             <div className="flex items-center text-xs text-muted-foreground">
               <span>Made with ❤️ from 21design.ch</span>

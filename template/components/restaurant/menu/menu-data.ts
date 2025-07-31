@@ -121,6 +121,10 @@ export const authenticBurgergrillMenu: BurgergrillMenu = {
     {
       id: 'barbecue',
       name: 'Barbecue'
+    },
+    {
+      id: 'senf',
+      name: 'Senf'
     }
   ],
 

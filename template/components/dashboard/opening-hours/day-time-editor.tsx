@@ -113,7 +113,7 @@ function validateDayHours(hours: DayHours): ValidationResult {
   if (!hours.openTime || !hours.closeTime) {
     return { 
       isValid: false, 
-      error: 'Öffnungs- und Schließzeit sind erforderlich' 
+      error: 'Öffnungs- und Schliesszeit sind erforderlich' 
     };
   }
 
@@ -132,7 +132,7 @@ function validateDayHours(hours: DayHours): ValidationResult {
   if (!normalizedCloseTime || !validateTimeFormat(normalizedCloseTime)) {
     return { 
       isValid: false, 
-      error: 'Ungültiges Schließzeit-Format (HH:MM)' 
+      error: 'Ungültiges Schliesszeit-Format (HH:MM)' 
     };
   }
 
@@ -140,7 +140,7 @@ function validateDayHours(hours: DayHours): ValidationResult {
   if (normalizedOpenTime >= normalizedCloseTime) {
     return { 
       isValid: false, 
-      error: 'Öffnungszeit muss vor Schließzeit liegen' 
+      error: 'Öffnungszeit muss vor Schliesszeit liegen' 
     };
   }
 
@@ -279,32 +279,19 @@ export function DayTimeEditor({
     )}>
       <CardContent className="p-4">
         {/* Day Header */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4 text-muted-foreground" />
-            <Label className={cn(
-              'text-sm font-medium',
-              isToday && 'text-primary'
-            )}>
-              {dayName}
-              {isToday && (
-                <Badge variant="outline" className="ml-2 text-xs">
-                  Heute
-                </Badge>
-              )}
-            </Label>
-          </div>
-          
-          {/* Status Badge */}
-          <Badge 
-            variant={hours.isOpen ? 'default' : 'secondary'}
-            className={cn(
-              'text-xs',
-              hours.isOpen ? 'bg-green-100 text-green-800 border-green-200' : 'bg-gray-100 text-gray-600 border-gray-200'
+        <div className="flex items-center gap-2 mb-4">
+          <Clock className="h-4 w-4 text-muted-foreground" />
+          <Label className={cn(
+            'text-sm font-medium',
+            isToday && 'text-primary'
+          )}>
+            {dayName}
+            {isToday && (
+              <Badge variant="outline" className="ml-2 text-xs">
+                Heute
+              </Badge>
             )}
-          >
-            {hours.isOpen ? 'Geöffnet' : 'Geschlossen'}
-          </Badge>
+          </Label>
         </div>
 
         {/* Open/Closed Toggle */}
@@ -358,7 +345,7 @@ export function DayTimeEditor({
               {/* Closing Time */}
               <div className="space-y-1">
                 <Label htmlFor={`close-${dayName}`} className="text-xs text-muted-foreground">
-                  Schließung
+                  Schliessung
                 </Label>
                 <Input
                   id={`close-${dayName}`}
