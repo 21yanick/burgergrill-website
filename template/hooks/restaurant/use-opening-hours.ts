@@ -22,11 +22,12 @@ import {
   getRestaurantSettings
 } from '@/lib/restaurant/actions/opening-hours';
 import type { 
-  WeeklyHoursData, 
+  WeeklyHours, 
   RestaurantStatus, 
   RestaurantSettings,
   DayHours,
-  UpdateOpeningHoursData 
+  UpdateDayRequest,
+  UpdateWeekRequest
 } from '@/types/database';
 
 // =====================================================================================
@@ -35,7 +36,7 @@ import type {
 
 export interface UseOpeningHoursReturn {
   // Data
-  weeklyHours: WeeklyHoursData | null;
+  weeklyHours: WeeklyHours | null;
   restaurantSettings: RestaurantSettings | null;
   
   // States
@@ -75,7 +76,7 @@ export interface UseRestaurantStatusReturn {
  */
 export function useOpeningHours(): UseOpeningHoursReturn {
   // State management
-  const [weeklyHours, setWeeklyHours] = useState<WeeklyHoursData | null>(null);
+  const [weeklyHours, setWeeklyHours] = useState<WeeklyHours | null>(null);
   const [restaurantSettings, setRestaurantSettings] = useState<RestaurantSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -89,7 +90,7 @@ export function useOpeningHours(): UseOpeningHoursReturn {
   const getDayHours = useCallback((dayOfWeek: number): DayHours | null => {
     if (!weeklyHours) return null;
     
-    const dayNames: (keyof WeeklyHoursData)[] = [
+    const dayNames: (keyof WeeklyHours)[] = [
       'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'
     ];
     
@@ -177,7 +178,7 @@ export function useOpeningHours(): UseOpeningHoursReturn {
     setError(null);
 
     // Optimistic update - immediately update UI
-    const dayNames: (keyof WeeklyHoursData)[] = [
+    const dayNames: (keyof WeeklyHours)[] = [
       'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'
     ];
     
@@ -196,12 +197,13 @@ export function useOpeningHours(): UseOpeningHoursReturn {
     setWeeklyHours(optimisticHours);
 
     try {
-      // Server update
-      await updateOpeningHours({
+      // Server update - simple request format
+      const updateData: UpdateDayRequest = {
         restaurantId: restaurantSettings.id,
         dayOfWeek,
         hours
-      });
+      };
+      await updateOpeningHours(updateData);
 
       console.log(`[Opening Hours Hook] Successfully updated ${dayName}`);
     } catch (err) {
@@ -230,8 +232,13 @@ export function useOpeningHours(): UseOpeningHoursReturn {
     setError(null);
 
     try {
-      // Server batch update
-      await updateMultipleOpeningHours(restaurantSettings.id, updates);
+      // Server batch update - simple request format
+      const updateData: UpdateWeekRequest = {
+        restaurantId: restaurantSettings.id,
+        updates
+      };
+      
+      await updateMultipleOpeningHours(updateData);
 
       console.log(`[Opening Hours Hook] Successfully updated ${updates.length} days`);
       
@@ -246,7 +253,7 @@ export function useOpeningHours(): UseOpeningHoursReturn {
     } finally {
       setSaving(false);
     }
-  }, [restaurantSettings?.id, weeklyHours]);
+  }, [restaurantSettings?.id, weeklyHours, fetchData]);
 
   // Initialize and setup subscriptions
   useEffect(() => {

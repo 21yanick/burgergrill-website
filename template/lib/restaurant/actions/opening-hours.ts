@@ -17,27 +17,13 @@ import { revalidatePath } from 'next/cache';
 import type { 
   Database, 
   OpeningHours, 
-  WeeklyHoursData, 
+  WeeklyHours, 
   RestaurantStatus,
-  RestaurantSettings 
+  RestaurantSettings,
+  DayHours,
+  UpdateDayRequest,
+  UpdateWeekRequest
 } from '@/types/database';
-
-// =====================================================================================
-// TYPES & VALIDATION
-// =====================================================================================
-
-export interface DayHours {
-  isOpen: boolean;
-  openTime: string | null;  // Format: "HH:MM" (24h)
-  closeTime: string | null; // Format: "HH:MM" (24h)
-  notes?: string | null;
-}
-
-export interface UpdateOpeningHoursData {
-  restaurantId: string;
-  dayOfWeek: number; // 0=Monday, 6=Sunday
-  hours: DayHours;
-}
 
 // Input validation helper
 function validateTimeFormat(time: string | null): boolean {
@@ -160,7 +146,7 @@ export async function getRestaurantSettings(): Promise<RestaurantSettings> {
  * Get weekly opening hours for restaurant
  * Returns structured data for dashboard components
  */
-export async function getOpeningHours(): Promise<WeeklyHoursData> {
+export async function getOpeningHours(): Promise<WeeklyHours> {
   const settings = await getRestaurantSettings();
   const supabase = await createClient();
 
@@ -176,8 +162,8 @@ export async function getOpeningHours(): Promise<WeeklyHoursData> {
       throw new Error(`Failed to fetch opening hours: ${error.message}`);
     }
 
-    // Transform database data to WeeklyHoursData format
-    const weeklyData: WeeklyHoursData = {
+    // Transform database data to WeeklyHours format
+    const weeklyData: WeeklyHours = {
       monday: { isOpen: false, openTime: null, closeTime: null },
       tuesday: { isOpen: false, openTime: null, closeTime: null },
       wednesday: { isOpen: false, openTime: null, closeTime: null },
@@ -187,7 +173,7 @@ export async function getOpeningHours(): Promise<WeeklyHoursData> {
       sunday: { isOpen: false, openTime: null, closeTime: null },
     };
 
-    const dayNames: (keyof WeeklyHoursData)[] = [
+    const dayNames: (keyof WeeklyHours)[] = [
       'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'
     ];
 
@@ -215,7 +201,7 @@ export async function getOpeningHours(): Promise<WeeklyHoursData> {
  * Update opening hours for a specific day
  * Uses upsert pattern for clean updates
  */
-export async function updateOpeningHours(data: UpdateOpeningHoursData): Promise<void> {
+export async function updateOpeningHours(data: UpdateDayRequest): Promise<void> {
   // Input validation
   if (!validateDayOfWeek(data.dayOfWeek)) {
     throw new Error('Invalid day of week. Must be 0-6 (Monday-Sunday)');
@@ -326,15 +312,12 @@ export async function getRestaurantStatus(): Promise<RestaurantStatus> {
  * Update multiple days at once
  * More efficient for bulk updates
  */
-export async function updateMultipleOpeningHours(
-  restaurantId: string,
-  updates: Array<{ dayOfWeek: number; hours: DayHours }>
-): Promise<void> {
+export async function updateMultipleOpeningHours(data: UpdateWeekRequest): Promise<void> {
   const user = await requireAuth();
   const supabase = await createClient();
 
   // Validate all inputs first
-  for (const update of updates) {
+  for (const update of data.updates) {
     if (!validateDayOfWeek(update.dayOfWeek)) {
       throw new Error(`Invalid day of week: ${update.dayOfWeek}`);
     }
@@ -350,7 +333,7 @@ export async function updateMultipleOpeningHours(
     const { data: restaurant, error: restaurantError } = await supabase
       .from('restaurant_settings')
       .select('id')
-      .eq('id', restaurantId)
+      .eq('id', data.restaurantId)
       .eq('profile_id', user.id)
       .single();
 
@@ -359,8 +342,8 @@ export async function updateMultipleOpeningHours(
     }
 
     // Prepare batch upsert data with normalization
-    const upsertData = updates.map(update => ({
-      restaurant_id: restaurantId,
+    const upsertData = data.updates.map(update => ({
+      restaurant_id: data.restaurantId,
       day_of_week: update.dayOfWeek,
       is_closed: !update.hours.isOpen,
       open_time: update.hours.isOpen ? normalizeTimeFormat(update.hours.openTime) : null,
@@ -385,7 +368,7 @@ export async function updateMultipleOpeningHours(
     revalidatePath('/dashboard/opening-hours');
     revalidatePath('/');
     
-    console.log(`[Opening Hours] Successfully updated ${updates.length} days for restaurant ${restaurantId}`);
+    console.log(`[Opening Hours] Successfully updated ${data.updates.length} days for restaurant ${data.restaurantId}`);
   } catch (error) {
     console.error('[Opening Hours] Batch update error:', error);
     throw error instanceof Error ? error : new Error('Unknown error updating opening hours');

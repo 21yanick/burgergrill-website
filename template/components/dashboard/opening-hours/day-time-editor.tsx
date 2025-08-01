@@ -20,7 +20,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Clock, Check, X, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { DayHours } from '@/lib/restaurant/actions/opening-hours';
+import type { DayHours } from '@/types/database';
 
 // =====================================================================================
 // TYPES & INTERFACES

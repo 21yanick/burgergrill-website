@@ -207,15 +207,15 @@ export function useSpecialHours(): UseSpecialHoursReturn {
     const optimisticPeriod: SpecialHours = {
       id: `temp-${Date.now()}`, // Temporary ID
       restaurant_id: 'temp-restaurant-id',
-      date_start: data.dateStart,
-      date_end: data.dateEnd,
+      date_start: data.startDate,
+      date_end: data.endDate,
       is_closed: data.isClosed,
       custom_open_time: data.customOpenTime || null,
       custom_close_time: data.customCloseTime || null,
       reason: data.reason,
       custom_message: data.customMessage || null,
       show_banner: data.showBanner ?? true,
-      banner_priority: data.bannerPriority ?? 1,
+      banner_priority: data.priority ?? 1,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
@@ -265,15 +265,15 @@ export function useSpecialHours(): UseSpecialHoursReturn {
     const previousHours = [...specialHours];
     const updatedPeriod: SpecialHours = {
       ...specialHours[periodIndex],
-      date_start: data.dateStart,
-      date_end: data.dateEnd,
-      is_closed: data.isClosed,
-      custom_open_time: data.customOpenTime || null,
-      custom_close_time: data.customCloseTime || null,
-      reason: data.reason,
-      custom_message: data.customMessage || null,
-      show_banner: data.showBanner ?? true,
-      banner_priority: data.bannerPriority ?? 1,
+      ...(data.startDate !== undefined && { date_start: data.startDate }),
+      ...(data.endDate !== undefined && { date_end: data.endDate }),
+      ...(data.isClosed !== undefined && { is_closed: data.isClosed }),
+      ...(data.customOpenTime !== undefined && { custom_open_time: data.customOpenTime || null }),
+      ...(data.customCloseTime !== undefined && { custom_close_time: data.customCloseTime || null }),
+      ...(data.reason !== undefined && { reason: data.reason }),
+      ...(data.customMessage !== undefined && { custom_message: data.customMessage || null }),
+      ...(data.showBanner !== undefined && { show_banner: data.showBanner }),
+      ...(data.priority !== undefined && { banner_priority: data.priority }),
       updated_at: new Date().toISOString(),
     };
 
@@ -345,7 +345,7 @@ export function useSpecialHours(): UseSpecialHoursReturn {
     } catch (err) {
       console.error('[Special Hours Hook] Conflict check error:', err);
       // Return safe default - assume no conflicts if check fails
-      return { hasConflict: false };
+      return { hasConflict: false, conflictingPeriods: [] };
     }
   }, []);
 
@@ -537,13 +537,13 @@ export function useSpecialHoursDashboard(): UseSpecialHoursDashboardReturn {
     message?: string
   ): Promise<string> => {
     return specialHoursHook.createPeriod({
-      dateStart: startDate,
-      dateEnd: endDate,
+      startDate: startDate,
+      endDate: endDate,
       isClosed: true,
       reason: 'Ferien',
       customMessage: message || 'Wir sind in den Ferien. Vielen Dank für Ihr Verständnis!',
       showBanner: true,
-      bannerPriority: 5
+      priority: 5
     });
   }, [specialHoursHook.createPeriod]);
 
@@ -553,13 +553,13 @@ export function useSpecialHoursDashboard(): UseSpecialHoursDashboardReturn {
     message?: string
   ): Promise<string> => {
     return specialHoursHook.createPeriod({
-      dateStart: date,
-      dateEnd: date, // Single day
+      startDate: date,
+      endDate: date, // Single day
       isClosed: true,
       reason: 'Feiertag',
       customMessage: message || `Wir sind wegen ${reason} geschlossen.`,
       showBanner: true,
-      bannerPriority: 8
+      priority: 8
     });
   }, [specialHoursHook.createPeriod]);
 

@@ -294,14 +294,24 @@ export type SpecialHours = Database['public']['Tables']['special_hours']['Row'];
 export type MenuCategory = Database['public']['Tables']['menu_categories']['Row'];
 export type MenuItem = Database['public']['Tables']['menu_items']['Row'];
 
-// 🕒 OPENING HOURS: Helper types for dashboard components
-export type WeeklyHoursData = {
-  [key in 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday']: {
-    isOpen: boolean;
-    openTime: string | null;
-    closeTime: string | null;
-    notes?: string | null;
-  };
+// 🕒 OPENING HOURS: Simple, clean types for dashboard components
+export type DayHours = {
+  isOpen: boolean;
+  openTime: string | null; // "HH:MM" format
+  closeTime: string | null; // "HH:MM" format
+  notes?: string | null;
+};
+
+export type WeeklyHours = {
+  monday: DayHours;
+  tuesday: DayHours;
+  wednesday: DayHours;
+  thursday: DayHours;
+  friday: DayHours;
+  saturday: DayHours;
+  sunday: DayHours;
+} & {
+  [key: string]: DayHours;
 };
 
 // 🏖️ SPECIAL HOURS: Helper types for holiday management
@@ -323,4 +333,57 @@ export type RestaurantStatus = {
   isOpen: boolean;
   currentMessage: string;
   nextOpening: string | null;
+};
+
+// =====================================================================================
+// 🕒 OPENING HOURS: Server action types (clean and simple)
+// =====================================================================================
+
+// Request type for updating a single day
+export type UpdateDayRequest = {
+  restaurantId: string;
+  dayOfWeek: number; // 0=Monday, 6=Sunday
+  hours: DayHours;
+};
+
+// Request type for batch updates
+export type UpdateWeekRequest = {
+  restaurantId: string;
+  updates: Array<{ dayOfWeek: number; hours: DayHours }>;
+};
+
+// =====================================================================================
+// 🏖️ SPECIAL HOURS: Hook-specific types for holiday management
+// =====================================================================================
+
+// Data for creating new special periods
+export type CreateSpecialPeriodData = {
+  startDate: string; // "YYYY-MM-DD" format
+  endDate: string; // "YYYY-MM-DD" format
+  isClosed: boolean;
+  customOpenTime?: string | null; // "HH:MM" format
+  customCloseTime?: string | null; // "HH:MM" format
+  reason: SpecialHours['reason'];
+  customMessage?: string | null;
+  showBanner: boolean;
+  priority: number;
+};
+
+// Data for updating existing special periods
+export type UpdateSpecialPeriodData = Partial<CreateSpecialPeriodData> & {
+  id: string;
+};
+
+// Result type for conflict checking when adding special periods
+export type ConflictCheckResult = {
+  hasConflict: boolean;
+  conflictingPeriods: SpecialPeriod[];
+  message?: string;
+  suggestions?: {
+    mergeOption?: boolean;
+    alternativeDates?: {
+      startDate: string;
+      endDate: string;
+    }[];
+  };
 };

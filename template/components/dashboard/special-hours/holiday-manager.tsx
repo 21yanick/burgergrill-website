@@ -241,24 +241,24 @@ export function HolidayManager({ className }: HolidayManagerProps) {
         // Update existing
         await updatePeriod({
           id: editingHoliday.id,
-          dateStart: data.startDate,
-          dateEnd: data.endDate,
+          startDate: data.startDate,
+          endDate: data.endDate,
           isClosed: true, // Always closed for holidays
           reason: 'Ferien', // Simple default
           customMessage: data.message,
           showBanner: true,
-          bannerPriority: 5
+          priority: 5
         });
       } else {
         // Create new
         await createPeriod({
-          dateStart: data.startDate,
-          dateEnd: data.endDate,
+          startDate: data.startDate,
+          endDate: data.endDate,
           isClosed: true, // Always closed for holidays
           reason: 'Ferien', // Simple default
           customMessage: data.message,
           showBanner: true,
-          bannerPriority: 5
+          priority: 5
         });
       }
       

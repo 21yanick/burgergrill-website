@@ -27,7 +27,7 @@ import { cn } from '@/lib/utils';
 
 import { DayTimeEditor } from './day-time-editor';
 import { useOpeningHours } from '@/hooks/restaurant/use-opening-hours';
-import type { DayHours } from '@/lib/restaurant/actions/opening-hours';
+import type { DayHours, WeeklyHours } from '@/types/database';
 
 // =====================================================================================
 // TYPES & CONSTANTS
@@ -62,7 +62,7 @@ export function WeeklyEditor({ className }: WeeklyEditorProps) {
   const { weeklyHours, loading, error, saving, updateMultipleDays } = useOpeningHours();
   
   // Draft state - local changes before save
-  const [draftHours, setDraftHours] = useState<any>(null);
+  const [draftHours, setDraftHours] = useState<WeeklyHours | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
   
   // Initialize draft state when data loads
@@ -79,12 +79,15 @@ export function WeeklyEditor({ className }: WeeklyEditorProps) {
   // Handle day change - only update draft, don't save
   const handleDayChange = useCallback((dayOfWeek: number, hours: DayHours) => {
     const dayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-    const dayKey = dayKeys[dayOfWeek];
+    const dayKey = dayKeys[dayOfWeek] as keyof WeeklyHours;
     
-    setDraftHours(prev => ({
-      ...prev,
-      [dayKey]: hours
-    }));
+    setDraftHours(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        [dayKey]: hours
+      };
+    });
   }, []);
 
   // Save all changes
@@ -92,8 +95,8 @@ export function WeeklyEditor({ className }: WeeklyEditorProps) {
     if (!draftHours || !hasUnsavedChanges) return;
     
     try {
-      // Prepare updates array
-      const dayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+      // Prepare updates array - simple format
+      const dayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
       const updates = dayKeys.map((dayKey, index) => ({
         dayOfWeek: index,
         hours: draftHours[dayKey] || { isOpen: false, openTime: null, closeTime: null }

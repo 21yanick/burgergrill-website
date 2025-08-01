@@ -18,34 +18,11 @@ import type {
   Database, 
   SpecialHours, 
   SpecialPeriod,
-  RestaurantSettings 
+  RestaurantSettings,
+  CreateSpecialPeriodData,
+  UpdateSpecialPeriodData,
+  ConflictCheckResult
 } from '@/types/database';
-
-// =====================================================================================
-// TYPES & VALIDATION
-// =====================================================================================
-
-export interface CreateSpecialPeriodData {
-  dateStart: string;   // Format: "YYYY-MM-DD"
-  dateEnd: string;     // Format: "YYYY-MM-DD"
-  isClosed: boolean;
-  customOpenTime?: string | null;  // Format: "HH:MM" (24h)
-  customCloseTime?: string | null; // Format: "HH:MM" (24h)
-  reason: SpecialHours['reason'];
-  customMessage?: string | null;
-  showBanner?: boolean;
-  bannerPriority?: number; // 1-10, higher = more important
-}
-
-export interface UpdateSpecialPeriodData extends CreateSpecialPeriodData {
-  id: string;
-}
-
-export interface ConflictCheckResult {
-  hasConflict: boolean;
-  conflictingPeriods?: SpecialHours[];
-  message?: string;
-}
 
 // =====================================================================================
 // VALIDATION HELPERS
@@ -83,7 +60,7 @@ function validateDateRange(startDate: string, endDate: string): { valid: boolean
 
 function validateSpecialPeriod(data: CreateSpecialPeriodData): { valid: boolean; error?: string } {
   // Validate date range
-  const dateValidation = validateDateRange(data.dateStart, data.dateEnd);
+  const dateValidation = validateDateRange(data.startDate, data.endDate);
   if (!dateValidation.valid) {
     return dateValidation;
   }
@@ -106,7 +83,7 @@ function validateSpecialPeriod(data: CreateSpecialPeriodData): { valid: boolean;
   }
 
   // Validate banner priority
-  if (data.bannerPriority && (data.bannerPriority < 1 || data.bannerPriority > 10)) {
+  if (data.priority && (data.priority < 1 || data.priority > 10)) {
     return { valid: false, error: 'Banner priority must be between 1 and 10' };
   }
 
@@ -249,8 +226,8 @@ export async function getUpcomingSpecialHours(): Promise<SpecialHours[]> {
  * Returns conflicting periods if any overlap is found
  */
 export async function checkDateConflicts(
-  dateStart: string, 
-  dateEnd: string, 
+  startDate: string, 
+  endDate: string, 
   excludeId?: string
 ): Promise<ConflictCheckResult> {
   const settings = await getRestaurantSettings();
@@ -261,7 +238,7 @@ export async function checkDateConflicts(
       .from('special_hours')
       .select('*')
       .eq('restaurant_id', settings.id)
-      .or(`and(date_start.lte.${dateEnd},date_end.gte.${dateStart})`);
+      .or(`and(date_start.lte.${endDate},date_end.gte.${startDate})`);
 
     // Exclude specific period if editing
     if (excludeId) {
@@ -279,7 +256,7 @@ export async function checkDateConflicts(
     
     return {
       hasConflict,
-      conflictingPeriods: hasConflict ? conflicts : undefined,
+      conflictingPeriods: conflicts || [],
       message: hasConflict 
         ? `Conflict found with ${conflicts.length} existing period(s)` 
         : undefined
@@ -305,7 +282,7 @@ export async function createSpecialPeriod(data: CreateSpecialPeriodData): Promis
     }
 
     // Check for date conflicts
-    const conflictCheck = await checkDateConflicts(data.dateStart, data.dateEnd);
+    const conflictCheck = await checkDateConflicts(data.startDate, data.endDate);
     if (conflictCheck.hasConflict) {
       throw new Error(`Date conflict detected: ${conflictCheck.message}`);
     }
@@ -315,15 +292,15 @@ export async function createSpecialPeriod(data: CreateSpecialPeriodData): Promis
       .from('special_hours')
       .insert({
         restaurant_id: settings.id,
-        date_start: data.dateStart,
-        date_end: data.dateEnd,
+        date_start: data.startDate,
+        date_end: data.endDate,
         is_closed: data.isClosed,
         custom_open_time: data.isClosed ? null : data.customOpenTime,
         custom_close_time: data.isClosed ? null : data.customCloseTime,
         reason: data.reason,
         custom_message: data.customMessage,
         show_banner: data.showBanner ?? true,
-        banner_priority: data.bannerPriority ?? 1,
+        banner_priority: data.priority ?? 1,
       })
       .select('id')
       .single();
@@ -353,13 +330,7 @@ export async function updateSpecialPeriod(data: UpdateSpecialPeriodData): Promis
   const supabase = await createClient();
 
   try {
-    // Validate input data
-    const validation = validateSpecialPeriod(data);
-    if (!validation.valid) {
-      throw new Error(validation.error || 'Invalid period data');
-    }
-
-    // Verify ownership and existence
+    // Verify ownership and existence first
     const { data: existing, error: existingError } = await supabase
       .from('special_hours')
       .select('*')
@@ -371,25 +342,51 @@ export async function updateSpecialPeriod(data: UpdateSpecialPeriodData): Promis
       throw new Error('Special period not found or access denied');
     }
 
+    // For updates, use existing values as defaults for validation
+    const startDate = data.startDate ?? existing.date_start;
+    const endDate = data.endDate ?? existing.date_end;
+    const isClosed = data.isClosed ?? existing.is_closed;
+    const customOpenTime = data.customOpenTime ?? existing.custom_open_time;
+    const customCloseTime = data.customCloseTime ?? existing.custom_close_time;
+    const reason = data.reason ?? existing.reason;
+    
+    // Validate with merged data
+    const validationData = {
+      startDate,
+      endDate,
+      isClosed,
+      customOpenTime,
+      customCloseTime,
+      reason,
+      customMessage: data.customMessage ?? existing.custom_message,
+      showBanner: data.showBanner ?? existing.show_banner,
+      priority: data.priority ?? existing.banner_priority
+    };
+    
+    const validation = validateSpecialPeriod(validationData);
+    if (!validation.valid) {
+      throw new Error(validation.error || 'Invalid period data');
+    }
+
     // Check for date conflicts (excluding current period)
-    const conflictCheck = await checkDateConflicts(data.dateStart, data.dateEnd, data.id);
+    const conflictCheck = await checkDateConflicts(startDate, endDate, data.id);
     if (conflictCheck.hasConflict) {
       throw new Error(`Date conflict detected: ${conflictCheck.message}`);
     }
 
-    // Update the period
+    // Update the period with merged data
     const { error: updateError } = await supabase
       .from('special_hours')
       .update({
-        date_start: data.dateStart,
-        date_end: data.dateEnd,
-        is_closed: data.isClosed,
-        custom_open_time: data.isClosed ? null : data.customOpenTime,
-        custom_close_time: data.isClosed ? null : data.customCloseTime,
-        reason: data.reason,
-        custom_message: data.customMessage,
-        show_banner: data.showBanner ?? true,
-        banner_priority: data.bannerPriority ?? 1,
+        date_start: startDate,
+        date_end: endDate,
+        is_closed: isClosed,
+        custom_open_time: isClosed ? null : customOpenTime,
+        custom_close_time: isClosed ? null : customCloseTime,
+        reason: reason,
+        custom_message: data.customMessage ?? existing.custom_message,
+        show_banner: data.showBanner ?? existing.show_banner,
+        banner_priority: data.priority ?? existing.banner_priority,
         updated_at: new Date().toISOString(),
       })
       .eq('id', data.id);
@@ -456,32 +453,32 @@ export async function createCommonHoliday(
   
   const holidayConfigs = {
     christmas: {
-      dateStart: `${currentYear}-12-24`,
-      dateEnd: `${currentYear}-12-26`,
+      startDate: `${currentYear}-12-24`,
+      endDate: `${currentYear}-12-26`,
       reason: 'Feiertag' as const,
       customMessage: 'Frohe Weihnachten! Wir sind über die Feiertage geschlossen.',
-      bannerPriority: 10
+      priority: 10
     },
     new_year: {
-      dateStart: `${currentYear}-12-31`,
-      dateEnd: `${currentYear + 1}-01-02`,
+      startDate: `${currentYear}-12-31`,
+      endDate: `${currentYear + 1}-01-02`,
       reason: 'Feiertag' as const,
       customMessage: 'Frohes neues Jahr! Wir sind über Neujahr geschlossen.',
-      bannerPriority: 10
+      priority: 10
     },
     easter: {
-      dateStart: `${currentYear}-04-07`, // Good Friday (approximate)
-      dateEnd: `${currentYear}-04-10`, // Easter Monday (approximate)
+      startDate: `${currentYear}-04-07`, // Good Friday (approximate)
+      endDate: `${currentYear}-04-10`, // Easter Monday (approximate)
       reason: 'Feiertag' as const,
       customMessage: 'Frohe Ostern! Wir sind über die Osterfeiertage geschlossen.',
-      bannerPriority: 8
+      priority: 8
     },
     summer_vacation: {
-      dateStart: `${currentYear}-07-15`,
-      dateEnd: `${currentYear}-08-15`,
+      startDate: `${currentYear}-07-15`,
+      endDate: `${currentYear}-08-15`,
       reason: 'Ferien' as const,
       customMessage: 'Wir sind in den Sommerferien. Wir freuen uns auf Ihren Besuch nach unserer Rückkehr!',
-      bannerPriority: 5
+      priority: 5
     }
   };
 

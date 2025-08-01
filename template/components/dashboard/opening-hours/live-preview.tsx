@@ -32,7 +32,7 @@ import {
 import { cn } from '@/lib/utils';
 
 import { useOpeningHours, useRestaurantStatus } from '@/hooks/restaurant/use-opening-hours';
-import type { WeeklyHoursData, RestaurantStatus } from '@/types/database';
+import type { WeeklyHours, RestaurantStatus } from '@/types/database';
 
 // =====================================================================================
 // TYPES & INTERFACES
@@ -46,11 +46,11 @@ export interface LivePreviewProps {
   compact?: boolean;
   
   /** Custom weekly hours data (for preview purposes) */
-  previewData?: WeeklyHoursData | null;
+  previewData?: WeeklyHours | null;
 }
 
 interface OpeningHoursPreviewProps {
-  weeklyHours: WeeklyHoursData | null;
+  weeklyHours: WeeklyHours | null;
   status: RestaurantStatus | null;
   viewMode: 'desktop' | 'mobile';
 }
@@ -75,15 +75,15 @@ function OpeningHoursPreview({ weeklyHours, status, viewMode }: OpeningHoursPrev
     );
   }
 
-  // Convert WeeklyHoursData to display format
+  // Convert WeeklyHours to display format
   const daysConfig = [
-    { key: 'monday' as keyof WeeklyHoursData, label: 'Montag' },
-    { key: 'tuesday' as keyof WeeklyHoursData, label: 'Dienstag' },
-    { key: 'wednesday' as keyof WeeklyHoursData, label: 'Mittwoch' },
-    { key: 'thursday' as keyof WeeklyHoursData, label: 'Donnerstag' },
-    { key: 'friday' as keyof WeeklyHoursData, label: 'Freitag' },
-    { key: 'saturday' as keyof WeeklyHoursData, label: 'Samstag' },
-    { key: 'sunday' as keyof WeeklyHoursData, label: 'Sonntag' },
+    { key: 'monday' as keyof WeeklyHours, label: 'Montag' },
+    { key: 'tuesday' as keyof WeeklyHours, label: 'Dienstag' },
+    { key: 'wednesday' as keyof WeeklyHours, label: 'Mittwoch' },
+    { key: 'thursday' as keyof WeeklyHours, label: 'Donnerstag' },
+    { key: 'friday' as keyof WeeklyHours, label: 'Freitag' },
+    { key: 'saturday' as keyof WeeklyHours, label: 'Samstag' },
+    { key: 'sunday' as keyof WeeklyHours, label: 'Sonntag' },
   ];
 
   // Get current day (0=Monday, 6=Sunday)
