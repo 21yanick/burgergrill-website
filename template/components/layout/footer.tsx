@@ -153,9 +153,6 @@ export function Footer() {
                 </Link>
               </div>
             </div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <span>Made with ❤️ from 21design.ch</span>
-            </div>
           </div>
         </div>
       </Container>

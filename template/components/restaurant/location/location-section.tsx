@@ -97,8 +97,8 @@ export async function LocationSection({
             Besuchen Sie uns
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Vor dem Conforama in Solothurn servieren wir Ihnen authentische Cevapcici 
-            und saftige Burger. Kommen Sie vorbei und erleben Sie unser Restaurant.
+            Vor dem Conforama in Solothurn servieren wir Ihnen authentische Cevapcici, 
+            saftige Burger und leckere Hot Dog. Kommen Sie vorbei und erleben Sie unser Restaurant.
           </p>
         </div>
 

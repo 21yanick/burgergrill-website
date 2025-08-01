@@ -11,7 +11,7 @@ import { KgOrderData } from "../kg-verkauf/types";
 // Modern Burgergrill content - focused and classy
 const createDefaultHeroContent = (onOrderClick: () => void) => ({
   title: "Balkan-Grill in Solothurn",
-  subtitle: "Traditionelle Cevapcici & saftige Burger - frisch vom Grill für Sie zubereitet.",
+  subtitle: "Traditionelle Cevapcici, saftige Burger & leckere Hot Dog - frisch vom Grill für Sie zubereitet.",
   primaryCTA: {
     text: "Jetzt bestellen",
     onClick: onOrderClick,

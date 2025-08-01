@@ -77,7 +77,7 @@ export function MainDishCard({ dish, onDishClick }: MainDishCardProps) {
                   variant="secondary"
                   className="bg-accent/10 text-accent border-accent/20 text-xs font-medium"
                 >
-                  Signature Spezialität
+                  Spezialität
                 </Badge>
               )}
               

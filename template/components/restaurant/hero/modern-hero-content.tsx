@@ -52,7 +52,7 @@ export function ModernHeroContent({ title, subtitle, ctas, className }: ModernHe
           textShadow: '0 2px 4px rgba(0,0,0,0.4), 0 4px 8px rgba(0,0,0,0.2)'
         }}>
           <span className="block md:hidden bg-black/5 backdrop-blur-sm rounded-xl px-3 py-2">
-            Traditionelle Cevapcici & saftige Burger.
+            Traditionelle Cevapcici, saftige Burger & leckere Hot Dog.
           </span>
           <span className="hidden md:block bg-black/5 backdrop-blur-sm rounded-xl px-6 py-3 border border-white/5">
             {subtitle}
