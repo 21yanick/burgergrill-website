@@ -38,10 +38,10 @@ export function KgVerkaufSection({ className }: KgVerkaufSectionProps) {
             {/* Section Header */}
             <div className="mb-12">
               <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-                Balkan-Würste für zu Hause
+                Würste für zu Hause
               </h2>
               <p className="text-xl text-muted-foreground leading-relaxed">
-                Unsere authentischen Balkan-Würste auch kilogrammweise für Ihre Grillparty oder Event. 
+                Unsere authentischen Würste auch kilogrammweise für Ihre Grillparty oder Event. 
                 Würzige Würste aus 100% Rind und Lamm sowie milde Sucuk aus bestem Rindfleisch.
               </p>
             </div>

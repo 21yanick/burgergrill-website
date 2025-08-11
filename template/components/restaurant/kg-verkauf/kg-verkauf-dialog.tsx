@@ -151,7 +151,7 @@ export function KgVerkaufDialog({ isOpen, onClose, onSubmit }: KgVerkaufDialogPr
       <DialogContent className="w-[95vw] max-w-[500px] h-[95vh] max-h-[90vh] sm:h-auto flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-accent">
-            Balkan-Würste bestellen
+            Würste bestellen
           </DialogTitle>
           <DialogDescription>
             Authentische Würste für zu Hause. Mindestvorlauf 24 Stunden.

@@ -49,7 +49,7 @@ export function HeroSection({
     // - Send order confirmation to customer
     // - Send order notification to restaurant
     // - Use template from lib/email/templates/
-    console.log("New Balkan-Würste order from hero:", orderData);
+    console.log("New Würste order from hero:", orderData);
     
     // Create summary of ordered products
     const productSummary = orderData.products

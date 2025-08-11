@@ -32,7 +32,7 @@ export default function LandingPage() {
       {/* Menu Section */}
       <MenuSection />
 
-      {/* Balkan-Würste Verkauf Section */}
+      {/* Würste Verkauf Section */}
       <KgVerkaufSection />
 
       {/* Features Section */}
