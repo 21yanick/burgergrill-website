@@ -71,7 +71,7 @@ export async function signInAction(
     });
 
     if (error) {
-      logger.error('Sign in failed', { error: error.message, email });
+      logger.error(`Sign in failed: ${error.message} for ${email}`);
       return {
         error: 'Invalid email or password',
       };
