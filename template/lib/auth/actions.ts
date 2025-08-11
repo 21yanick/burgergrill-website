@@ -77,10 +77,10 @@ export async function signInAction(
       };
     }
 
-    logger.info('User signed in successfully', { email });
+    logger.info({ email }, 'User signed in successfully');
     
   } catch (error) {
-    logger.error('Sign in error', { error });
+    logger.error({ error }, 'Sign in error');
     return {
       error: 'An unexpected error occurred. Please try again.',
     };
@@ -124,19 +124,19 @@ export async function signUpAction(
     });
 
     if (error) {
-      logger.error('Sign up failed', { error: error.message, email });
+      logger.error({ error: error.message, email }, 'Sign up failed');
       return {
         error: error.message,
       };
     }
 
-    logger.info('User signed up successfully', { email });
+    logger.info({ email }, 'User signed up successfully');
 
     return {
       success: 'Check your email for a confirmation link',
     };
   } catch (error) {
-    logger.error('Sign up error', { error });
+    logger.error({ error }, 'Sign up error');
     return {
       error: 'An unexpected error occurred. Please try again.',
     };
@@ -171,19 +171,19 @@ export async function resetPasswordAction(
     });
 
     if (error) {
-      logger.error('Reset password failed', { error: error.message, email });
+      logger.error({ error: error.message, email }, 'Reset password failed');
       return {
         error: error.message,
       };
     }
 
-    logger.info('Password reset email sent', { email });
+    logger.info({ email }, 'Password reset email sent');
 
     return {
       success: 'Check your email for a password reset link',
     };
   } catch (error) {
-    logger.error('Reset password error', { error });
+    logger.error({ error }, 'Reset password error');
     return {
       error: 'An unexpected error occurred. Please try again.',
     };
@@ -219,7 +219,7 @@ export async function updatePasswordAction(
     });
 
     if (error) {
-      logger.error('Update password failed', { error: error.message });
+      logger.error({ error: error.message }, 'Update password failed');
       return {
         error: error.message,
       };
@@ -231,7 +231,7 @@ export async function updatePasswordAction(
       success: 'Password updated successfully',
     };
   } catch (error) {
-    logger.error('Update password error', { error });
+    logger.error({ error }, 'Update password error');
     return {
       error: 'An unexpected error occurred. Please try again.',
     };
@@ -246,13 +246,13 @@ export async function signOutAction(): Promise<void> {
     const { error } = await supabase.auth.signOut();
     
     if (error) {
-      logger.error('Sign out failed', { error: error.message });
+      logger.error({ error: error.message }, 'Sign out failed');
       throw error;
     }
 
     logger.info('User signed out successfully');
   } catch (error) {
-    logger.error('Sign out error', { error });
+    logger.error({ error }, 'Sign out error');
     throw error;
   }
   
