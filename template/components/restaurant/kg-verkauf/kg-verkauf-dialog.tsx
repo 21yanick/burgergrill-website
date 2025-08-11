@@ -16,38 +16,27 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { KgVerkaufProduct, KgVerkaufDialogProps, KgOrderData, SelectedProduct } from "./types";
 
-// Produkt-Daten basierend auf Konzept
+// Authentische Balkan-Würste für KG-Verkauf
 const PRODUCTS: KgVerkaufProduct[] = [
   {
-    id: "cevapcici",
-    name: "Cevapcici",
-    description: "Handgemachte Cevapcici nach traditionellem Rezept",
-    price: 28.00,
+    id: "wuerste-pikant",
+    name: "Würste pikant",
+    description: "Würzige Würste aus 100% Rind und Lamm - traditionell gewürzt",
+    price: 32.00,
     unit: "kg",
-    minOrder: 1,
-    maxOrder: 20,
+    minOrder: 0.5,
+    maxOrder: 10,
     available: true,
     preparationTime: "24h"
   },
   {
-    id: "burger-patties",
-    name: "Burger Patties",
-    description: "Premium Rindfleisch-Patties aus der Region",
-    price: 35.00,
+    id: "sucuk-mild",
+    name: "Sucuk Mild",
+    description: "Milde Sucuk aus 100% Rindfleisch - authentisch türkischer Stil",
+    price: 38.00,
     unit: "kg", 
-    minOrder: 1,
-    maxOrder: 15,
-    available: true,
-    preparationTime: "24h"
-  },
-  {
-    id: "wuerste",
-    name: "Würste",
-    description: "Traditionelle Bratwürste und Grillspezialitäten",
-    price: 4.50,
-    unit: "stk",
-    minOrder: 1,
-    maxOrder: 50,
+    minOrder: 0.5,
+    maxOrder: 8,
     available: true,
     preparationTime: "24h"
   }
@@ -162,10 +151,10 @@ export function KgVerkaufDialog({ isOpen, onClose, onSubmit }: KgVerkaufDialogPr
       <DialogContent className="w-[95vw] max-w-[500px] h-[95vh] max-h-[90vh] sm:h-auto flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-accent">
-            Grillfleisch-Verkauf bestellen
+            Balkan-Würste bestellen
           </DialogTitle>
           <DialogDescription>
-            Frische Spezialitäten für zu Hause. Mindestvorlauf 24 Stunden.
+            Authentische Würste für zu Hause. Mindestvorlauf 24 Stunden.
           </DialogDescription>
         </DialogHeader>
 
@@ -243,6 +232,17 @@ export function KgVerkaufDialog({ isOpen, onClose, onSubmit }: KgVerkaufDialogPr
 
           </div>
 
+          {/* Pickup Reminder */}
+          <div className="bg-accent/5 border border-accent/15 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-accent text-sm">📍</span>
+              <span className="font-medium text-accent text-sm">Wichtiger Hinweis zur Abholung</span>
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Persönliche Abholung an unserem Restaurant-Stand zu den Öffnungszeiten. 
+              Bielstrasse 50, Solothurn (vor dem Conforama).
+            </p>
+          </div>
 
           {/* Kundendaten */}
           <div className="space-y-4">

@@ -23,11 +23,15 @@ export interface HeroContent {
     onClick: () => void;
     icon?: string;
   });
-  secondaryCTA: {
+  secondaryCTA: ({
     text: string;
     href: string;
     icon?: string;
-  };
+  } | {
+    text: string;
+    onClick: () => void;
+    icon?: string;
+  });
 }
 
 export interface ModernHeroProps {

@@ -30,7 +30,7 @@ const defaultLocationData: LocationData = {
   },
   // Google Maps embed for Bielstrasse 50, 4500 Solothurn (CSP now allows frame-src)
   mapEmbed: {
-    src: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2677.579554787817!2d7.528403866414368!3d47.21035549845828!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x478e1a8c8d8f8d8f%3A0x8d8f8d8f8d8f8d8f!2sBielstrasse%2050%2C%204500%20Solothurn!5e0!3m2!1sde!2sch!4v1643723400000!5m2!1sde!2sch",
+    src: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d677.5699718847112!2d7.526118748806476!3d47.211105591437175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4791d804a2f7a8f5%3A0xaeea4c9e0f451141!2sConforama%20Solothurn!5e0!3m2!1sde!2sch!4v1754340230676!5m2!1sde!2sch",
     title: "Burgergrill Solothurn - Bielstrasse 50"
   }
 };
@@ -98,7 +98,7 @@ export async function LocationSection({
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Vor dem Conforama in Solothurn servieren wir Ihnen authentische Cevapcici, 
-            saftige Burger und leckere Hot Dog. Kommen Sie vorbei und erleben Sie unser Restaurant.
+            saftige Burger und leckere Hot Dog. Kommen Sie vorbei und erleben Sie unsere Spezialitäten frisch vom Grill.
           </p>
         </div>
 

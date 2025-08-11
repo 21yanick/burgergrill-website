@@ -2,13 +2,12 @@ import Link from "next/link"
 import { Container } from "@/components/layout/container"
 import { Separator } from "@/components/ui/separator"
 import { MapPin, Phone, Mail, Instagram, Facebook, Settings } from "lucide-react"
-import { siteConfig } from "@/lib/config"
 
 export function Footer() {
   // Restaurant-specific navigation
   const restaurantLinks = [
     { href: '#menu', label: 'Speisekarte' },
-    { href: '#grillfleisch-verkauf', label: 'Grillfleisch-Verkauf' },
+    { href: '#wurst-verkauf', label: 'Wurst-Verkauf' },
     { href: '#location', label: 'Standort' }
   ]
 
@@ -30,25 +29,11 @@ export function Footer() {
       <Container>
         <div className="py-8 md:py-12">
           {/* Main footer content */}
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-            
-            {/* Restaurant Brand */}
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-accent text-accent-foreground">
-                  <span className="text-lg">🍔</span>
-                </div>
-                <span className="font-bold text-lg">{siteConfig.name}</span>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Authentische Cevapcici nach traditionellem Balkan-Rezept. 
-                Frisch gegrillt mit schweizer Premium-Zutaten.
-              </p>
-            </div>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 
             {/* Restaurant Navigation */}
             <div className="space-y-4">
-              <h4 className="text-sm font-semibold">Restaurant</h4>
+              <h4 className="text-sm font-semibold">Burgergrill</h4>
               <ul className="space-y-3 text-sm">
                 {restaurantLinks.map((link) => (
                   <li key={link.href}>
@@ -132,26 +117,24 @@ export function Footer() {
           <Separator className="my-8" />
 
           {/* Bottom footer */}
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <div className="text-center md:text-left">
-              <p className="text-sm text-muted-foreground">
-                © 2025 {siteConfig.name}. Authentische Cevapcici seit 2020.
-              </p>
-              <div className="flex justify-center md:justify-start gap-4 mt-2">
-                <Link 
-                  href="/impressum"
-                  className="text-xs text-muted-foreground hover:text-accent transition-colors"
-                >
-                  Impressum
-                </Link>
-                <span className="text-xs text-muted-foreground">•</span>
-                <Link 
-                  href="/datenschutz"
-                  className="text-xs text-muted-foreground hover:text-accent transition-colors"
-                >
-                  Datenschutz
-                </Link>
-              </div>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-muted-foreground">
+              © Burgergrill seit 2017.
+            </p>
+            <div className="flex gap-4">
+              <Link 
+                href="/impressum"
+                className="text-xs text-muted-foreground hover:text-accent transition-colors"
+              >
+                Impressum
+              </Link>
+              <span className="text-xs text-muted-foreground">•</span>
+              <Link 
+                href="/datenschutz"
+                className="text-xs text-muted-foreground hover:text-accent transition-colors"
+              >
+                Datenschutz
+              </Link>
             </div>
           </div>
         </div>

@@ -120,7 +120,7 @@ export function ComingSoonPage({ className }: ComingSoonPageProps) {
               <div className="flex flex-wrap justify-center gap-2 text-xs">
                 <span className="bg-amber-500/20 text-amber-200 px-2 py-1 rounded-full">Čevapčići</span>
                 <span className="bg-amber-500/20 text-amber-200 px-2 py-1 rounded-full">Burger</span>
-                <span className="bg-amber-500/20 text-amber-200 px-2 py-1 rounded-full">Grillfleisch-Verkauf</span>
+                <span className="bg-amber-500/20 text-amber-200 px-2 py-1 rounded-full">Balkan-Würste</span>
               </div>
             </div>
           </div>

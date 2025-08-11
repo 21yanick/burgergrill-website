@@ -22,13 +22,6 @@ export function DrinkCard({ drinks }: DrinkCardProps) {
       </div>
       
       <CardContent className="relative p-8 text-center">
-        {/* Icon */}
-        <div className="flex justify-center mb-4">
-          <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-            <span className="text-3xl">🥤</span>
-          </div>
-        </div>
-        
         {/* Title */}
         <h3 className="text-2xl lg:text-3xl font-bold mb-2 group-hover:text-primary transition-colors">
           {drinks.title}
@@ -52,9 +45,9 @@ export function DrinkCard({ drinks }: DrinkCardProps) {
           {drinks.description}
         </p>
         
-        {/* Popular Drinks Grid */}
+        {/* Available Drinks Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {['Coca-Cola', 'Fanta', 'Sprite', 'Wasser'].map((drink) => (
+          {['Coca Cola', 'Cola Zero', 'Redbull', 'Redbull Zero', 'Icetea Lemon', 'Ayran', 'Evian'].map((drink) => (
             <div
               key={drink}
               className="p-2 bg-background/50 rounded-lg border border-primary/10 hover:border-primary/30 transition-colors text-sm font-medium"
@@ -68,7 +61,7 @@ export function DrinkCard({ drinks }: DrinkCardProps) {
         <div className="mt-6 p-4 bg-background/30 rounded-lg border border-accent/20">
           <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
             <Droplets className="h-4 w-4 text-accent" />
-            <span>Erfrischend kalt serviert • Alle Standardgetränke verfügbar</span>
+            <span>Erfrischend kalt serviert</span>
           </div>
         </div>
       </CardContent>
@@ -76,19 +69,11 @@ export function DrinkCard({ drinks }: DrinkCardProps) {
   );
 }
 
-// Extended Drink Section with additional info
+// Extended Drink Section - Clean and minimal
 export function DrinkSection({ drinks }: DrinkCardProps) {
   return (
     <div className="space-y-6">
       <DrinkCard drinks={drinks} />
-      
-      {/* Additional Info */}
-      <div className="text-center text-sm text-muted-foreground">
-        <p>
-          ✨ <strong>Tipp:</strong> Bestellen Sie Ihr Lieblingsgetränk dazu - 
-          alle Getränke zum gleichen fairen Preis!
-        </p>
-      </div>
     </div>
   );
 }

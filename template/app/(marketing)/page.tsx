@@ -32,7 +32,7 @@ export default function LandingPage() {
       {/* Menu Section */}
       <MenuSection />
 
-      {/* Grillfleisch-Verkauf Section */}
+      {/* Balkan-Würste Verkauf Section */}
       <KgVerkaufSection />
 
       {/* Features Section */}
@@ -53,7 +53,7 @@ export default function LandingPage() {
                 <Shield className="w-12 h-12 mb-4 text-accent" />
                 <CardTitle>Authentische Rezepte</CardTitle>
                 <CardDescription>
-                  Traditionelle Cevapcici-Rezepte aus dem Balkan, seit Generationen weitergegeben.
+                  Traditionelle Familien-Rezepte aus dem Balkan, seit Generationen weitergegeben.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -71,9 +71,9 @@ export default function LandingPage() {
             <Card>
               <CardHeader>
                 <Users className="w-12 h-12 mb-4 text-accent" />
-                <CardTitle>Schweizer Qualität</CardTitle>
+                <CardTitle>Höchste Qualität</CardTitle>
                 <CardDescription>
-                  Premium Rindfleisch aus der Region und höchste Qualitätsstandards bei allen Zutaten.
+                  Premium Kalb- und Rindfleisch. Höchste Qualitätsstandards bei allen Zutaten.
                 </CardDescription>
               </CardHeader>
             </Card>

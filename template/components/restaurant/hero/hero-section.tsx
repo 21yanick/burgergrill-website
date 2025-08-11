@@ -8,19 +8,19 @@ import { ModernHeroProps } from "./types";
 import { KgVerkaufDialog } from "../kg-verkauf/kg-verkauf-dialog";
 import { KgOrderData } from "../kg-verkauf/types";
 
-// Modern Burgergrill content - focused and classy
+// Modern Burgergrill content - Premium meat focus with clear pickup messaging
 const createDefaultHeroContent = (onOrderClick: () => void) => ({
-  title: "Balkan-Grill in Solothurn",
-  subtitle: "Traditionelle Cevapcici, saftige Burger & leckere Hot Dog - frisch vom Grill für Sie zubereitet.",
+  title: "Burger Grill Solothurn|100% Rind & Kalbsfleisch",
+  subtitle: "Für unsere Kunden legen wir die Hand ins Feuer 😉",
   primaryCTA: {
-    text: "Jetzt bestellen",
-    onClick: onOrderClick,
-    icon: "ShoppingCart"
+    text: "Speisekarte ansehen",
+    href: "#menu",
+    icon: "BookOpen"
   },
   secondaryCTA: {
-    text: "Speisekarte ansehen", 
-    href: "#menu",
-    icon: "ArrowRight"
+    text: "Würste abholen", 
+    onClick: onOrderClick,
+    icon: "Package"
   }
 });
 
@@ -49,7 +49,7 @@ export function HeroSection({
     // - Send order confirmation to customer
     // - Send order notification to restaurant
     // - Use template from lib/email/templates/
-    console.log("New Grillfleisch-Verkauf order from hero:", orderData);
+    console.log("New Balkan-Würste order from hero:", orderData);
     
     // Create summary of ordered products
     const productSummary = orderData.products
