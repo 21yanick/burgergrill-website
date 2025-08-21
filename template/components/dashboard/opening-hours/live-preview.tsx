@@ -137,12 +137,12 @@ function OpeningHoursPreview({ weeklyHours, status, viewMode }: OpeningHoursPrev
           </div>
         )}
         
-        {status?.currentMessage && (
+        {status && (
           <p className={cn(
             'text-muted-foreground',
             viewMode === 'mobile' ? 'text-xs' : 'text-sm'
           )}>
-            {status.currentMessage}
+            {status.isOpen ? 'Derzeit geöffnet' : 'Derzeit geschlossen'}
           </p>
         )}
       </CardHeader>
@@ -212,9 +212,6 @@ function OpeningHoursPreview({ weeklyHours, status, viewMode }: OpeningHoursPrev
           viewMode === 'mobile' ? 'text-xs' : 'text-sm'
         )}>
           <p>* Feiertage können abweichen</p>
-          {status?.nextOpening && (
-            <p className="mt-1">Nächste Öffnung: {status.nextOpening}</p>
-          )}
         </div>
       </CardContent>
     </Card>

@@ -228,7 +228,7 @@ export function HolidayManager({ className }: HolidayManagerProps) {
     createPeriod,
     updatePeriod,
     deletePeriod,
-    refresh
+    refreshSpecialHours
   } = useSpecialHoursDashboard();
 
   const [editingHoliday, setEditingHoliday] = useState<SpecialHours | null>(null);
@@ -239,26 +239,25 @@ export function HolidayManager({ className }: HolidayManagerProps) {
     try {
       if (editingHoliday) {
         // Update existing
-        await updatePeriod({
-          id: editingHoliday.id,
-          startDate: data.startDate,
-          endDate: data.endDate,
-          isClosed: true, // Always closed for holidays
+        await updatePeriod(editingHoliday.id, {
+          date_start: data.startDate,
+          date_end: data.endDate,
+          is_closed: true, // Always closed for holidays
           reason: 'Ferien', // Simple default
-          customMessage: data.message,
-          showBanner: true,
-          priority: 5
+          custom_message: data.message,
+          show_banner: true,
+          banner_priority: 5
         });
       } else {
         // Create new
         await createPeriod({
-          startDate: data.startDate,
-          endDate: data.endDate,
-          isClosed: true, // Always closed for holidays
+          date_start: data.startDate,
+          date_end: data.endDate,
+          is_closed: true, // Always closed for holidays
           reason: 'Ferien', // Simple default
-          customMessage: data.message,
-          showBanner: true,
-          priority: 5
+          custom_message: data.message,
+          show_banner: true,
+          banner_priority: 5
         });
       }
       

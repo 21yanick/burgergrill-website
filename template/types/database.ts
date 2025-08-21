@@ -1,17 +1,22 @@
 /**
- * 🎯 BURGERGRILL DATABASE TYPES
- * TypeScript definitions for restaurant database schema
+ * 🎯 SINGLE-TENANT DATABASE TYPES  
+ * Clean TypeScript definitions for single restaurant architecture
  * 
- * RESTAURANT DATABASE SCHEMA:
- * - Clean restaurant-focused schema
- * - User profiles for customer accounts
- * - Integrates with Supabase Auth
+ * ARCHITECTURE:
+ * - Single restaurant focus (KISS principle)
+ * - Public data access (no complex auth relations)
+ * - Clean separation: Marketing vs Dashboard
+ * - Direct table access (no unnecessary joins)
  */
+
+// =====================================================================================
+// DATABASE SCHEMA TYPES
+// =====================================================================================
 
 export type Database = {
   public: {
     Tables: {
-      // ✅ SHARED: User profiles (core functionality)
+      // User profiles (Supabase Auth integration) 
       profiles: {
         Row: {
           id: string;
@@ -26,131 +31,98 @@ export type Database = {
           email: string;
           full_name?: string | null;
           avatar_url?: string | null;
-          created_at?: string;
-          updated_at?: string;
         };
         Update: {
-          id?: string;
           email?: string;
           full_name?: string | null;
           avatar_url?: string | null;
-          created_at?: string;
-          updated_at?: string;
         };
       };
-      
-      // 🏢 RESTAURANT: Business settings and configuration
-      restaurant_settings: {
+
+      // Restaurant business information (single row)
+      restaurant_info: {
         Row: {
           id: string;
-          profile_id: string;
           business_name: string;
           phone: string | null;
           email: string | null;
           street: string | null;
           city: string | null;
           postal_code: string | null;
-          country: string;
+          country: string | null;
           google_maps_url: string | null;
-          special_notice_text: string | null;
-          special_notice_active: boolean;
-          special_notice_priority: number;
+          maps_embed_src: string | null;
           created_at: string;
           updated_at: string;
         };
         Insert: {
-          id?: string;
-          profile_id: string;
           business_name?: string;
           phone?: string | null;
           email?: string | null;
           street?: string | null;
           city?: string | null;
           postal_code?: string | null;
-          country?: string;
+          country?: string | null;
           google_maps_url?: string | null;
-          special_notice_text?: string | null;
-          special_notice_active?: boolean;
-          special_notice_priority?: number;
-          created_at?: string;
-          updated_at?: string;
+          maps_embed_src?: string | null;
         };
         Update: {
-          id?: string;
-          profile_id?: string;
           business_name?: string;
           phone?: string | null;
           email?: string | null;
           street?: string | null;
           city?: string | null;
           postal_code?: string | null;
-          country?: string;
+          country?: string | null;
           google_maps_url?: string | null;
-          special_notice_text?: string | null;
-          special_notice_active?: boolean;
-          special_notice_priority?: number;
-          created_at?: string;
-          updated_at?: string;
+          maps_embed_src?: string | null;
         };
       };
-      
-      // 🕒 OPENING HOURS: Weekly schedule management
+
+      // Weekly opening hours (7 rows)
       opening_hours: {
         Row: {
           id: string;
-          restaurant_id: string;
           day_of_week: number; // 0=Monday, 6=Sunday
           is_closed: boolean;
-          open_time: string | null; // TIME format "HH:MM"
-          close_time: string | null; // TIME format "HH:MM"
+          open_time: string | null; // HH:MM:SS format
+          close_time: string | null; // HH:MM:SS format
           notes: string | null;
           created_at: string;
           updated_at: string;
         };
         Insert: {
-          id?: string;
-          restaurant_id: string;
           day_of_week: number;
           is_closed?: boolean;
           open_time?: string | null;
           close_time?: string | null;
           notes?: string | null;
-          created_at?: string;
-          updated_at?: string;
         };
         Update: {
-          id?: string;
-          restaurant_id?: string;
-          day_of_week?: number;
           is_closed?: boolean;
           open_time?: string | null;
           close_time?: string | null;
           notes?: string | null;
-          created_at?: string;
-          updated_at?: string;
         };
       };
-      
-      // 🏖️ SPECIAL HOURS: Holidays, vacations, special events
+
+      // Special hours (holidays, vacations) 
       special_hours: {
         Row: {
           id: string;
-          restaurant_id: string;
-          date_start: string; // DATE format "YYYY-MM-DD"
-          date_end: string; // DATE format "YYYY-MM-DD"
+          date_start: string; // YYYY-MM-DD
+          date_end: string; // YYYY-MM-DD
           is_closed: boolean;
-          custom_open_time: string | null; // TIME format "HH:MM"
-          custom_close_time: string | null; // TIME format "HH:MM"
+          custom_open_time: string | null;
+          custom_close_time: string | null;
           reason: 'Ferien' | 'Feiertag' | 'Wartung' | 'Event' | 'Sonstiges';
           custom_message: string | null;
           show_banner: boolean;
-          banner_priority: number;
+          banner_priority: number; // 1-10
           created_at: string;
           updated_at: string;
         };
         Insert: {
-          id?: string;
-          restaurant_id: string;
           date_start: string;
           date_end: string;
           is_closed?: boolean;
@@ -160,12 +132,8 @@ export type Database = {
           custom_message?: string | null;
           show_banner?: boolean;
           banner_priority?: number;
-          created_at?: string;
-          updated_at?: string;
         };
         Update: {
-          id?: string;
-          restaurant_id?: string;
           date_start?: string;
           date_end?: string;
           is_closed?: boolean;
@@ -175,133 +143,25 @@ export type Database = {
           custom_message?: string | null;
           show_banner?: boolean;
           banner_priority?: number;
-          created_at?: string;
-          updated_at?: string;
         };
-      };
-
-      // 📂 MENU CATEGORIES: Menu organization (Phase 2)
-      menu_categories: {
-        Row: {
-          id: string;
-          restaurant_id: string;
-          name: string;
-          description: string | null;
-          icon_emoji: string | null;
-          sort_order: number;
-          active: boolean;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          restaurant_id: string;
-          name: string;
-          description?: string | null;
-          icon_emoji?: string | null;
-          sort_order?: number;
-          active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          restaurant_id?: string;
-          name?: string;
-          description?: string | null;
-          icon_emoji?: string | null;
-          sort_order?: number;
-          active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-      };
-
-      // 🍔 MENU ITEMS: Individual menu items (Phase 2)
-      menu_items: {
-        Row: {
-          id: string;
-          category_id: string;
-          name: string;
-          description: string | null;
-          price_chf: number | null;
-          is_signature: boolean;
-          is_profitable: boolean;
-          is_vegetarian: boolean;
-          is_vegan: boolean;
-          available: boolean;
-          sold_out: boolean;
-          sort_order: number;
-          image_url: string | null;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          category_id: string;
-          name: string;
-          description?: string | null;
-          price_chf?: number | null;
-          is_signature?: boolean;
-          is_profitable?: boolean;
-          is_vegetarian?: boolean;
-          is_vegan?: boolean;
-          available?: boolean;
-          sold_out?: boolean;
-          sort_order?: number;
-          image_url?: string | null;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          category_id?: string;
-          name?: string;
-          description?: string | null;
-          price_chf?: number | null;
-          is_signature?: boolean;
-          is_profitable?: boolean;
-          is_vegetarian?: boolean;
-          is_vegan?: boolean;
-          available?: boolean;
-          sold_out?: boolean;
-          sort_order?: number;
-          image_url?: string | null;
-          created_at?: string;
-          updated_at?: string;
-        };
-      };
-    };
-    Functions: {
-      // 🔍 UTILITY: Get current restaurant status
-      get_restaurant_status: {
-        Args: { restaurant_uuid: string };
-        Returns: {
-          is_open: boolean;
-          current_message: string;
-          next_opening: string | null;
-        }[];
       };
     };
   };
 };
 
-// 🎯 HELPER TYPES: Restaurant website specific exports
-export type Profile = Database['public']['Tables']['profiles']['Row'];
-export type RestaurantSettings = Database['public']['Tables']['restaurant_settings']['Row'];
-export type OpeningHours = Database['public']['Tables']['opening_hours']['Row'];
-export type SpecialHours = Database['public']['Tables']['special_hours']['Row'];
-export type MenuCategory = Database['public']['Tables']['menu_categories']['Row'];
-export type MenuItem = Database['public']['Tables']['menu_items']['Row'];
+// =====================================================================================
+// BUSINESS LOGIC TYPES (Clean, reusable)
+// =====================================================================================
 
-// 🕒 OPENING HOURS: Simple, clean types for dashboard components
+// Single day hours structure
 export type DayHours = {
   isOpen: boolean;
-  openTime: string | null; // "HH:MM" format
-  closeTime: string | null; // "HH:MM" format
+  openTime: string | null; // HH:MM format
+  closeTime: string | null; // HH:MM format  
   notes?: string | null;
 };
 
+// Weekly hours structure (for dashboard editing)
 export type WeeklyHours = {
   monday: DayHours;
   tuesday: DayHours;
@@ -310,80 +170,66 @@ export type WeeklyHours = {
   friday: DayHours;
   saturday: DayHours;
   sunday: DayHours;
-} & {
-  [key: string]: DayHours;
 };
 
-// 🏖️ SPECIAL HOURS: Helper types for holiday management
-export type SpecialPeriod = {
-  id: string;
-  startDate: string;
-  endDate: string;
-  isClosed: boolean;
-  customOpenTime?: string | null;
-  customCloseTime?: string | null;
-  reason: SpecialHours['reason'];
-  customMessage?: string | null;
-  showBanner: boolean;
-  priority: number;
+// Display-ready hours (for marketing website)
+export type DisplayHours = {
+  monday: string;
+  tuesday: string;
+  wednesday: string;
+  thursday: string;
+  friday: string;
+  saturday: string;
+  sunday: string;
 };
 
-// 🔍 RESTAURANT STATUS: Function return type
+// Restaurant basic info
+export type RestaurantInfo = Database['public']['Tables']['restaurant_info']['Row'];
+
+// Special hours/holidays
+export type SpecialHours = Database['public']['Tables']['special_hours']['Row'];
+
+// Restaurant operational status
 export type RestaurantStatus = {
   isOpen: boolean;
-  currentMessage: string;
-  nextOpening: string | null;
+  currentDay: string;
+  todayHours: DayHours;
+  nextChange: string | null;
 };
 
-// =====================================================================================
-// 🕒 OPENING HOURS: Server action types (clean and simple)
+// =====================================================================================  
+// UTILITY TYPES
 // =====================================================================================
 
-// Request type for updating a single day
+// For dashboard day updates
 export type UpdateDayRequest = {
-  restaurantId: string;
-  dayOfWeek: number; // 0=Monday, 6=Sunday
+  dayOfWeek: number; // 0-6
   hours: DayHours;
 };
 
-// Request type for batch updates
+// For dashboard batch updates
 export type UpdateWeekRequest = {
-  restaurantId: string;
-  updates: Array<{ dayOfWeek: number; hours: DayHours }>;
+  updates: UpdateDayRequest[];
 };
 
-// =====================================================================================
-// 🏖️ SPECIAL HOURS: Hook-specific types for holiday management
-// =====================================================================================
-
-// Data for creating new special periods
-export type CreateSpecialPeriodData = {
-  startDate: string; // "YYYY-MM-DD" format
-  endDate: string; // "YYYY-MM-DD" format
-  isClosed: boolean;
-  customOpenTime?: string | null; // "HH:MM" format
-  customCloseTime?: string | null; // "HH:MM" format
-  reason: SpecialHours['reason'];
-  customMessage?: string | null;
-  showBanner: boolean;
-  priority: number;
+// Special hours creation
+export type CreateSpecialHoursData = {
+  date_start: string;
+  date_end: string;
+  is_closed?: boolean;
+  custom_open_time?: string | null;
+  custom_close_time?: string | null;
+  reason?: 'Ferien' | 'Feiertag' | 'Wartung' | 'Event' | 'Sonstiges';
+  custom_message?: string | null;
+  show_banner?: boolean;
+  banner_priority?: number;
 };
 
-// Data for updating existing special periods
-export type UpdateSpecialPeriodData = Partial<CreateSpecialPeriodData> & {
-  id: string;
-};
+// Special hours updates
+export type UpdateSpecialHoursData = Partial<CreateSpecialHoursData>;
 
-// Result type for conflict checking when adding special periods
+// Conflict checking result
 export type ConflictCheckResult = {
   hasConflict: boolean;
-  conflictingPeriods: SpecialPeriod[];
-  message?: string;
-  suggestions?: {
-    mergeOption?: boolean;
-    alternativeDates?: {
-      startDate: string;
-      endDate: string;
-    }[];
-  };
+  conflictingPeriods: SpecialHours[];
 };

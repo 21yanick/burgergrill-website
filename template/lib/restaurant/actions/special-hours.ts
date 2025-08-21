@@ -1,12 +1,12 @@
 /**
- * 📅 SPECIAL HOURS SERVER ACTIONS
- * Clean server-side operations for restaurant special hours management (holidays, vacations, etc.)
+ * 🏖️ SINGLE-TENANT SPECIAL HOURS SERVER ACTIONS
+ * Clean server-side operations for restaurant holidays & vacations
  * 
  * Architecture:
- * - Type-safe database operations with Supabase
+ * - PUBLIC functions: No auth needed (marketing website)
+ * - ADMIN functions: Auth required (dashboard)  
+ * - Direct table access: No complex restaurant_id relations
  * - Date conflict detection and business logic
- * - Banner priority management
- * - Next.js Server Actions for dashboard integration
  */
 
 'use server';
@@ -14,15 +14,44 @@
 import { createClient } from '@/lib/supabase/server';
 import { requireAuth } from '@/lib/auth/server';
 import { revalidatePath } from 'next/cache';
-import type { 
-  Database, 
-  SpecialHours, 
-  SpecialPeriod,
-  RestaurantSettings,
-  CreateSpecialPeriodData,
-  UpdateSpecialPeriodData,
-  ConflictCheckResult
-} from '@/types/database';
+
+// =====================================================================================
+// TYPES (Simplified for Single-Tenant)
+// =====================================================================================
+
+export type SpecialHours = {
+  id: string;
+  date_start: string; // YYYY-MM-DD
+  date_end: string;   // YYYY-MM-DD
+  is_closed: boolean;
+  custom_open_time: string | null;
+  custom_close_time: string | null;
+  reason: 'Ferien' | 'Feiertag' | 'Wartung' | 'Event' | 'Sonstiges';
+  custom_message: string | null;
+  show_banner: boolean;
+  banner_priority: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type CreateSpecialHoursData = {
+  date_start: string;
+  date_end: string;
+  is_closed?: boolean;
+  custom_open_time?: string | null;
+  custom_close_time?: string | null;
+  reason?: 'Ferien' | 'Feiertag' | 'Wartung' | 'Event' | 'Sonstiges';
+  custom_message?: string | null;
+  show_banner?: boolean;
+  banner_priority?: number;
+};
+
+export type UpdateSpecialHoursData = Partial<CreateSpecialHoursData>;
+
+export type ConflictCheckResult = {
+  hasConflict: boolean;
+  conflictingPeriods: SpecialHours[];
+};
 
 // =====================================================================================
 // VALIDATION HELPERS
@@ -44,12 +73,6 @@ function validateDateRange(startDate: string, endDate: string): { valid: boolean
 
   const start = new Date(startDate);
   const end = new Date(endDate);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Reset time to start of day
-
-  if (start < today) {
-    return { valid: false, error: 'Start date cannot be in the past' };
-  }
 
   if (start > end) {
     return { valid: false, error: 'Start date must be before or equal to end date' };
@@ -58,189 +81,278 @@ function validateDateRange(startDate: string, endDate: string): { valid: boolean
   return { valid: true };
 }
 
-function validateSpecialPeriod(data: CreateSpecialPeriodData): { valid: boolean; error?: string } {
-  // Validate date range
-  const dateValidation = validateDateRange(data.startDate, data.endDate);
-  if (!dateValidation.valid) {
-    return dateValidation;
-  }
-
-  // If not closed, must have custom times
-  if (!data.isClosed) {
-    if (!data.customOpenTime || !data.customCloseTime) {
-      return { valid: false, error: 'Custom opening hours require both open and close times' };
-    }
-
-    // Validate time formats
-    if (!validateTimeFormat(data.customOpenTime) || !validateTimeFormat(data.customCloseTime)) {
-      return { valid: false, error: 'Invalid time format. Use HH:MM (24h)' };
-    }
-
-    // Validate logical time order
-    if (data.customOpenTime >= data.customCloseTime) {
-      return { valid: false, error: 'Opening time must be before closing time' };
+function validateSpecialHours(data: CreateSpecialHoursData | UpdateSpecialHoursData): { valid: boolean; error?: string } {
+  // Date validation
+  if (data.date_start && data.date_end) {
+    const dateValidation = validateDateRange(data.date_start, data.date_end);
+    if (!dateValidation.valid) {
+      return dateValidation;
     }
   }
 
-  // Validate banner priority
-  if (data.priority && (data.priority < 1 || data.priority > 10)) {
+  // Time validation for custom hours
+  if (!data.is_closed && data.is_closed !== undefined) {
+    if (!data.custom_open_time || !data.custom_close_time) {
+      return { valid: false, error: 'Custom open and close times required when not fully closed' };
+    }
+
+    if (!validateTimeFormat(data.custom_open_time) || !validateTimeFormat(data.custom_close_time)) {
+      return { valid: false, error: 'Invalid time format. Use HH:MM format' };
+    }
+
+    if (data.custom_open_time >= data.custom_close_time) {
+      return { valid: false, error: 'Custom open time must be before close time' };
+    }
+  }
+
+  // Banner priority validation
+  if (data.banner_priority !== undefined && (data.banner_priority < 1 || data.banner_priority > 10)) {
     return { valid: false, error: 'Banner priority must be between 1 and 10' };
-  }
-
-  // Validate custom message length
-  if (data.customMessage && data.customMessage.length > 200) {
-    return { valid: false, error: 'Custom message cannot exceed 200 characters' };
   }
 
   return { valid: true };
 }
 
 // =====================================================================================
-// RESTAURANT SETTINGS HELPER (reuse from opening-hours pattern)
-// =====================================================================================
-
-async function getRestaurantSettings(): Promise<RestaurantSettings> {
-  const user = await requireAuth();
-  const supabase = await createClient();
-
-  try {
-    const { data: settings, error } = await supabase
-      .from('restaurant_settings')
-      .select('*')
-      .eq('profile_id', user.id)
-      .single();
-
-    if (error && error.code !== 'PGRST116') {
-      console.error('[Special Hours] Restaurant settings error:', error);
-      throw new Error(`Failed to fetch restaurant settings: ${error.message}`);
-    }
-
-    if (!settings) {
-      throw new Error('Restaurant settings not found. Please contact support.');
-    }
-
-    return settings;
-  } catch (error) {
-    console.error('[Special Hours] Restaurant settings error:', error);
-    throw error instanceof Error ? error : new Error('Unknown error fetching restaurant settings');
-  }
-}
-
-// =====================================================================================
-// SPECIAL HOURS OPERATIONS
+// PUBLIC FUNCTIONS (No Auth Required - Marketing Website)
 // =====================================================================================
 
 /**
- * Get all special hours for restaurant
- * Returns periods ordered by date (upcoming first)
- */
-export async function getSpecialHours(): Promise<SpecialHours[]> {
-  const settings = await getRestaurantSettings();
-  const supabase = await createClient();
-
-  try {
-    const { data: specialHours, error } = await supabase
-      .from('special_hours')
-      .select('*')
-      .eq('restaurant_id', settings.id)
-      .order('date_start');
-
-    if (error) {
-      console.error('[Special Hours] Database error:', error);
-      throw new Error(`Failed to fetch special hours: ${error.message}`);
-    }
-
-    return specialHours || [];
-  } catch (error) {
-    console.error('[Special Hours] Get error:', error);
-    throw error instanceof Error ? error : new Error('Unknown error fetching special hours');
-  }
-}
-
-/**
- * Get currently active special hours (current date within range)
+ * Get currently active special hours - PUBLIC ACCESS
+ * Used by marketing website to show holiday banner
  */
 export async function getActiveSpecialHours(): Promise<SpecialHours | null> {
-  const settings = await getRestaurantSettings();
   const supabase = await createClient();
-  const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
-
+  
   try {
+    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+    
     const { data: activeHours, error } = await supabase
       .from('special_hours')
       .select('*')
-      .eq('restaurant_id', settings.id)
       .lte('date_start', today)
       .gte('date_end', today)
       .eq('show_banner', true)
       .order('banner_priority', { ascending: false })
-      .limit(1);
+      .limit(1)
+      .single();
 
-    if (error) {
-      console.error('[Special Hours] Active query error:', error);
-      throw new Error(`Failed to fetch active special hours: ${error.message}`);
+    if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+      console.error('[Special Hours] Database error:', error);
+      return null;
     }
 
-    return activeHours?.[0] || null;
+    return activeHours || null;
   } catch (error) {
-    console.error('[Special Hours] Active error:', error);
-    // Return null instead of throwing to allow graceful degradation
+    console.error('[Special Hours] Unexpected error:', error);
     return null;
   }
 }
 
 /**
- * Get upcoming special hours (next 30 days)
+ * Get upcoming special hours - PUBLIC ACCESS  
+ * Used by marketing website to show upcoming closures
  */
-export async function getUpcomingSpecialHours(): Promise<SpecialHours[]> {
-  const settings = await getRestaurantSettings();
+export async function getUpcomingSpecialHours(days: number = 30): Promise<SpecialHours[]> {
   const supabase = await createClient();
-  const today = new Date().toISOString().split('T')[0];
-  const futureDate = new Date();
-  futureDate.setDate(futureDate.getDate() + 30);
-  const futureLimit = futureDate.toISOString().split('T')[0];
-
+  
   try {
+    const today = new Date().toISOString().split('T')[0];
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + days);
+    const futureDateStr = futureDate.toISOString().split('T')[0];
+    
     const { data: upcomingHours, error } = await supabase
       .from('special_hours')
       .select('*')
-      .eq('restaurant_id', settings.id)
       .gte('date_start', today)
-      .lte('date_start', futureLimit)
-      .order('date_start');
+      .lte('date_start', futureDateStr)
+      .eq('show_banner', true)
+      .order('date_start', { ascending: true });
 
     if (error) {
-      console.error('[Special Hours] Upcoming query error:', error);
-      throw new Error(`Failed to fetch upcoming special hours: ${error.message}`);
+      console.error('[Special Hours] Database error:', error);
+      return [];
     }
 
     return upcomingHours || [];
   } catch (error) {
-    console.error('[Special Hours] Upcoming error:', error);
-    throw error instanceof Error ? error : new Error('Unknown error fetching upcoming special hours');
+    console.error('[Special Hours] Unexpected error:', error);
+    return [];
   }
 }
 
 /**
- * Check for date conflicts with existing periods
- * Returns conflicting periods if any overlap is found
+ * Get all special hours - PUBLIC ACCESS
+ * Used by marketing website for complete schedule display
  */
-export async function checkDateConflicts(
-  startDate: string, 
-  endDate: string, 
-  excludeId?: string
-): Promise<ConflictCheckResult> {
-  const settings = await getRestaurantSettings();
+export async function getAllSpecialHours(): Promise<SpecialHours[]> {
   const supabase = await createClient();
+  
+  try {
+    const { data: allHours, error } = await supabase
+      .from('special_hours')
+      .select('*')
+      .order('date_start', { ascending: false });
 
+    if (error) {
+      console.error('[Special Hours] Database error:', error);
+      return [];
+    }
+
+    return allHours || [];
+  } catch (error) {
+    console.error('[Special Hours] Unexpected error:', error);
+    return [];
+  }
+}
+
+// =====================================================================================
+// ADMIN FUNCTIONS (Auth Required - Dashboard Only)
+// =====================================================================================
+
+/**
+ * Create new special hours period - ADMIN ONLY
+ * Used by dashboard to add holidays/vacations
+ */
+export async function createSpecialPeriod(data: CreateSpecialHoursData): Promise<string> {
+  await requireAuth();
+  const supabase = await createClient();
+  
+  try {
+    // Validate input data
+    const validation = validateSpecialHours(data);
+    if (!validation.valid) {
+      throw new Error(validation.error);
+    }
+
+    // Check for date conflicts
+    const conflictCheck = await checkDateConflicts(data.date_start, data.date_end);
+    if (conflictCheck.hasConflict) {
+      throw new Error(`Date conflict with existing periods: ${conflictCheck.conflictingPeriods.map(p => `${p.date_start} to ${p.date_end}`).join(', ')}`);
+    }
+
+    // Create special period
+    const { data: createdPeriod, error } = await supabase
+      .from('special_hours')
+      .insert({
+        date_start: data.date_start,
+        date_end: data.date_end,
+        is_closed: data.is_closed ?? true,
+        custom_open_time: data.custom_open_time || null,
+        custom_close_time: data.custom_close_time || null,
+        reason: data.reason || 'Ferien',
+        custom_message: data.custom_message || null,
+        show_banner: data.show_banner ?? true,
+        banner_priority: data.banner_priority ?? 1,
+      })
+      .select('id')
+      .single();
+
+    if (error) {
+      console.error('[Special Hours] Create error:', error);
+      throw new Error(`Failed to create special period: ${error.message}`);
+    }
+
+    // Revalidate marketing website cache
+    revalidatePath('/');
+    console.log('[Special Hours] Successfully created special period:', createdPeriod.id);
+    
+    return createdPeriod.id;
+  } catch (error) {
+    console.error('[Special Hours] Create error:', error);
+    throw error instanceof Error ? error : new Error('Unknown error creating special period');
+  }
+}
+
+/**
+ * Update special hours period - ADMIN ONLY
+ * Used by dashboard to modify existing holidays/vacations
+ */
+export async function updateSpecialPeriod(id: string, data: UpdateSpecialHoursData): Promise<void> {
+  await requireAuth();
+  const supabase = await createClient();
+  
+  try {
+    // Validate input data
+    const validation = validateSpecialHours(data);
+    if (!validation.valid) {
+      throw new Error(validation.error);
+    }
+
+    // If updating dates, check for conflicts (excluding current period)
+    if (data.date_start && data.date_end) {
+      const conflictCheck = await checkDateConflicts(data.date_start, data.date_end, id);
+      if (conflictCheck.hasConflict) {
+        throw new Error(`Date conflict with existing periods: ${conflictCheck.conflictingPeriods.map(p => `${p.date_start} to ${p.date_end}`).join(', ')}`);
+      }
+    }
+
+    // Update special period
+    const { error } = await supabase
+      .from('special_hours')
+      .update({
+        ...data,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', id);
+
+    if (error) {
+      console.error('[Special Hours] Update error:', error);
+      throw new Error(`Failed to update special period: ${error.message}`);
+    }
+
+    // Revalidate marketing website cache
+    revalidatePath('/');
+    console.log('[Special Hours] Successfully updated special period:', id);
+  } catch (error) {
+    console.error('[Special Hours] Update error:', error);
+    throw error instanceof Error ? error : new Error('Unknown error updating special period');
+  }
+}
+
+/**
+ * Delete special hours period - ADMIN ONLY
+ * Used by dashboard to remove holidays/vacations
+ */
+export async function deleteSpecialPeriod(id: string): Promise<void> {
+  await requireAuth();
+  const supabase = await createClient();
+  
+  try {
+    const { error } = await supabase
+      .from('special_hours')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('[Special Hours] Delete error:', error);
+      throw new Error(`Failed to delete special period: ${error.message}`);
+    }
+
+    // Revalidate marketing website cache
+    revalidatePath('/');
+    console.log('[Special Hours] Successfully deleted special period:', id);
+  } catch (error) {
+    console.error('[Special Hours] Delete error:', error);
+    throw error instanceof Error ? error : new Error('Unknown error deleting special period');
+  }
+}
+
+/**
+ * Check for date conflicts - ADMIN ONLY
+ * Used by dashboard to prevent overlapping periods
+ */
+export async function checkDateConflicts(startDate: string, endDate: string, excludeId?: string): Promise<ConflictCheckResult> {
+  await requireAuth();
+  const supabase = await createClient();
+  
   try {
     let query = supabase
       .from('special_hours')
       .select('*')
-      .eq('restaurant_id', settings.id)
       .or(`and(date_start.lte.${endDate},date_end.gte.${startDate})`);
 
-    // Exclude specific period if editing
     if (excludeId) {
       query = query.neq('id', excludeId);
     }
@@ -252,14 +364,9 @@ export async function checkDateConflicts(
       throw new Error(`Failed to check date conflicts: ${error.message}`);
     }
 
-    const hasConflict = conflicts && conflicts.length > 0;
-    
     return {
-      hasConflict,
+      hasConflict: (conflicts || []).length > 0,
       conflictingPeriods: conflicts || [],
-      message: hasConflict 
-        ? `Conflict found with ${conflicts.length} existing period(s)` 
-        : undefined
     };
   } catch (error) {
     console.error('[Special Hours] Conflict check error:', error);
@@ -268,225 +375,44 @@ export async function checkDateConflicts(
 }
 
 /**
- * Create a new special period (holiday, vacation, etc.)
+ * Create quick common holiday periods - ADMIN ONLY
+ * Used by dashboard for quick holiday setup
  */
-export async function createSpecialPeriod(data: CreateSpecialPeriodData): Promise<string> {
-  const settings = await getRestaurantSettings();
-  const supabase = await createClient();
-
-  try {
-    // Validate input data
-    const validation = validateSpecialPeriod(data);
-    if (!validation.valid) {
-      throw new Error(validation.error || 'Invalid period data');
-    }
-
-    // Check for date conflicts
-    const conflictCheck = await checkDateConflicts(data.startDate, data.endDate);
-    if (conflictCheck.hasConflict) {
-      throw new Error(`Date conflict detected: ${conflictCheck.message}`);
-    }
-
-    // Insert new special period
-    const { data: insertData, error } = await supabase
-      .from('special_hours')
-      .insert({
-        restaurant_id: settings.id,
-        date_start: data.startDate,
-        date_end: data.endDate,
-        is_closed: data.isClosed,
-        custom_open_time: data.isClosed ? null : data.customOpenTime,
-        custom_close_time: data.isClosed ? null : data.customCloseTime,
-        reason: data.reason,
-        custom_message: data.customMessage,
-        show_banner: data.showBanner ?? true,
-        banner_priority: data.priority ?? 1,
-      })
-      .select('id')
-      .single();
-
-    if (error) {
-      console.error('[Special Hours] Create error:', error);
-      throw new Error(`Failed to create special period: ${error.message}`);
-    }
-
-    // Revalidate relevant pages
-    revalidatePath('/dashboard/special-hours');
-    revalidatePath('/'); // Main page with special hours display
-
-    console.log(`[Special Hours] Successfully created period ${insertData.id} for restaurant ${settings.id}`);
-    return insertData.id;
-  } catch (error) {
-    console.error('[Special Hours] Create error:', error);
-    throw error instanceof Error ? error : new Error('Unknown error creating special period');
-  }
-}
-
-/**
- * Update an existing special period
- */
-export async function updateSpecialPeriod(data: UpdateSpecialPeriodData): Promise<void> {
-  const settings = await getRestaurantSettings();
-  const supabase = await createClient();
-
-  try {
-    // Verify ownership and existence first
-    const { data: existing, error: existingError } = await supabase
-      .from('special_hours')
-      .select('*')
-      .eq('id', data.id)
-      .eq('restaurant_id', settings.id)
-      .single();
-
-    if (existingError || !existing) {
-      throw new Error('Special period not found or access denied');
-    }
-
-    // For updates, use existing values as defaults for validation
-    const startDate = data.startDate ?? existing.date_start;
-    const endDate = data.endDate ?? existing.date_end;
-    const isClosed = data.isClosed ?? existing.is_closed;
-    const customOpenTime = data.customOpenTime ?? existing.custom_open_time;
-    const customCloseTime = data.customCloseTime ?? existing.custom_close_time;
-    const reason = data.reason ?? existing.reason;
-    
-    // Validate with merged data
-    const validationData = {
-      startDate,
-      endDate,
-      isClosed,
-      customOpenTime,
-      customCloseTime,
-      reason,
-      customMessage: data.customMessage ?? existing.custom_message,
-      showBanner: data.showBanner ?? existing.show_banner,
-      priority: data.priority ?? existing.banner_priority
-    };
-    
-    const validation = validateSpecialPeriod(validationData);
-    if (!validation.valid) {
-      throw new Error(validation.error || 'Invalid period data');
-    }
-
-    // Check for date conflicts (excluding current period)
-    const conflictCheck = await checkDateConflicts(startDate, endDate, data.id);
-    if (conflictCheck.hasConflict) {
-      throw new Error(`Date conflict detected: ${conflictCheck.message}`);
-    }
-
-    // Update the period with merged data
-    const { error: updateError } = await supabase
-      .from('special_hours')
-      .update({
-        date_start: startDate,
-        date_end: endDate,
-        is_closed: isClosed,
-        custom_open_time: isClosed ? null : customOpenTime,
-        custom_close_time: isClosed ? null : customCloseTime,
-        reason: reason,
-        custom_message: data.customMessage ?? existing.custom_message,
-        show_banner: data.showBanner ?? existing.show_banner,
-        banner_priority: data.priority ?? existing.banner_priority,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', data.id);
-
-    if (updateError) {
-      console.error('[Special Hours] Update error:', updateError);
-      throw new Error(`Failed to update special period: ${updateError.message}`);
-    }
-
-    // Revalidate relevant pages
-    revalidatePath('/dashboard/special-hours');
-    revalidatePath('/');
-
-    console.log(`[Special Hours] Successfully updated period ${data.id} for restaurant ${settings.id}`);
-  } catch (error) {
-    console.error('[Special Hours] Update error:', error);
-    throw error instanceof Error ? error : new Error('Unknown error updating special period');
-  }
-}
-
-/**
- * Delete a special period
- */
-export async function deleteSpecialPeriod(id: string): Promise<void> {
-  const settings = await getRestaurantSettings();
-  const supabase = await createClient();
-
-  try {
-    // Verify ownership and delete
-    const { error } = await supabase
-      .from('special_hours')
-      .delete()
-      .eq('id', id)
-      .eq('restaurant_id', settings.id);
-
-    if (error) {
-      console.error('[Special Hours] Delete error:', error);
-      throw new Error(`Failed to delete special period: ${error.message}`);
-    }
-
-    // Revalidate relevant pages
-    revalidatePath('/dashboard/special-hours');
-    revalidatePath('/');
-
-    console.log(`[Special Hours] Successfully deleted period ${id} for restaurant ${settings.id}`);
-  } catch (error) {
-    console.error('[Special Hours] Delete error:', error);
-    throw error instanceof Error ? error : new Error('Unknown error deleting special period');
-  }
-}
-
-// =====================================================================================
-// CONVENIENCE FUNCTIONS
-// =====================================================================================
-
-/**
- * Create common holiday periods with smart defaults
- */
-export async function createCommonHoliday(
-  holiday: 'christmas' | 'new_year' | 'easter' | 'summer_vacation',
-  year?: number
-): Promise<string> {
+export async function createCommonHoliday(type: 'christmas' | 'newyear' | 'easter' | 'summer', year?: number): Promise<string> {
+  await requireAuth();
+  
   const currentYear = year || new Date().getFullYear();
   
-  const holidayConfigs = {
+  const holidayData: Record<string, CreateSpecialHoursData> = {
     christmas: {
-      startDate: `${currentYear}-12-24`,
-      endDate: `${currentYear}-12-26`,
-      reason: 'Feiertag' as const,
-      customMessage: 'Frohe Weihnachten! Wir sind über die Feiertage geschlossen.',
-      priority: 10
+      date_start: `${currentYear}-12-24`,
+      date_end: `${currentYear}-12-26`,
+      reason: 'Feiertag',
+      custom_message: 'Frohe Weihnachten! Wir sind vom 24.-26. Dezember geschlossen.',
+      banner_priority: 5,
     },
-    new_year: {
-      startDate: `${currentYear}-12-31`,
-      endDate: `${currentYear + 1}-01-02`,
-      reason: 'Feiertag' as const,
-      customMessage: 'Frohes neues Jahr! Wir sind über Neujahr geschlossen.',
-      priority: 10
+    newyear: {
+      date_start: `${currentYear}-12-31`,
+      date_end: `${currentYear + 1}-01-02`,
+      reason: 'Feiertag', 
+      custom_message: 'Guten Rutsch! Wir sind über Neujahr geschlossen.',
+      banner_priority: 5,
     },
     easter: {
-      startDate: `${currentYear}-04-07`, // Good Friday (approximate)
-      endDate: `${currentYear}-04-10`, // Easter Monday (approximate)
-      reason: 'Feiertag' as const,
-      customMessage: 'Frohe Ostern! Wir sind über die Osterfeiertage geschlossen.',
-      priority: 8
+      date_start: `${currentYear}-04-14`, // This would need dynamic calculation
+      date_end: `${currentYear}-04-17`,
+      reason: 'Feiertag',
+      custom_message: 'Frohe Ostern! Wir sind über die Osterfeiertage geschlossen.',
+      banner_priority: 4,
     },
-    summer_vacation: {
-      startDate: `${currentYear}-07-15`,
-      endDate: `${currentYear}-08-15`,
-      reason: 'Ferien' as const,
-      customMessage: 'Wir sind in den Sommerferien. Wir freuen uns auf Ihren Besuch nach unserer Rückkehr!',
-      priority: 5
-    }
+    summer: {
+      date_start: `${currentYear}-07-15`,
+      date_end: `${currentYear}-07-29`, 
+      reason: 'Ferien',
+      custom_message: 'Sommerferien! Wir sind vom 15.-29. Juli in den Ferien.',
+      banner_priority: 3,
+    },
   };
 
-  const config = holidayConfigs[holiday];
-  
-  return createSpecialPeriod({
-    ...config,
-    isClosed: true,
-    showBanner: true
-  });
+  return await createSpecialPeriod(holidayData[type]);
 }

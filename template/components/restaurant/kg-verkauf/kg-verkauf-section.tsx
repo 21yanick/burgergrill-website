@@ -89,7 +89,6 @@ export function KgVerkaufSection({ className }: KgVerkaufSectionProps) {
                     Würzige Würste aus 100% Rind und Lamm
                   </p>
                   <p className="text-xs text-muted-foreground">Kilogrammweise verfügbar</p>
-                  <p className="text-xs text-accent font-medium">Traditionell gewürzt</p>
                 </div>
                 
                 <div className="space-y-3 text-center">
@@ -98,7 +97,6 @@ export function KgVerkaufSection({ className }: KgVerkaufSectionProps) {
                     Milde Sucuk aus 100% Rindfleisch
                   </p>
                   <p className="text-xs text-muted-foreground">Kilogrammweise verfügbar</p>
-                  <p className="text-xs text-accent font-medium">Authentisch türkischer Stil</p>
                 </div>
               </div>
             </div>
@@ -112,7 +110,7 @@ export function KgVerkaufSection({ className }: KgVerkaufSectionProps) {
                 <div>
                   <h4 className="font-semibold text-accent mb-2">Abholung & Öffnungszeiten</h4>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Persönliche Abholung an unserem Restaurant-Stand zu den{" "}
+                    Persönliche Abholung an unserem Imbiss-Stand zu den{" "}
                     <a 
                       href="#location" 
                       className="text-accent hover:text-accent/80 underline font-medium"

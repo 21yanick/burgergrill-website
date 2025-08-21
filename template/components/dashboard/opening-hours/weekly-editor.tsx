@@ -173,8 +173,9 @@ export function WeeklyEditor({ className }: WeeklyEditorProps) {
       {/* Weekly Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {WEEK_DAYS.map((day) => {
-          const dayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-          const dayHours = draftHours[dayKeys[day.key]] || { 
+          const dayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
+          const dayKey = dayKeys[day.key] as keyof WeeklyHours;
+          const dayHours = draftHours[dayKey] || { 
             isOpen: false, 
             openTime: null, 
             closeTime: null 

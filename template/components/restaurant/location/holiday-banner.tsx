@@ -2,26 +2,25 @@
  * 🎯 SIMPLE HOLIDAY BANNER
  * Shows active holiday message on website
  * 
- * KISS principle: If restaurant is closed today → show message
- * No complex priority system, no multiple banners
+ * KISS principle: Receives holiday data as props (server-side fetched)
+ * No client-side data fetching, clean separation of concerns
  * Simple and effective.
  */
 
-'use client';
-
 import React from 'react';
-import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useActiveSpecialHours } from '@/hooks/restaurant/use-special-hours';
+import type { SpecialHours } from '@/types/database';
 
 // =====================================================================================
 // TYPES
 // =====================================================================================
 
 export interface HolidayBannerProps {
+  /** Active holiday data (from server) */
+  holiday: SpecialHours;
+  
   /** Additional CSS classes */
   className?: string;
   
@@ -58,17 +57,10 @@ function formatDateRangeForCustomers(startDate: string, endDate: string): string
 // MAIN COMPONENT
 // =====================================================================================
 
-export function HolidayBanner({ className, compact = false }: HolidayBannerProps) {
-  const { activeSpecialHours, loading, error } = useActiveSpecialHours();
-
-  // Don't show anything if loading or error
-  if (loading || error || !activeSpecialHours) {
-    return null;
-  }
-
+export function HolidayBanner({ holiday, className, compact = false }: HolidayBannerProps) {
   const dateRange = formatDateRangeForCustomers(
-    activeSpecialHours.date_start, 
-    activeSpecialHours.date_end
+    holiday.date_start, 
+    holiday.date_end
   );
 
   return (
@@ -93,7 +85,7 @@ export function HolidayBanner({ className, compact = false }: HolidayBannerProps
         'text-amber-900 dark:text-amber-100 font-semibold leading-relaxed mb-4',
         compact ? 'text-base' : 'text-lg'
       )}>
-        {activeSpecialHours.custom_message}
+        {holiday.custom_message}
       </div>
       
       {/* Date Range with icon */}

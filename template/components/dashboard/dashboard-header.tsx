@@ -21,6 +21,7 @@ import {
   LayoutDashboard, 
   Clock, 
   CalendarX, 
+  ShoppingCart,
   Settings,
   Menu,
   X,
@@ -51,6 +52,12 @@ const navigationItems = [
     title: 'Ferien & Feiertage',
     href: '/dashboard/special-hours',
     icon: CalendarX,
+    exact: false,
+  },
+  {
+    title: 'KG-Produkte',
+    href: '/dashboard/kg-products',
+    icon: ShoppingCart,
     exact: false,
   },
 ] as const;

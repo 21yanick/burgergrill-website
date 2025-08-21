@@ -13,34 +13,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
-import { KgVerkaufProduct, KgVerkaufDialogProps, KgOrderData, SelectedProduct } from "./types";
+import { useState, useEffect } from "react";
+import { Loader2, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
-// Authentische Balkan-Würste für KG-Verkauf
-const PRODUCTS: KgVerkaufProduct[] = [
-  {
-    id: "wuerste-pikant",
-    name: "Würste pikant",
-    description: "Würzige Würste aus 100% Rind und Lamm - traditionell gewürzt",
-    price: 32.00,
-    unit: "kg",
-    minOrder: 0.5,
-    maxOrder: 10,
-    available: true,
-    preparationTime: "24h"
-  },
-  {
-    id: "sucuk-mild",
-    name: "Sucuk Mild",
-    description: "Milde Sucuk aus 100% Rindfleisch - authentisch türkischer Stil",
-    price: 38.00,
-    unit: "kg", 
-    minOrder: 0.5,
-    maxOrder: 8,
-    available: true,
-    preparationTime: "24h"
-  }
-];
+import { KgVerkaufProduct, KgVerkaufDialogProps, KgOrderData, SelectedProduct, dbArrayToFrontend } from "./types";
+import { getAvailableKgProducts } from "@/lib/restaurant/actions/kg-products";
 
 interface ProductSelection {
   [productId: string]: {
@@ -50,6 +28,12 @@ interface ProductSelection {
 }
 
 export function KgVerkaufDialog({ isOpen, onClose, onSubmit }: KgVerkaufDialogProps) {
+  // Product data state (dynamic from database)
+  const [products, setProducts] = useState<KgVerkaufProduct[]>([]);
+  const [isLoadingProducts, setIsLoadingProducts] = useState<boolean>(false);
+  const [productsError, setProductsError] = useState<string | null>(null);
+  
+  // Form state
   const [productSelections, setProductSelections] = useState<ProductSelection>({});
   const [customerName, setCustomerName] = useState<string>("");
   const [customerEmail, setCustomerEmail] = useState<string>("");
@@ -58,8 +42,32 @@ export function KgVerkaufDialog({ isOpen, onClose, onSubmit }: KgVerkaufDialogPr
   const [specialRequests, setSpecialRequests] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+  // Load products from database
+  useEffect(() => {
+    if (isOpen && products.length === 0) {
+      loadProducts();
+    }
+  }, [isOpen, products.length]);
+
+  const loadProducts = async () => {
+    try {
+      setIsLoadingProducts(true);
+      setProductsError(null);
+      
+      const dbProducts = await getAvailableKgProducts();
+      const frontendProducts = dbArrayToFrontend(dbProducts);
+      
+      setProducts(frontendProducts);
+    } catch (error) {
+      console.error('Failed to load KG products:', error);
+      setProductsError('Fehler beim Laden der Produkte. Bitte versuchen Sie es später erneut.');
+    } finally {
+      setIsLoadingProducts(false);
+    }
+  };
+
   // Calculate selected products
-  const selectedProducts: SelectedProduct[] = PRODUCTS
+  const selectedProducts: SelectedProduct[] = products
     .filter(product => productSelections[product.id]?.selected)
     .map(product => ({
       product,
@@ -79,9 +87,18 @@ export function KgVerkaufDialog({ isOpen, onClose, onSubmit }: KgVerkaufDialogPr
     }).format(price);
   };
 
+  const formatUnit = (unit: string) => {
+    switch(unit) {
+      case 'pack': return '6er Pack';
+      case 'kg': return 'kg';
+      case 'stk': return 'Stück';
+      default: return unit;
+    }
+  };
+
   // Helper functions for product selection
   const handleProductToggle = (productId: string) => {
-    const product = PRODUCTS.find(p => p.id === productId);
+    const product = products.find(p => p.id === productId);
     if (!product) return;
 
     setProductSelections(prev => ({
@@ -159,15 +176,43 @@ export function KgVerkaufDialog({ isOpen, onClose, onSubmit }: KgVerkaufDialogPr
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto px-1 -mr-1" style={{ WebkitOverflowScrolling: 'touch' }}>
-          <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Preis-Info Box */}
+          {/* Loading State */}
+          {isLoadingProducts && (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin mr-2" />
+              <span>Lade Produkte...</span>
+            </div>
+          )}
+
+          {/* Error State */}
+          {productsError && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                {productsError}
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={loadProducts}
+                  className="ml-2"
+                >
+                  Erneut versuchen
+                </Button>
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {/* Main Form - only show when products are loaded */}
+          {!isLoadingProducts && !productsError && products.length > 0 && (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Preis-Info Box */}
           <div className="bg-muted/50 border rounded-lg p-4">
             <h4 className="font-semibold text-sm mb-2">📋 Aktuelle Preise:</h4>
             <div className="text-sm text-muted-foreground space-y-1">
-              {PRODUCTS.map(product => (
+              {products.map(product => (
                 <div key={product.id} className="flex justify-between">
                   <span>• {product.name}:</span>
-                  <span className="font-medium">{formatPrice(product.price)}/{product.unit}</span>
+                  <span className="font-medium">{formatPrice(product.price)}/{formatUnit(product.unit)}</span>
                 </div>
               ))}
             </div>
@@ -177,7 +222,7 @@ export function KgVerkaufDialog({ isOpen, onClose, onSubmit }: KgVerkaufDialogPr
           <div className="space-y-4">
             <Label className="text-base font-semibold">Produkte auswählen (mehrere möglich)</Label>
             <div className="grid gap-4">
-              {PRODUCTS.map(product => {
+              {products.map(product => {
                 const isSelected = productSelections[product.id]?.selected || false;
                 const quantity = productSelections[product.id]?.quantity || product.minOrder;
 
@@ -221,7 +266,7 @@ export function KgVerkaufDialog({ isOpen, onClose, onSubmit }: KgVerkaufDialogPr
                           className="w-24"
                         />
                         <span className="text-sm text-muted-foreground">
-                          {product.unit} ({product.minOrder}-{product.maxOrder})
+                          {formatUnit(product.unit)} ({product.minOrder}-{product.maxOrder})
                         </span>
                       </div>
                     )}
@@ -239,7 +284,7 @@ export function KgVerkaufDialog({ isOpen, onClose, onSubmit }: KgVerkaufDialogPr
               <span className="font-medium text-accent text-sm">Wichtiger Hinweis zur Abholung</span>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Persönliche Abholung an unserem Restaurant-Stand zu den Öffnungszeiten. 
+              Persönliche Abholung an unserem Imbiss-Stand zu den Öffnungszeiten. 
               Bielstrasse 50, Solothurn (vor dem Conforama).
             </p>
           </div>
@@ -319,21 +364,46 @@ export function KgVerkaufDialog({ isOpen, onClose, onSubmit }: KgVerkaufDialogPr
             />
           </div>
           </form>
+          )}
+
+          {/* No Products State */}
+          {!isLoadingProducts && !productsError && products.length === 0 && (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground mb-4">
+                Aktuell sind keine Produkte verfügbar.
+              </p>
+              <Button variant="outline" onClick={loadProducts}>
+                Erneut laden
+              </Button>
+            </div>
+          )}
         </div>
 
-        <DialogFooter className="gap-3">
-          <Button type="button" variant="outline" onClick={onClose}>
-            Abbrechen
-          </Button>
-          <Button
-            type="submit"
-            onClick={handleSubmit}
-            disabled={!isFormValid || isSubmitting}
-            className="bg-accent hover:bg-accent/90"
-          >
-            {isSubmitting ? "Wird gesendet..." : "Anfrage senden"}
-          </Button>
-        </DialogFooter>
+        {/* Footer - only show when products are available */}
+        {!isLoadingProducts && !productsError && products.length > 0 && (
+          <DialogFooter className="gap-3">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Abbrechen
+            </Button>
+            <Button
+              type="submit"
+              onClick={handleSubmit}
+              disabled={!isFormValid || isSubmitting}
+              className="bg-accent hover:bg-accent/90"
+            >
+              {isSubmitting ? "Wird gesendet..." : "Anfrage senden"}
+            </Button>
+          </DialogFooter>
+        )}
+
+        {/* Footer for error/loading states */}
+        {(isLoadingProducts || productsError || products.length === 0) && (
+          <DialogFooter className="gap-3">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Schließen
+            </Button>
+          </DialogFooter>
+        )}
       </DialogContent>
     </Dialog>
   );
