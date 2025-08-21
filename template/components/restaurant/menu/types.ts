@@ -8,6 +8,9 @@ export interface MainDish {
   isSignature?: boolean; // Cevapcici specialties  
   isProfitable?: boolean; // Mix dishes with higher margins
   available?: boolean;
+  // 🆕 IMAGE INTEGRATION
+  image?: string;           // "/images/menu/hauptgerichte/cevapcici-7stk.jpg"
+  imageAlt?: string;        // "Cevapcici im Fladenbrot mit Ajvar und Zwiebeln"
 }
 
 // Simple accompaniment without price
@@ -41,6 +44,18 @@ export interface BurgergrillMenu {
   };
 }
 
+// 🆕 IMAGE SYSTEM TYPES
+
+// Image loading states for error handling
+export type ImageLoadState = 'loading' | 'loaded' | 'error';
+
+// Image configuration for menu photos
+export interface MenuImageConfig {
+  basePath: string;         // "/images/menu/hauptgerichte"
+  fallbackImage: string;    // "/images/menu/fallback/dish-placeholder.jpg"
+  aspectRatio: number;      // 4/3 for food photos
+}
+
 // Component Props
 export interface MenuSectionProps {
   menu?: BurgergrillMenu;
@@ -50,6 +65,7 @@ export interface MenuSectionProps {
 export interface MainDishCardProps {
   dish: MainDish;
   onDishClick?: (dish: MainDish) => void;
+  priority?: boolean;       // 🆕 Priority loading for above-the-fold images
 }
 
 export interface SimpleListProps {

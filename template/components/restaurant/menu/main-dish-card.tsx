@@ -4,10 +4,51 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Star, TrendingUp, Clock } from "lucide-react";
-import { MainDish, MainDishCardProps } from "./types";
+import { MainDish, MainDishCardProps, ImageLoadState } from "./types";
 import { formatPrice } from "@/lib/config";
+import Image from "next/image";
+import { useState } from "react";
 
-export function MainDishCard({ dish, onDishClick }: MainDishCardProps) {
+// 🆕 DISH IMAGE COMPONENT with Error Handling
+function DishImage({ dish, priority = false }: { dish: MainDish, priority?: boolean }) {
+  const [imageState, setImageState] = useState<ImageLoadState>('loading');
+  
+  const handleImageLoad = () => setImageState('loaded');
+  const handleImageError = () => setImageState('error');
+  
+  const showFallback = !dish.image || imageState === 'error';
+  
+  return (
+    <div className="w-full md:w-40 h-32 md:h-28 flex-shrink-0 p-4 md:p-6">
+      <div className="w-full h-full relative bg-muted/30 rounded-lg overflow-hidden border border-border/50">
+        {showFallback ? (
+          // Fallback: Emoji for appetite appeal
+          <div className="w-full h-full flex items-center justify-center bg-muted/30">
+            <span className="text-3xl md:text-4xl">🍔</span>
+          </div>
+        ) : (
+          <Image
+            src={dish.image!}
+            alt={dish.imageAlt || dish.name}
+            fill
+            className="object-cover rounded-lg transition-transform group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, 160px"
+            priority={priority}
+            onLoad={handleImageLoad}
+            onError={handleImageError}
+          />
+        )}
+        
+        {/* Loading State */}
+        {imageState === 'loading' && dish.image && (
+          <div className="absolute inset-0 bg-muted/50 animate-pulse rounded-lg" />
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function MainDishCard({ dish, onDishClick, priority = false }: MainDishCardProps) {
   const handleClick = () => {
     if (dish.available !== false) {
       onDishClick?.(dish);
@@ -17,8 +58,8 @@ export function MainDishCard({ dish, onDishClick }: MainDishCardProps) {
   return (
     <Card 
       className={cn(
-        "group cursor-pointer transition-all duration-300",
-        "hover:shadow-lg hover:scale-[1.02] hover:ring-2 hover:ring-primary/20",
+        "group cursor-pointer transition-all duration-300 overflow-hidden",
+        "hover:shadow-lg hover:scale-[1.01] hover:ring-2 hover:ring-primary/20",
         
         // Signature items - Burgundy accent for authenticity
         dish.isSignature && [
@@ -42,14 +83,21 @@ export function MainDishCard({ dish, onDishClick }: MainDishCardProps) {
       )}
       onClick={handleClick}
     >
-      <CardContent className="p-6">
-        <div className="flex justify-between items-start gap-4">
+      {/* 🆕 NEW: Flex container for Split Layout */}
+      <div className="flex flex-col md:flex-row md:items-center">
+        
+        {/* 🆕 NEW: Image Section */}
+        <DishImage dish={dish} priority={priority} />
+        
+        {/* EXISTING: Content Section - Structure preserved */}
+        <CardContent className="flex-1 p-4 md:p-6">
+        <div className="flex justify-between items-center gap-4">
           
           {/* Left: Dish Info */}
-          <div className="flex-1 space-y-3">
+          <div className="flex-1 space-y-2">
             <div className="flex items-start justify-between">
               <h3 className={cn(
-                "font-semibold text-lg leading-tight group-hover:text-primary transition-colors",
+                "font-semibold text-lg leading-tight group-hover:text-primary transition-colors pr-2",
                 dish.isSignature && "text-accent",
                 dish.isProfitable && "text-primary"
               )}>
@@ -57,7 +105,7 @@ export function MainDishCard({ dish, onDishClick }: MainDishCardProps) {
               </h3>
               
               {/* Special Indicators */}
-              <div className="flex items-center gap-1 ml-2">
+              <div className="flex items-center gap-1 flex-shrink-0">
                 {dish.isSignature && (
                   <Star className="h-4 w-4 fill-accent text-accent" />
                 )}
@@ -99,7 +147,7 @@ export function MainDishCard({ dish, onDishClick }: MainDishCardProps) {
           </div>
 
           {/* Right: Price */}
-          <div className="flex-shrink-0 text-right">
+          <div className="flex-shrink-0 text-right self-start md:self-center">
             <div className={cn(
               "text-2xl font-bold transition-colors",
               dish.isSignature && "text-accent",
@@ -124,7 +172,8 @@ export function MainDishCard({ dish, onDishClick }: MainDishCardProps) {
             🔥 Frisch auf dem Grill zubereitet
           </div>
         </div>
-      </CardContent>
+        </CardContent>
+      </div>
     </Card>
   );
 }
@@ -152,18 +201,19 @@ export function MainDishGrid({ dishes, onDishClick }: {
 
   return (
     <div className="grid gap-4 md:gap-6 lg:gap-8">
-      {/* Special grid for first 4 items (Golden Triangle area) */}
+      {/* Golden Triangle - First 4 items with priority loading */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-        {sortedDishes.slice(0, 4).map((dish) => (
+        {sortedDishes.slice(0, 4).map((dish, index) => (
           <MainDishCard
             key={dish.id}
             dish={dish}
             onDishClick={onDishClick}
+            priority={index < 2} // First 2 get priority loading
           />
         ))}
       </div>
       
-      {/* Remaining items in standard grid */}
+      {/* Remaining items - lazy loading */}
       {sortedDishes.length > 4 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {sortedDishes.slice(4).map((dish) => (
@@ -171,6 +221,7 @@ export function MainDishGrid({ dishes, onDishClick }: {
               key={dish.id}
               dish={dish}
               onDishClick={onDishClick}
+              priority={false}
             />
           ))}
         </div>

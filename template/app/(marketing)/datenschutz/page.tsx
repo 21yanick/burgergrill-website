@@ -106,19 +106,6 @@ export default function DatenschutzPage() {
                 </p>
               </div>
 
-              <div className="border-l-4 border-primary/20 pl-4">
-                <h4 className="font-medium">Restaurant-Management (nur Inhaber)</h4>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Für die Verwaltung des Restaurant-Dashboards: E-Mail-Adresse, 
-                  verschlüsseltes Passwort, Öffnungszeiten, Ferien-Einstellungen.
-                </p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  <strong>Zweck:</strong> Restaurant-Verwaltung (nur für Inhaberin)<br/>
-                  <strong>Rechtsgrundlage:</strong> Berechtigte Interessen (DSG Art. 6 / DSGVO Art. 6 Abs. 1 lit. f)<br/>
-                  <strong>Speicherdauer:</strong> Bis zur Löschung<br/>
-                  <strong>Standort:</strong> Hetzner Deutschland (EU)
-                </p>
-              </div>
             </div>
           </CardContent>
         </Card>
