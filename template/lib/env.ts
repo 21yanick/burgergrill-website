@@ -9,7 +9,8 @@ const envSchema = z.object({
   
   // Server-only variables
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
-  RESEND_API_KEY: z.string().min(1),
+  SMTP_USER: z.string().email('SMTP_USER must be a valid email address'),
+  SMTP_PASSWORD: z.string().min(1, 'SMTP_PASSWORD is required'),
   SENTRY_AUTH_TOKEN: z.string().optional(),
   
   // Database Direct Connection (for migrations)

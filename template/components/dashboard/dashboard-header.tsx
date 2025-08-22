@@ -25,7 +25,8 @@ import {
   Settings,
   Menu,
   X,
-  ExternalLink
+  ExternalLink,
+  User
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/theme';
@@ -36,12 +37,6 @@ import { LogoutButton } from '@/components/dashboard/logout-button';
 // =====================================================================================
 
 const navigationItems = [
-  {
-    title: 'Übersicht',
-    href: '/dashboard',
-    icon: LayoutDashboard,
-    exact: true, // Exact match for dashboard root
-  },
   {
     title: 'Öffnungszeiten',
     href: '/dashboard/opening-hours',
@@ -58,6 +53,12 @@ const navigationItems = [
     title: 'KG-Produkte',
     href: '/dashboard/kg-products',
     icon: ShoppingCart,
+    exact: false,
+  },
+  {
+    title: 'Account',
+    href: '/dashboard/account',
+    icon: User,
     exact: false,
   },
 ] as const;
@@ -91,7 +92,7 @@ export function DashboardHeader() {
           {/* Brand + Navigation */}
           <div className="flex items-center gap-6">
             {/* Dashboard Brand */}
-            <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
+            <Link href="/dashboard/opening-hours" className="flex items-center gap-2 font-semibold">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
                 <LayoutDashboard className="h-4 w-4 text-primary" />
               </div>

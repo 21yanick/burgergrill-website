@@ -1,3 +1,13 @@
-import { Resend } from 'resend';
+/**
+ * 📧 Email Client - Infomaniak SMTP
+ * Re-export from infomaniak-client for backward compatibility
+ */
 
-export const resend = new Resend(process.env.RESEND_API_KEY!);
+export { 
+  getTransporter,
+  verifyConnection,
+  getSmtpStatus,
+  getFromAddress,
+  getReplyToAddress,
+  closeConnection
+} from './infomaniak-client';

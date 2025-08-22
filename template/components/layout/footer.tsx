@@ -103,7 +103,7 @@ export function Footer() {
                 {/* Dashboard Link (hidden for non-owners) */}
                 <div className="pt-2 border-t border-border/50">
                   <Link 
-                    href="/dashboard"
+                    href="/dashboard/opening-hours"
                     className="flex items-center gap-2 text-xs text-muted-foreground hover:text-accent transition-colors"
                   >
                     <Settings className="w-3 h-3" />

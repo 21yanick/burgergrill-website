@@ -129,7 +129,7 @@ export default function DatenschutzPage() {
             <ul className="list-disc list-inside mt-3 text-sm space-y-1">
               <li>Database-Server: Hetzner Deutschland (DSGVO-konform)</li>
               <li>Website-Hosting: Hetzner Deutschland (ISO 27001 zertifiziert)</li>
-              <li>E-Mail-Service: Resend (EU-Datenschutz-konform)</li>
+              <li>E-Mail-Service: Infomaniak SMTP (🇨🇭 Schweizer Datenschutz)</li>
               <li>Backup-Systeme: Ebenfalls in Deutschland</li>
             </ul>
             <p className="text-xs mt-3">
@@ -172,16 +172,17 @@ export default function DatenschutzPage() {
               <div className="border rounded-lg p-4">
                 <h4 className="font-medium flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  E-Mail-Versand (Resend)
+                  E-Mail-Versand (Infomaniak SMTP)
                 </h4>
                 <p className="text-sm text-muted-foreground mt-1">
                   Transaktions-E-Mails und Kommunikation für Grossbestellungen.
                 </p>
                 <p className="text-xs text-muted-foreground mt-2">
-                  <strong>Anbieter:</strong> Resend, EU<br/>
+                  <strong>Anbieter:</strong> Infomaniak, 🇨🇭 Schweiz<br/>
                   <strong>Zweck:</strong> E-Mail-Versand, Kommunikation<br/>
                   <strong>Daten:</strong> E-Mail-Adressen, Namen, Nachrichteninhalt<br/>
-                  <strong>Rechtsgrundlage:</strong> Einverständnis, Vertragserfüllung
+                  <strong>Rechtsgrundlage:</strong> Einverständnis, Vertragserfüllung<br/>
+                  <strong>Datenschutz:</strong> Schweizer Datenschutzgesetz (DSG)
                 </p>
               </div>
 

@@ -87,7 +87,7 @@ export async function signInAction(
   }
 
   // Redirect will be handled by middleware
-  redirect('/dashboard');
+  redirect('/dashboard/opening-hours');
 }
 
 // Sign up action

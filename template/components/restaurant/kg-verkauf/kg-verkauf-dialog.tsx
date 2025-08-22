@@ -136,7 +136,7 @@ export function KgVerkaufDialog({ isOpen, onClose, onSubmit }: KgVerkaufDialogPr
       customerPhone,
       pickupDate,
       specialRequests,
-      totalPrice: 0 // No price calculation needed
+      totalPrice: 0 // Price calculated at pickup - no online payment
     };
 
     try {

@@ -3,5 +3,9 @@
  * Restaurant website email templates
  */
 
-// Restaurant email templates
-export { WelcomeEmail } from './welcome'
+// Authentication email templates
+export { WelcomeEmail } from './welcome';
+
+// KG-Verkauf order email templates
+export { OrderConfirmationEmail } from './order-confirmation';
+export { RestaurantNotificationEmail } from './restaurant-notification';

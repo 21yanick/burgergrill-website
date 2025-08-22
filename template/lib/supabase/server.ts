@@ -83,7 +83,7 @@ export async function requireAuth() {
 export async function requireNoAuth() {
   const user = await getUser();
   if (user) {
-    redirect('/dashboard');
+    redirect('/dashboard/opening-hours');
   }
 }
 

@@ -11,9 +11,9 @@ export default function NotFound() {
           <div className="mx-auto w-12 h-12 bg-muted rounded-full flex items-center justify-center mb-4">
             <FileX className="w-6 h-6 text-muted-foreground" />
           </div>
-          <CardTitle>Page Not Found</CardTitle>
+          <CardTitle>Seite nicht gefunden</CardTitle>
           <CardDescription>
-            The page you&apos;re looking for doesn&apos;t exist or has been moved.
+            Die von Ihnen gesuchte Seite existiert nicht oder wurde verschoben.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -24,11 +24,11 @@ export default function NotFound() {
             <Button asChild className="flex-1">
               <Link href="/">
                 <Home className="w-4 h-4 mr-2" />
-                Go Home
+                Zur Startseite
               </Link>
             </Button>
             <Button variant="outline" asChild className="flex-1">
-              <Link href="/dashboard">
+              <Link href="/dashboard/opening-hours">
                 <Search className="w-4 h-4 mr-2" />
                 Dashboard
               </Link>

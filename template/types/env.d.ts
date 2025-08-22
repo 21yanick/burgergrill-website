@@ -5,7 +5,8 @@ declare namespace NodeJS {
     NEXT_PUBLIC_SENTRY_DSN?: string;
     NEXT_PUBLIC_APP_URL: string;
     SUPABASE_SERVICE_ROLE_KEY: string;
-    RESEND_API_KEY: string;
+    SMTP_USER: string;
+    SMTP_PASSWORD: string;
     SENTRY_AUTH_TOKEN?: string;
     DATABASE_URL?: string;
     LOG_LEVEL?: 'debug' | 'info' | 'warn' | 'error';

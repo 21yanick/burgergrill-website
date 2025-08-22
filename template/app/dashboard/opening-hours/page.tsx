@@ -104,7 +104,7 @@ export default async function OpeningHoursPage() {
                 Website anzeigen →
               </Link>
               <Link 
-                href="/dashboard" 
+                href="/dashboard/opening-hours" 
                 className="hover:text-foreground transition-colors"
               >
                 Dashboard
