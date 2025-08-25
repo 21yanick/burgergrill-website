@@ -17,7 +17,6 @@ import {
   Column,
 } from '@react-email/components';
 import type { KgOrderData } from '@/components/restaurant/kg-verkauf/types';
-import { formatPrice } from '@/lib/config';
 
 interface OrderConfirmationEmailProps {
   orderData: KgOrderData;
@@ -50,7 +49,7 @@ export function OrderConfirmationEmail({
           </Text>
           
           <Text style={text}>
-            vielen Dank für Ihre Bestellung bei Burgergrill! Wir haben Ihre Bestellung erhalten 
+            Vielen Dank für Ihre Bestellung bei Burgergrill! Wir haben Ihre Bestellung erhalten 
             und bereiten alles für Sie vor.
           </Text>
 
@@ -74,22 +73,8 @@ export function OrderConfirmationEmail({
                     {item.quantity} {item.product.unit}
                   </Text>
                 </Column>
-                <Column style={productPrice}>
-                  <Text style={productText}>
-                    {formatPrice(item.quantity * item.product.price)}
-                  </Text>
-                </Column>
               </Row>
             ))}
-            
-            <Row style={totalRow}>
-              <Column style={totalLabel}>
-                <Text style={totalText}>Gesamtpreis:</Text>
-              </Column>
-              <Column style={totalPrice}>
-                <Text style={totalText}>{formatPrice(orderData.totalPrice)}</Text>
-              </Column>
-            </Row>
           </Section>
 
           {/* Pickup Information */}
@@ -115,7 +100,7 @@ export function OrderConfirmationEmail({
               Bei Fragen zu Ihrer Bestellung können Sie uns gerne kontaktieren:
             </Text>
             <Text style={text}>
-              📞 Telefon: Siehe unsere Website<br/>
+              📞 Telefon: 079 489 77 55<br/>
               📧 E-Mail: info@burgergrill.ch
             </Text>
           </Section>
@@ -196,17 +181,12 @@ const productRow = {
 };
 
 const productName = {
-  width: '50%',
-  paddingRight: '10px'
+  width: '70%',
+  paddingRight: '15px'
 };
 
 const productQuantity = {
-  width: '25%',
-  textAlign: 'center' as const
-};
-
-const productPrice = {
-  width: '25%',
+  width: '30%',
   textAlign: 'right' as const
 };
 
@@ -224,29 +204,6 @@ const productDescription = {
   margin: '2px 0 0 0'
 };
 
-const totalRow = {
-  borderTop: '2px solid #ddd',
-  paddingTop: '15px',
-  marginTop: '15px'
-};
-
-const totalLabel = {
-  width: '75%',
-  textAlign: 'right' as const,
-  paddingRight: '10px'
-};
-
-const totalPrice = {
-  width: '25%',
-  textAlign: 'right' as const
-};
-
-const totalText = {
-  color: '#333',
-  fontSize: '18px',
-  fontWeight: 'bold',
-  margin: '0'
-};
 
 const footerText = {
   color: '#666',

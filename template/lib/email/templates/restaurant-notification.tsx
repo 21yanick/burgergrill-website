@@ -9,7 +9,6 @@ import {
   Head,
   Heading,
   Html,
-  Link,
   Preview,
   Text,
   Section,
@@ -17,7 +16,6 @@ import {
   Column,
 } from '@react-email/components';
 import type { KgOrderData } from '@/components/restaurant/kg-verkauf/types';
-import { formatPrice } from '@/lib/config';
 
 interface RestaurantNotificationEmailProps {
   orderData: KgOrderData;
@@ -97,22 +95,8 @@ export function RestaurantNotificationEmail({
                     <strong>{item.quantity} {item.product.unit}</strong>
                   </Text>
                 </Column>
-                <Column style={productPrice}>
-                  <Text style={priceText}>
-                    <strong>{formatPrice(item.quantity * item.product.price)}</strong>
-                  </Text>
-                </Column>
               </Row>
             ))}
-            
-            <Row style={totalRow}>
-              <Column style={totalLabel}>
-                <Text style={totalText}>GESAMTPREIS:</Text>
-              </Column>
-              <Column style={totalPrice}>
-                <Text style={totalText}>{formatPrice(orderData.totalPrice)}</Text>
-              </Column>
-            </Row>
           </Section>
 
           {/* Pickup Information */}
@@ -135,26 +119,12 @@ export function RestaurantNotificationEmail({
             )}
           </Section>
 
-          {/* Action Items */}
-          <Section style={actionSection}>
-            <Heading style={h2}>✅ Nächste Schritte</Heading>
-            <Text style={actionText}>
-              1. ✅ Bestellung bestätigen und einplanen<br/>
-              2. 📞 Kunde bei Fragen kontaktieren: {orderData.customerPhone}<br/>
-              3. 🥩 Produkte vorbereiten bis: {pickupDate}<br/>
-              4. 📋 Bestellung für Abholung bereitstellen
-            </Text>
-          </Section>
 
           {/* Footer */}
           <Text style={footerText}>
             Diese E-Mail wurde automatisch vom Burgergrill Website-System generiert.<br/>
             Bestellzeit: {orderTime}
           </Text>
-          
-          <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard`} style={button}>
-            Zum Dashboard
-          </Link>
         </Container>
       </Body>
     </Html>
@@ -233,17 +203,12 @@ const productRow = {
 };
 
 const productName = {
-  width: '50%',
+  width: '70%',
   paddingRight: '15px'
 };
 
 const productQuantity = {
-  width: '25%',
-  textAlign: 'center' as const
-};
-
-const productPrice = {
-  width: '25%',
+  width: '30%',
   textAlign: 'right' as const
 };
 
@@ -275,38 +240,6 @@ const quantityText = {
   margin: '0'
 };
 
-const priceText = {
-  color: '#28a745',
-  fontSize: '16px',
-  fontWeight: 'bold',
-  margin: '0'
-};
-
-const totalRow = {
-  backgroundColor: '#e8f5e8',
-  padding: '20px',
-  borderRadius: '8px',
-  border: '2px solid #28a745',
-  marginTop: '20px'
-};
-
-const totalLabel = {
-  width: '70%',
-  textAlign: 'right' as const,
-  paddingRight: '15px'
-};
-
-const totalPrice = {
-  width: '30%',
-  textAlign: 'right' as const
-};
-
-const totalText = {
-  color: '#28a745',
-  fontSize: '20px',
-  fontWeight: 'bold',
-  margin: '0'
-};
 
 const pickupInfo = {
   color: '#555',
@@ -341,19 +274,6 @@ const specialRequestsText = {
   fontStyle: 'italic'
 };
 
-const actionSection = {
-  backgroundColor: '#f0f8f0',
-  padding: '20px',
-  borderRadius: '8px',
-  border: '1px solid #cceecc'
-};
-
-const actionText = {
-  color: '#555',
-  fontSize: '16px',
-  lineHeight: '28px',
-  margin: '0'
-};
 
 const footerText = {
   color: '#999',
@@ -366,12 +286,3 @@ const footerText = {
   paddingTop: '20px'
 };
 
-const button = {
-  backgroundColor: '#5469d4',
-  color: '#fff',
-  padding: '12px 20px',
-  textDecoration: 'none',
-  borderRadius: '5px',
-  display: 'inline-block',
-  fontWeight: 'bold'
-};
