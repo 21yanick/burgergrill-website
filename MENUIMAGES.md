@@ -294,7 +294,7 @@ export function MainDishCard({ dish, onDishClick, priority = false }: MainDishCa
           {/* Hover Effect - UNCHANGED */}
           <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
             <div className="text-xs text-muted-foreground italic">
-              🔥 Frisch auf dem Grill zubereitet
+              🔥 Frisch vom Grill
             </div>
           </div>
         </CardContent>

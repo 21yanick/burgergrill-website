@@ -7,7 +7,7 @@
 export const siteConfig = {
   // Restaurant Brand Identity
   name: "Burgergrill",
-  description: "Das beste Burgergrill in der Schweiz. Frische Zutaten, perfekt gegrillte Burger und authentische Schweizer Qualität.",
+  description: "Der beste Burgergrill in der Schweiz. Frische Zutaten, perfekt gegrillte Burger und authentische Schweizer Qualität.",
   
   // Regional Settings for Switzerland
   currency: "CHF" as const,
@@ -46,7 +46,7 @@ export function formatPrice(amount: number): string {
  */
 export function getSiteMetadata() {
   return {
-    title: `${siteConfig.name} - Das beste Burgergrill der Schweiz`,
+    title: `${siteConfig.name} - Der beste Burgergrill der Schweiz`,
     description: siteConfig.description,
     author: siteConfig.contact.company,
     keywords: ['burger', 'grill', 'restaurant', 'schweiz', 'chf', siteConfig.region]

@@ -9,7 +9,7 @@ import { formatPrice } from "@/lib/config";
 import Image from "next/image";
 import { useState } from "react";
 
-// 🆕 DISH IMAGE COMPONENT with Error Handling
+// ✅ CLEAN DISH IMAGE COMPONENT - ULTRATHINK DESIGN
 function DishImage({ dish, priority = false }: { dish: MainDish, priority?: boolean }) {
   const [imageState, setImageState] = useState<ImageLoadState>('loading');
   
@@ -19,12 +19,12 @@ function DishImage({ dish, priority = false }: { dish: MainDish, priority?: bool
   const showFallback = !dish.image || imageState === 'error';
   
   return (
-    <div className="w-full md:w-40 h-32 md:h-28 flex-shrink-0 p-4 md:p-6">
+    <div className="w-full sm:w-28 h-28 flex-shrink-0 p-3">
       <div className="w-full h-full relative bg-muted/30 rounded-lg overflow-hidden border border-border/50">
         {showFallback ? (
           // Fallback: Emoji for appetite appeal
           <div className="w-full h-full flex items-center justify-center bg-muted/30">
-            <span className="text-3xl md:text-4xl">🍔</span>
+            <span className="text-3xl">🍔</span>
           </div>
         ) : (
           <Image
@@ -32,7 +32,7 @@ function DishImage({ dish, priority = false }: { dish: MainDish, priority?: bool
             alt={dish.imageAlt || dish.name}
             fill
             className="object-cover rounded-lg transition-transform group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, 160px"
+            sizes="(max-width: 640px) 100vw, 112px"
             priority={priority}
             onLoad={handleImageLoad}
             onError={handleImageError}
@@ -83,39 +83,46 @@ export function MainDishCard({ dish, onDishClick, priority = false }: MainDishCa
       )}
       onClick={handleClick}
     >
-      {/* 🆕 NEW: Flex container for Split Layout */}
-      <div className="flex flex-col md:flex-row md:items-center">
+      {/* ✅ CLEAN LAYOUT STRUCTURE - ULTRATHINK DESIGN */}
+      <div className="flex flex-col sm:flex-row gap-4">
         
-        {/* 🆕 NEW: Image Section */}
+        {/* Image Section - Clean, predictable sizing */}
         <DishImage dish={dish} priority={priority} />
         
-        {/* EXISTING: Content Section - Structure preserved */}
-        <CardContent className="flex-1 p-4 md:p-6">
-        <div className="flex justify-between items-center gap-4">
-          
-          {/* Left: Dish Info */}
-          <div className="flex-1 space-y-2">
-            <div className="flex items-start justify-between">
-              <h3 className={cn(
-                "font-semibold text-lg leading-tight group-hover:text-primary transition-colors pr-2",
+        {/* Content Section - CLEAN VERTICAL STRUCTURE with CENTERING */}
+        <CardContent className="flex-1 p-4 lg:p-6 flex items-center">
+          <div className="space-y-3">
+            
+            {/* Title */}
+            <h3 className={cn(
+              "font-semibold text-lg leading-tight group-hover:text-primary transition-colors",
+              dish.isSignature && "text-accent",
+              dish.isProfitable && "text-primary"
+            )}>
+              {dish.name}
+            </h3>
+            
+            {/* Price + Indicators - ALWAYS VISIBLE */}
+            <div className="flex items-center gap-2">
+              <div className={cn(
+                "text-2xl font-bold transition-colors",
                 dish.isSignature && "text-accent",
-                dish.isProfitable && "text-primary"
+                dish.isProfitable && "text-primary", 
+                !dish.isSignature && !dish.isProfitable && "text-foreground group-hover:text-primary"
               )}>
-                {dish.name}
-              </h3>
-              
-              {/* Special Indicators */}
-              <div className="flex items-center gap-1 flex-shrink-0">
-                {dish.isSignature && (
-                  <Star className="h-4 w-4 fill-accent text-accent" />
-                )}
-                {dish.isProfitable && (
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                )}
-                {dish.available === false && (
-                  <Clock className="h-4 w-4 text-muted-foreground" />
-                )}
+                {formatPrice(dish.price)}
               </div>
+              
+              {/* Special Indicators inline with price */}
+              {dish.isSignature && (
+                <Star className="h-5 w-5 fill-accent text-accent" />
+              )}
+              {dish.isProfitable && (
+                <TrendingUp className="h-5 w-5 text-primary" />
+              )}
+              {dish.available === false && (
+                <Clock className="h-5 w-5 text-muted-foreground" />
+              )}
             </div>
 
             {/* Special Badges */}
@@ -144,41 +151,21 @@ export function MainDishCard({ dish, onDishClick, priority = false }: MainDishCa
                 </Badge>
               )}
             </div>
-          </div>
 
-          {/* Right: Price */}
-          <div className="flex-shrink-0 text-right self-start md:self-center">
-            <div className={cn(
-              "text-2xl font-bold transition-colors",
-              dish.isSignature && "text-accent",
-              dish.isProfitable && "text-primary", 
-              !dish.isSignature && !dish.isProfitable && "text-foreground group-hover:text-primary"
-            )}>
-              {formatPrice(dish.price)}
-            </div>
-            
-            {/* Value indicator for profitable items */}
-            {dish.isProfitable && (
-              <div className="text-xs text-primary font-medium mt-1">
-                Besonders beliebt
+            {/* Hover Effect */}
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="text-xs text-muted-foreground italic">
+                🔥 Frisch vom Grill
               </div>
-            )}
+            </div>
           </div>
-        </div>
-
-        {/* Hover Effect: Show "Frisch vom Grill" */}
-        <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-          <div className="text-xs text-muted-foreground italic">
-            🔥 Frisch auf dem Grill zubereitet
-          </div>
-        </div>
         </CardContent>
       </div>
     </Card>
   );
 }
 
-// Grid Layout for Main Dishes with Golden Triangle Psychology
+// ✅ CLEAN GRID LAYOUT - ULTRATHINK DESIGN
 export function MainDishGrid({ dishes, onDishClick }: { 
   dishes: MainDish[], 
   onDishClick?: (dish: MainDish) => void 
@@ -200,9 +187,9 @@ export function MainDishGrid({ dishes, onDishClick }: {
   });
 
   return (
-    <div className="grid gap-4 md:gap-6 lg:gap-8">
-      {/* Golden Triangle - First 4 items with priority loading */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+    <div className="space-y-8">
+      {/* Golden Triangle - First 4 items (Priority) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
         {sortedDishes.slice(0, 4).map((dish, index) => (
           <MainDishCard
             key={dish.id}
@@ -213,9 +200,9 @@ export function MainDishGrid({ dishes, onDishClick }: {
         ))}
       </div>
       
-      {/* Remaining items - lazy loading */}
+      {/* Remaining items - PROFESSIONAL: Max 2 columns for price visibility */}
       {sortedDishes.length > 4 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
           {sortedDishes.slice(4).map((dish) => (
             <MainDishCard
               key={dish.id}

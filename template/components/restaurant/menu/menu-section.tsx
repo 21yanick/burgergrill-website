@@ -63,7 +63,7 @@ export function MenuSection({
                 <span>Hauptgerichte</span>
               </h3>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Unsere authentischen Spezialitäten, frisch auf dem Grill zubereitet
+                Unsere authentischen Spezialitäten, frisch vom Grill
               </p>
             </div>
             
