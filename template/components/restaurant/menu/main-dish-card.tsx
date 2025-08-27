@@ -19,7 +19,7 @@ function DishImage({ dish, priority = false }: { dish: MainDish, priority?: bool
   const showFallback = !dish.image || imageState === 'error';
   
   return (
-    <div className="w-full sm:w-28 h-28 flex-shrink-0 p-3">
+    <div className="w-full aspect-[4/3] sm:w-32 lg:w-48 sm:aspect-[4/3] flex-shrink-0 p-3">
       <div className="w-full h-full relative bg-muted/30 rounded-lg overflow-hidden border border-border/50">
         {showFallback ? (
           // Fallback: Emoji for appetite appeal
