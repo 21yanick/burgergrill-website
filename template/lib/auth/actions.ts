@@ -9,28 +9,28 @@ const logger = getLogger('auth');
 
 // Validation schemas
 const signInSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  email: z.string().email('Ungültige E-Mail-Adresse'),
+  password: z.string().min(6, 'Passwort muss mindestens 6 Zeichen haben'),
 });
 
 const signUpSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  confirmPassword: z.string().min(6, 'Password must be at least 6 characters'),
+  email: z.string().email('Ungültige E-Mail-Adresse'),
+  password: z.string().min(6, 'Passwort muss mindestens 6 Zeichen haben'),
+  confirmPassword: z.string().min(6, 'Passwort muss mindestens 6 Zeichen haben'),
 }).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
+  message: "Passwörter stimmen nicht überein",
   path: ["confirmPassword"],
 });
 
 const resetPasswordSchema = z.object({
-  email: z.string().email('Invalid email address'),
+  email: z.string().email('Ungültige E-Mail-Adresse'),
 });
 
 const updatePasswordSchema = z.object({
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  confirmPassword: z.string().min(6, 'Password must be at least 6 characters'),
+  password: z.string().min(6, 'Passwort muss mindestens 6 Zeichen haben'),
+  confirmPassword: z.string().min(6, 'Passwort muss mindestens 6 Zeichen haben'),
 }).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
+  message: "Passwörter stimmen nicht überein",
   path: ["confirmPassword"],
 });
 
@@ -57,7 +57,7 @@ export async function signInAction(
 
     if (!validatedFields.success) {
       return {
-        error: 'Invalid form data',
+        error: 'Ungültige Formulardaten',
         field_errors: validatedFields.error.flatten().fieldErrors,
       };
     }
@@ -73,7 +73,7 @@ export async function signInAction(
     if (error) {
       logger.error(`Sign in failed: ${error.message} for ${email}`);
       return {
-        error: 'Invalid email or password',
+        error: 'Ungültige E-Mail oder Passwort',
       };
     }
 
@@ -82,7 +82,7 @@ export async function signInAction(
   } catch (error) {
     logger.error({ error }, 'Sign in error');
     return {
-      error: 'An unexpected error occurred. Please try again.',
+      error: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
     };
   }
 
@@ -107,7 +107,7 @@ export async function signUpAction(
 
     if (!validatedFields.success) {
       return {
-        error: 'Invalid form data',
+        error: 'Ungültige Formulardaten',
         field_errors: validatedFields.error.flatten().fieldErrors,
       };
     }
@@ -133,12 +133,12 @@ export async function signUpAction(
     logger.info({ email }, 'User signed up successfully');
 
     return {
-      success: 'Check your email for a confirmation link',
+      success: 'Überprüfen Sie Ihre E-Mails für einen Bestätigungslink',
     };
   } catch (error) {
     logger.error({ error }, 'Sign up error');
     return {
-      error: 'An unexpected error occurred. Please try again.',
+      error: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
     };
   }
 }
@@ -158,7 +158,7 @@ export async function resetPasswordAction(
 
     if (!validatedFields.success) {
       return {
-        error: 'Invalid form data',
+        error: 'Ungültige Formulardaten',
         field_errors: validatedFields.error.flatten().fieldErrors,
       };
     }
@@ -180,12 +180,12 @@ export async function resetPasswordAction(
     logger.info({ email }, 'Password reset email sent');
 
     return {
-      success: 'Check your email for a password reset link',
+      success: 'Überprüfen Sie Ihre E-Mails für einen Passwort-Reset-Link',
     };
   } catch (error) {
     logger.error({ error }, 'Reset password error');
     return {
-      error: 'An unexpected error occurred. Please try again.',
+      error: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
     };
   }
 }
@@ -206,7 +206,7 @@ export async function updatePasswordAction(
 
     if (!validatedFields.success) {
       return {
-        error: 'Invalid form data',
+        error: 'Ungültige Formulardaten',
         field_errors: validatedFields.error.flatten().fieldErrors,
       };
     }
@@ -225,15 +225,15 @@ export async function updatePasswordAction(
       };
     }
 
-    logger.info('Password updated successfully');
+    logger.info('Passwort erfolgreich aktualisiert');
 
     return {
-      success: 'Password updated successfully',
+      success: 'Passwort erfolgreich aktualisiert',
     };
   } catch (error) {
     logger.error({ error }, 'Update password error');
     return {
-      error: 'An unexpected error occurred. Please try again.',
+      error: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
     };
   }
 }

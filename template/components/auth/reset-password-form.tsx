@@ -36,12 +36,12 @@ export function ResetPasswordForm() {
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">E-Mail</Label>
         <Input
           id="email"
           name="email"
           type="email"
-          placeholder="Enter your email"
+          placeholder="E-Mail eingeben"
           required
           aria-describedby={state.field_errors?.email ? "email-error" : undefined}
         />
@@ -52,7 +52,7 @@ export function ResetPasswordForm() {
         )}
       </div>
 
-      <SubmitButton>Send Reset Link</SubmitButton>
+      <SubmitButton>Reset-Link senden</SubmitButton>
     </form>
   );
 }

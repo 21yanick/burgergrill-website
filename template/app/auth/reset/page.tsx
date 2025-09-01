@@ -15,24 +15,24 @@ export default async function ResetPage() {
         <div className="mx-auto max-w-md">
           <Card>
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl">Reset your password</CardTitle>
+              <CardTitle className="text-2xl">Passwort zurücksetzen</CardTitle>
               <CardDescription>
-                Enter your email address and we&apos;ll send you a link to reset your password
+                Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<div>Laden...</div>}>
                 <ResetPasswordForm />
               </Suspense>
               
               <div className="mt-6 text-center text-sm">
                 <p className="text-muted-foreground">
-                  Remember your password?{' '}
+                  Passwort wieder eingefallen?{' '}
                   <Link 
                     href="/auth/login" 
                     className="text-primary hover:underline"
                   >
-                    Sign in
+                    Anmelden
                   </Link>
                 </p>
               </div>

@@ -56,7 +56,7 @@ const navigationItems = [
     exact: false,
   },
   {
-    title: 'Account',
+    title: 'Konto',
     href: '/dashboard/account',
     icon: User,
     exact: false,

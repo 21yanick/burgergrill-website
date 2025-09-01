@@ -11,7 +11,7 @@ export function SignOutButton() {
         className="flex w-full items-center px-2 py-1.5 text-sm cursor-pointer hover:bg-accent rounded-sm"
       >
         <LogOut className="mr-2 h-4 w-4" />
-        Sign out
+        Abmelden
       </button>
     </form>
   );

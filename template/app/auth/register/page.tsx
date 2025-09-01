@@ -15,24 +15,24 @@ export default async function RegisterPage() {
         <div className="mx-auto max-w-md">
           <Card>
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl">Create an account</CardTitle>
+              <CardTitle className="text-2xl">Konto erstellen</CardTitle>
               <CardDescription>
-                Get started with your free account
+                Legen Sie Ihr Konto an
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<div>Laden...</div>}>
                 <SignUpForm />
               </Suspense>
               
               <div className="mt-6 text-center text-sm">
                 <p className="text-muted-foreground">
-                  Already have an account?{' '}
+                  Bereits ein Konto?{' '}
                   <Link 
                     href="/auth/login" 
                     className="text-primary hover:underline"
                   >
-                    Sign in
+                    Anmelden
                   </Link>
                 </p>
               </div>

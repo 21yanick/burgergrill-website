@@ -23,9 +23,9 @@ export default function GlobalError({ error, reset }: ErrorProps) {
           <div className="mx-auto w-12 h-12 bg-destructive/10 rounded-full flex items-center justify-center mb-4">
             <AlertTriangle className="w-6 h-6 text-destructive" />
           </div>
-          <CardTitle>Oops! Something went wrong</CardTitle>
+          <CardTitle>Oops! Etwas ist schiefgelaufen</CardTitle>
           <CardDescription>
-            We&apos;ve encountered an unexpected error. Our team has been notified and we&apos;re working on a fix.
+            Wir sind auf einen unerwarteten Fehler gestossen. Unser Team wurde benachrichtigt und arbeitet an einer Lösung.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -35,12 +35,12 @@ export default function GlobalError({ error, reset }: ErrorProps) {
           <div className="flex flex-col sm:flex-row gap-2">
             <Button onClick={reset} className="flex-1">
               <RefreshCw className="w-4 h-4 mr-2" />
-              Try Again
+              Erneut versuchen
             </Button>
             <Button variant="outline" asChild className="flex-1">
               <Link href="/">
                 <Home className="w-4 h-4 mr-2" />
-                Go Home
+                Zur Startseite
               </Link>
             </Button>
           </div>

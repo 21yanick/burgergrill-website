@@ -27,24 +27,24 @@ export default async function ConfirmPage({ searchParams }: ConfirmPageProps) {
             <Card>
               <CardHeader className="text-center">
                 <CardTitle className="text-2xl text-destructive">
-                  Invalid confirmation link
+                  Ungültiger Bestätigungslink
                 </CardTitle>
                 <CardDescription>
-                  This confirmation link is invalid or has expired
+                  Dieser Bestätigungslink ist ungültig oder abgelaufen
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <Alert variant="destructive">
                   <XCircle className="h-4 w-4" />
                   <AlertDescription>
-                    The confirmation link you clicked is invalid or has expired.
+                    Der Bestätigungslink, den Sie angeklickt haben, ist ungültig oder abgelaufen.
                   </AlertDescription>
                 </Alert>
                 
                 <div className="text-center">
                   <Button asChild>
                     <Link href="/auth/login">
-                      Go to Sign In
+                      Zur Anmeldung
                     </Link>
                   </Button>
                 </div>
@@ -71,24 +71,24 @@ export default async function ConfirmPage({ searchParams }: ConfirmPageProps) {
             <Card>
               <CardHeader className="text-center">
                 <CardTitle className="text-2xl text-destructive">
-                  Confirmation failed
+                  Bestätigung fehlgeschlagen
                 </CardTitle>
                 <CardDescription>
-                  We couldn&apos;t confirm your email address
+                  Wir konnten Ihre E-Mail-Adresse nicht bestätigen
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <Alert variant="destructive">
                   <XCircle className="h-4 w-4" />
                   <AlertDescription>
-                    {error.message || 'An error occurred during confirmation'}
+                    {error.message || 'Ein Fehler ist bei der Bestätigung aufgetreten'}
                   </AlertDescription>
                 </Alert>
                 
                 <div className="text-center">
                   <Button asChild>
                     <Link href="/auth/login">
-                      Go to Sign In
+                      Zur Anmeldung
                     </Link>
                   </Button>
                 </div>

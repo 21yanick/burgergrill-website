@@ -58,7 +58,7 @@ export async function middleware(request: NextRequest) {
   );
   
   // Auth routes - redirect if already logged in
-  const authRoutes = ['/auth/login', '/auth/register', '/auth/reset'];
+  const authRoutes = ['/auth/login'];
   const isAuthRoute = authRoutes.some(route => 
     request.nextUrl.pathname.startsWith(route)
   );

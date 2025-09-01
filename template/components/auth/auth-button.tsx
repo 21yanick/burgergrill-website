@@ -18,12 +18,9 @@ export async function AuthButton() {
 
   if (!user) {
     return (
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center">
         <Button variant="ghost" size="sm" asChild>
-          <Link href="/auth/login">Sign in</Link>
-        </Button>
-        <Button size="sm" asChild>
-          <Link href="/auth/register">Get started</Link>
+          <Link href="/auth/login">Anmelden</Link>
         </Button>
       </div>
     );
@@ -48,7 +45,7 @@ export async function AuthButton() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {user.user_metadata?.full_name || 'User'}
+              {user.user_metadata?.full_name || 'Benutzer'}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
               {user.email}
@@ -65,7 +62,7 @@ export async function AuthButton() {
         <DropdownMenuItem asChild>
           <Link href="/settings" className="cursor-pointer">
             <Settings className="mr-2 h-4 w-4" />
-            Settings
+            Einstellungen
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />

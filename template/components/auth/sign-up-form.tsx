@@ -36,12 +36,12 @@ export function SignUpForm() {
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">E-Mail</Label>
         <Input
           id="email"
           name="email"
           type="email"
-          placeholder="Enter your email"
+          placeholder="E-Mail eingeben"
           required
           aria-describedby={state.field_errors?.email ? "email-error" : undefined}
         />
@@ -53,12 +53,12 @@ export function SignUpForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor="password">Passwort</Label>
         <Input
           id="password"
           name="password"
           type="password"
-          placeholder="Enter your password"
+          placeholder="Passwort eingeben"
           required
           aria-describedby={state.field_errors?.password ? "password-error" : undefined}
         />
@@ -70,12 +70,12 @@ export function SignUpForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="confirmPassword">Confirm Password</Label>
+        <Label htmlFor="confirmPassword">Passwort bestätigen</Label>
         <Input
           id="confirmPassword"
           name="confirmPassword"
           type="password"
-          placeholder="Confirm your password"
+          placeholder="Passwort wiederholen"
           required
           aria-describedby={state.field_errors?.confirmPassword ? "confirmPassword-error" : undefined}
         />
@@ -86,7 +86,7 @@ export function SignUpForm() {
         )}
       </div>
 
-      <SubmitButton>Create Account</SubmitButton>
+      <SubmitButton>Konto erstellen</SubmitButton>
     </form>
   );
 }
